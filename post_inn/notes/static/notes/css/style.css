@@ -1,0 +1,72 @@
+body, .form-control.input-text {
+    font-size: 100%;
+    font-style: normal;
+    font-variant-ligatures: normal;
+    font-variant-caps: normal;
+    font-variant-numeric: normal;
+    font-variant-east-asian: normal;
+    font-weight: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    text-rendering: optimizelegibility;
+    color: #5d686f;
+    font-weight: 400;
+    font-family: 'Merriweather', serif;
+    }
+
+
+
+
+
+b, strong {
+  font-weight: bold;
+}
+
+p {
+    display: block;
+    }
+
+h1,  .form-control.input-title{
+    font-size: 32px;
+    }
+
+
+h1, h2, h3, h4, h5, h6, .form-control.input-title {
+    letter-spacing: -0.04em;
+    font-family: "Open Sans",sans-serif;
+    font-weight: 700;
+    line-height: 1.45em;
+    color: #4a4a4a;
+    }
+
+.container {
+      width: auto;
+      max-width: 680px;
+      padding: 0 15px;
+    }
+
+.bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+@media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+hr {
+    width: auto;
+    max-width: 690px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 60px;
+ }
+
+a.nav-link i.bi {
+margin-right:7px;
+}
