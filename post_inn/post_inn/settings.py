@@ -27,6 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
+
 DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -87,18 +88,9 @@ WSGI_APPLICATION = 'post_inn.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': env(f'DB_NAME_LOCALHOST'),
-            'USER': env('DB_USER_LOCALHOST'),
-            'PASSWORD': env('DB_PASSWORD_LOCALHOST'),
-            'HOST': env('DB_HOST_LOCALHOST'),
-            'PORT': env('DB_PORT_LOCALHOST'),
-        }
-    }
-else:
+IS_DEV_SERVER = False
+
+if IS_DEV_SERVER:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -107,6 +99,17 @@ else:
             'PASSWORD': env('DB_PASSWORD'),
             'HOST': env('DB_HOST'),
             'PORT': env('DB_PORT'),
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': env(f'DB_NAME_LOCALHOST'),
+            'USER': env('DB_USER_LOCALHOST'),
+            'PASSWORD': env('DB_PASSWORD_LOCALHOST'),
+            'HOST': env('DB_HOST_LOCALHOST'),
+            'PORT': env('DB_PORT_LOCALHOST'),
         }
     }
 
