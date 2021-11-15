@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'post_inn.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-IS_DEV_SERVER = False
+IS_DEV_SERVER = True
 
 if IS_DEV_SERVER:
     DATABASES = {
