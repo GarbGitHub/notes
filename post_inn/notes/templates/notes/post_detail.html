@@ -5,5 +5,12 @@
     <div class="lead">
         {{ post.text|safe }}
     </div>
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center py-1 my-2">
+        <button type="submit" class="btn btn-labeled btn-outline-secondary" onclick="location.href='{% url 'post_update' pk %}'">
+            <span class="btn-label">
+                <i class="bi bi-pencil-square"></i>
+            </span>Изменить запись
+        </button>
+    </div>
 </div>
 {% endblock %}

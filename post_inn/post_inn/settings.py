@@ -92,7 +92,7 @@ WSGI_APPLICATION = 'post_inn.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-IS_DEV_SERVER = True
+IS_DEV_SERVER = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
