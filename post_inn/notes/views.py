@@ -1,8 +1,10 @@
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
+from django.shortcuts import get_object_or_404
+from django.contrib import messages
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, DetailView, UpdateView, CreateView
+from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
 from notes.forms import NoteEditForm
 from notes.models import Note
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -66,10 +68,6 @@ class NoteUpdateView(SuccessMessageMixin, UpdateView):
         # request_user_pk = self.request.user.pk
         return context
 
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
-
     def get_success_url(self):
         return reverse_lazy('post_detail', args=(self.object.id,))
 
@@ -105,4 +103,32 @@ class NoteCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
     def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+
+class NoteDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+    model = Note
+    template_name = 'notes/post_delete.html'
+    success_message = "Успешно удалено"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title_page'] = f'Удалить: "{context.get(self, self.object.title)}"'
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('notes_list')
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        messages.success(self.request, self.success_message)
+        success_url = self.get_success_url()
+        obj.delete()
+        return HttpResponseRedirect(success_url)
+
+    @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
+    def dispatch(self, *args, **kwargs):
+        obj = self.get_object()
+        if obj.author.pk != self.request.user.pk:
+            return HttpResponseRedirect(reverse('notes_list'))
         return super().dispatch(*args, **kwargs)
