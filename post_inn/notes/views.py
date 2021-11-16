@@ -2,9 +2,10 @@ from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
-from django.views.generic import ListView, DetailView, UpdateView
+from django.views.generic import ListView, DetailView, UpdateView, CreateView
 from notes.forms import NoteEditForm
 from notes.models import Note
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
 
@@ -38,6 +39,7 @@ class NoteDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['pk'] = self.object.id
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
@@ -64,6 +66,10 @@ class NoteUpdateView(SuccessMessageMixin, UpdateView):
         # request_user_pk = self.request.user.pk
         return context
 
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
     def get_success_url(self):
         return reverse_lazy('post_detail', args=(self.object.id,))
 
@@ -73,4 +79,30 @@ class NoteUpdateView(SuccessMessageMixin, UpdateView):
         # Если пользователь не является автором, отправляем его в свою библиотеку
         if obj.author.pk != self.request.user.pk:
             return HttpResponseRedirect(reverse('notes_list'))
+        return super().dispatch(*args, **kwargs)
+
+
+class NoteCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    model = Note
+    template_name = 'notes/post_create.html'
+    success_message = "Успешно добавленно"
+
+    def get_form(self, form_class=NoteEditForm):
+        """Вернет экземпляр формы, которая будет использоваться в этом представлении."""
+        return form_class(**self.get_form_kwargs())
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title_page'] = f'Создать: '
+        return context
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('notes_list')
+
+    @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
+    def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
