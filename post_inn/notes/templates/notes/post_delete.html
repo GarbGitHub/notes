@@ -1,0 +1,14 @@
+{% extends 'notes/base.html' %}
+{% block content %}
+<div class="container">
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center py-1 my-2">
+        <form action="{% url 'post_delete' pk=object.pk %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-labeled btn-outline-secondary" id="liveToastBtn">
+                        <span class="btn-label">
+                        </span> Точно удалить!
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
