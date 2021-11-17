@@ -11,6 +11,7 @@ class NoteEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
+            field.widget.attrs['placeholder'] = field_name.title
             if field_name == 'title':
                 field.widget.attrs['class'] = 'form-control input-title'
             elif field_name == 'text':
