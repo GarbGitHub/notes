@@ -108,6 +108,7 @@ class NoteCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
 class NoteDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Note
+    context_object_name = 'post'
     template_name = 'notes/post_delete.html'
     success_message = "Успешно удалено"
 

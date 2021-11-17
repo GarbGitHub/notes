@@ -1,13 +1,27 @@
 {% extends 'notes/base.html' %}
 {% block content %}
 <div class="container">
+    <div class="lead">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <h4 class="alert-heading text-center">Внимание!</h4>
+            <p class="text-center">Вы пытаетесь полностью удалить заметку с названием <b>"{{ post.title }}"</b>.</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+    </div>
     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center py-1 my-2">
         <form action="{% url 'post_delete' pk=object.pk %}" method="post">
             {% csrf_token %}
-            <button type="submit" class="btn btn-labeled btn-outline-secondary" id="liveToastBtn">
+            <button type="submit" class="btn btn-labeled btn-outline-secondary">
                         <span class="btn-label">
+                            <i class="bi bi-check2"></i>
                         </span> Точно удалить!
             </button>
+            <a href="{% url 'post_detail' post.pk %}" class="btn btn-labeled btn-outline-secondary">
+                        <span class="btn-label">
+                            <i class="bi bi-x-lg"></i>
+                        </span> Отмена
+            </a>
         </form>
     </div>
 </div>
