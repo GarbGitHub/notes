@@ -6,8 +6,7 @@
     width: 100%;
     padding: 0;
     background-clip: padding-box;
-    border: 0px;
-    border-radius: 0rem;
+    border-color:#ebebeb;
 }
 
 .form-control p{
@@ -25,10 +24,48 @@ textarea.form-control.input-text {
     padding: 0;
     font-size: 1.25rem;
     font-weight: 300;
-    overflow: hidden;
     min-height: 600px;
 }
 
 textarea.form-control.input-text:active,  textarea.form-control.input-text:focus{
     overflow: visible;
 }
+
+.form-control::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #e0e0e0;
+  line-height: 1.5em;
+  padding:7px;
+  opacity: 1; /* Firefox */
+}
+
+.form-control:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  line-height: 1.5em;
+  padding:7px;
+  color: #e0e0e0;
+}
+
+.form-control::-ms-input-placeholder { /* Microsoft Edge */
+  line-height: 1.5em;
+  padding:7px;
+  color: #e0e0e0;
+}
+
+input.form-control.input-title:active:focus::-webkit-input-placeholder {color: transparent}
+input.form-control.input-title:active:focus::-moz-placeholder          {color: transparent}
+input.form-control.input-title:active:focus:-moz-placeholder           {color: transparent}
+input.form-control.input-title:active:focus:-ms-input-placeholder      {color: transparent}
+
+input.form-control.input-title:focus:focus::-webkit-input-placeholder {color: transparent}
+input.form-control.input-title:focus:focus::-moz-placeholder          {color: transparent}
+input.form-control.input-title:focus:focus:-moz-placeholder           {color: transparent}
+input.form-control.input-title:focus:focus:-ms-input-placeholder      {color: transparent}
+
+textarea.form-control.input-text:active:focus::-webkit-input-placeholder {color: transparent}
+textarea.form-control.input-text:active:focus::-moz-placeholder          {color: transparent}
+textarea.form-control.input-text:active:focus:-moz-placeholder           {color: transparent}
+textarea.form-control.input-text:active:focus:-ms-input-placeholder      {color: transparent}
+
+textarea.form-control.input-text:focus:focus::-webkit-input-placeholder {color: transparent}
+textarea.form-control.input-text:focus:focus::-moz-placeholder          {color: transparent}
+textarea.form-control.input-text:focus:focus:-moz-placeholder           {color: transparent}
+textarea.form-control.input-text:focus:focus:-ms-input-placeholder      {color: transparent}

@@ -1,0 +1,22 @@
+{% extends 'notes/base.html' %}
+{% load static %}
+{% block css %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'notes/css/post-update.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="mt-5">{{ post.title }}</h1>
+    <form class="form-horizontal" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center py-1 my-2">
+            <button type="submit" class="btn btn-labeled btn-outline-secondary" id="liveToastBtn">
+                        <span class="btn-label">
+                            <i class="bi bi-check2-circle"></i>
+                        </span> Сохранить
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

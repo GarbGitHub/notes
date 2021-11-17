@@ -100,6 +100,12 @@ IS_DEV_SERVER = True
 STATIC_URL = '/static/'
 
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.2/howto/static-files/
+
+STATIC_URL = '/static/'
+
+
 if IS_DEV_SERVER:
     DATABASES = {
         'default': {

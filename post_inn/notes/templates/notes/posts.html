@@ -9,6 +9,7 @@
     <a class="container__title" href="{% url 'post_detail' post.pk %}">
         <h1 class="mt-5">{{ post.title }}</h1>
     </a>
+    <p>{{ post.text|truncatechars:90 }}</p>
     <p>{{ post.created }}</p>
 </div>
 {% endfor %}
