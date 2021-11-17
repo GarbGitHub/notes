@@ -94,14 +94,33 @@ WSGI_APPLICATION = 'post_inn.wsgi.application'
 
 IS_DEV_SERVER = True
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.2/howto/static-files/
+
+STATIC_URL = '/static/'
+
+
 if IS_DEV_SERVER:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME': env(f'DB_NAME'),
             'USER': env('DB_USER'),
+            'PASSWORD': env('DB_PASSWORD'),
         }
     }
+
+    # STATICFILES_DIRS = (
+    #     os.path.join(BASE_DIR, 'note_inn', 'static'),  # Путь к статике на сервере
+    # )
+
+    STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+    STATICFILES_FINDERS = [
+        'django.contrib.staticfiles.finders.FileSystemFinder',
+        'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    ]
+
 else:
     DATABASES = {
         'default': {
@@ -113,6 +132,10 @@ else:
             'PORT': env('DB_PORT_LOCALHOST'),
         }
     }
+
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, 'note_inn', 'static'),  # Путь к статике на сервере
+    )
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -145,10 +168,6 @@ USE_L10N = True
 
 USE_TZ = False
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
-
-STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
