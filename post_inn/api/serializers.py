@@ -45,7 +45,7 @@ class ThinNoteSerializer(ModelSerializer):
 
     class Meta:
         model = Note
-        fields = ('id', 'title', 'url')
+        fields = ('id', 'title', 'text', 'url', 'created', 'is_active')
 
 # class NoteSerializer(Serializer):
 #     id = IntegerField(read_only=True)
