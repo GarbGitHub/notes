@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
-from notes.forms import NoteEditForm
+from notes.forms import NoteBasketForm, NoteEditForm, NoteReturnBasketForm
 from notes.models import Note
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -25,8 +25,7 @@ class NoteListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(NoteListView, self).get_context_data(**kwargs)
         # context = Note.objects.filter(author=self.request.user)
-        title_page = 'List of notes'
-        context['title_page'] = title_page
+        context['title_page'] = 'Список заметок'
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
@@ -42,6 +41,7 @@ class NoteDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['pk'] = self.object.id
+        context['title_page'] = f'{context.get(self, self.object.title)}'
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
@@ -106,10 +106,86 @@ class NoteCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         return super().dispatch(*args, **kwargs)
 
 
-class NoteDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+class NoteBasketListView(ListView):
+    paginate_by = 5
+    model = Note
+    template_name = 'notes/posts_basket.html'
+    context_object_name = 'objects'
+
+    def get_queryset(self):
+        return Note.objects.filter(author=self.request.user, is_active=False)
+        # return Note.objects.filter(category__pk=self.kwargs.get('pk')).order_by('-is_active')
+
+    def get_context_data(self, **kwargs):
+        context = super(NoteBasketListView, self).get_context_data(**kwargs)
+        # context = Note.objects.filter(author=self.request.user)
+        context['title_page'] = 'Корзина'
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+
+class NoteBasketDelUpdateView(SuccessMessageMixin, UpdateView):
     model = Note
     context_object_name = 'post'
-    template_name = 'notes/post_delete.html'
+    template_name = 'notes/post_basket_add.html'
+    success_message = "Успешно добавлено в корзину"
+
+    def get_form(self, form_class=NoteBasketForm):
+        """Вернет экземпляр формы, которая будет использоваться в этом представлении."""
+        return form_class(**self.get_form_kwargs())
+
+    def form_valid(self, form):
+        form.instance.is_active = False
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title_page'] = f'Добавить в корзину: "{context.get(self, self.object.title)}"'
+        context['pk'] = self.object.id
+        context['name_button'] = 'Добавить в корзину!'
+        context['alert_text'] = 'Вы пытаетесь добавить заметку в корзину!'
+        # author_pk = context.get(self, self.object.author.pk)
+        # request_user_pk = self.request.user.pk
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('notes_list')
+
+    @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
+    def dispatch(self, *args, **kwargs):
+        obj = self.get_object()
+        # Если пользователь не является автором, отправляем его в свою библиотеку
+        if obj.author.pk != self.request.user.pk:
+            return HttpResponseRedirect(reverse('notes_list'))
+        return super().dispatch(*args, **kwargs)
+
+
+class NoteBasketDetailView(DetailView):
+    model = Note
+    template_name = 'notes/post_basket_detail.html'
+    context_object_name = 'post'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['pk'] = self.object.id
+        context['title_page'] = f'{context.get(self, self.object.title)}'
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
+    def dispatch(self, *args, **kwargs):
+        obj = self.get_object()
+        if obj.author.pk != self.request.user.pk:
+            return HttpResponseRedirect(reverse('notes_list'))
+        return super().dispatch(*args, **kwargs)
+
+
+class NoteBasketDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+    model = Note
+    context_object_name = 'post'
+    template_name = 'notes/post_basket_delete.html'
     success_message = "Успешно удалено"
 
     def get_context_data(self, **kwargs):
@@ -118,7 +194,7 @@ class NoteDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         return context
 
     def get_success_url(self):
-        return reverse_lazy('notes_list')
+        return reverse_lazy('posts_basket_list')
 
     def delete(self, request, *args, **kwargs):
         obj = self.get_object()
@@ -131,5 +207,42 @@ class NoteDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     def dispatch(self, *args, **kwargs):
         obj = self.get_object()
         if obj.author.pk != self.request.user.pk:
-            return HttpResponseRedirect(reverse('notes_list'))
+            return HttpResponseRedirect(reverse('posts_basket_list'))
+        return super().dispatch(*args, **kwargs)
+
+
+class NoteReturnActiveUpdateView(SuccessMessageMixin, UpdateView):
+    model = Note
+    context_object_name = 'post'
+    template_name = 'notes/post_basket_add.html'
+    success_message = "Успешно восстановленно"
+
+    def get_form(self, form_class=NoteReturnBasketForm):
+        """Вернет экземпляр формы, которая будет использоваться в этом представлении."""
+        return form_class(**self.get_form_kwargs())
+
+    def form_valid(self, form):
+        form.instance.is_active = True
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title_page'] = f'Восстановить заметку: "{context.get(self, self.object.title)}"'
+        context['pk'] = self.object.id
+        context['name_button'] = 'Восстановить заметку!'
+        context['alert_text'] = 'Вы пытаетесь восстановить заметку.'
+
+        # author_pk = context.get(self, self.object.author.pk)
+        # request_user_pk = self.request.user.pk
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('posts_basket_list')
+
+    @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
+    def dispatch(self, *args, **kwargs):
+        obj = self.get_object()
+        # Если пользователь не является автором, отправляем его в свою библиотеку
+        if obj.author.pk != self.request.user.pk:
+            return HttpResponseRedirect(reverse('posts_basket_list'))
         return super().dispatch(*args, **kwargs)

@@ -21,3 +21,23 @@ class NoteEditForm(forms.ModelForm):
             field.help_text = ''
             field.label = ''
         # self.fields['is_active'].widget.attrs.update({'class': 'form-check-input'})
+
+
+class NoteBasketForm(forms.ModelForm):
+
+    class Meta:
+        model = Note
+        fields = ('is_active',)  # необходимые поля
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+class NoteReturnBasketForm(forms.ModelForm):
+
+    class Meta:
+        model = Note
+        fields = ('is_active',)  # необходимые поля
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
