@@ -1,3 +1,5 @@
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -18,7 +20,7 @@ class UserViewsSet(ModelViewSet):
 
 class NoteViewSet(ModelViewSet):
     model = Note
-    queryset = model.objects.filter()
+    queryset = model.objects.all()
     serializer_class = NoteSerializer
     # permission_classes = (IsAuthenticatedOrReadOnly,)  # Если не авторизован, только читать
     permission_classes = (IsAuthorOrReadOnly,)  # Если не автор, то только читать
