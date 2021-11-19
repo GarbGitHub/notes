@@ -1,17 +1,17 @@
 {% extends 'notes/base.html' %}
 {% block content %}
 <div class="container">
-    <h1 class="mt-5">{{ post.title }}</h1>
+    <h1 class="mt-5"><s>{{ post.title }}</s></h1>
     <div class="lead">
-        {{ post.text|safe }}
+        <s>{{ post.text|safe }}</s>
     </div>
     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center py-1 my-2">
-        <button class="btn btn-labeled btn-outline-secondary" onclick="location.href='{% url 'post_update' post.pk %}'">
+        <button class="btn btn-labeled btn-outline-secondary" onclick="location.href='{% url 'post_basket_return' pk %}'">
             <span class="btn-label">
-                <i class="bi bi-pencil-square"></i>
+                <i class="bi bi-reply-fill"></i>
             </span>
         </button>
-        <button class="btn btn-labeled btn-outline-secondary" onclick="location.href='{% url 'post_basket_add' post.pk %}'">
+        <button class="btn btn-labeled btn-outline-secondary" onclick="location.href='{% url 'post_basket_delete' pk %}'">
             <span class="btn-label">
                 <i class="bi bi-x-lg"></i>
             </span>

@@ -6,10 +6,10 @@
 {% block content %}
 {% for post in objects %}
 <div class="container">
-    <a class="container__title" href="{% url 'post_detail' post.pk %}">
-        <h1 class="mt-5">{{ post.title }}</h1>
+    <a class="container__title" href="{% url 'post_basket_detail' post.pk %}">
+        <h1 class="mt-5"><s>{{ post.title }}</s></h1>
     </a>
-    <p>{{ post.text|truncatechars:90|safe }}</p>
+    <p><s>{{ post.text|truncatechars:90|safe }}</s></p>
     <p>{{ post.created }}</p>
 </div>
 {% endfor %}
