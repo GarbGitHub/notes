@@ -1,6 +1,6 @@
-# from rest_framework.serializers import Serializer, IntegerField, CharField, ModelSerializer, HyperlinkedIdentityField, \
-#     SerializerMethodField
 from rest_framework.serializers import ModelSerializer, HyperlinkedIdentityField, SerializerMethodField
+
+from accounts.models import User
 from notes.models import Note
 from django.contrib.auth import get_user_model
 
@@ -9,23 +9,18 @@ class UserSerializer(ModelSerializer):
     class Meta:
         model = get_user_model()
         queryset = model.objects.all()
-        fields = ('id', 'email', 'password', 'name', 'admin', 'staff')
-        extra_kwargs = {'password': {'write_only': True}}
+        fields = ('id', 'email', 'name', 'full_name')
 
-    def create(self, validated_data):
-        """
-        :param validated_data: верификация полей на основе описания модели класса
-        :return:
-        """
-        password = validated_data.pop('password', '')
-        user = self.Meta.model(**validated_data)
-        user.set_password(password)
-        user.save()
-        return user
 
-    def update(self, instance, validated_data):
-        instance.set_password(validated_data.pop('password', ''))
-        return super().update(instance, validated_data)
+class ThinUserSerializer(ModelSerializer):
+    """
+    Если вы используете стандартные классы маршрутизаторов, это будет строка в формате <имя_модели>-detail
+    """
+    url = HyperlinkedIdentityField(view_name='users-detail')
+
+    class Meta:
+        model = User
+        fields = ('id', 'url')
 
 
 class NoteSerializer(ModelSerializer):
@@ -45,18 +40,4 @@ class ThinNoteSerializer(ModelSerializer):
 
     class Meta:
         model = Note
-        fields = ('id', 'title', 'url')
-
-# class NoteSerializer(Serializer):
-#     id = IntegerField(read_only=True)
-#     title = CharField(required=True, max_length=250)
-#     text = CharField(required=False, allow_blank=True)
-#
-#     def create(self, validated_data):
-#         return Note.objects.create(**validated_data)
-#
-#     def update(self, instance, validated_data):
-#         instance.title = validated_data.get('title', instance.title)
-#         instance.text = validated_data.get('text', instance.text)
-#         instance.save()
-#         return instance
+        fields = ('id', 'title', 'text', 'created', 'is_active', 'url')
