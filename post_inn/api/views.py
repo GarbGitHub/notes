@@ -1,34 +1,37 @@
-from django.utils.decorators import method_decorator
-from django.views.decorators.cache import cache_page
-from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+
+from accounts.models import User
 from notes.models import Note
-from api.serializers import NoteSerializer, ThinNoteSerializer, UserSerializer
-from rest_framework.permissions import IsAdminUser
-from .permission import IsAuthorOrReadOnly
-from django.contrib.auth import get_user_model
+from api.serializers import NoteSerializer, ThinNoteSerializer, UserSerializer, ThinUserSerializer
+from .permission import IsAuthor, IsAuthUser
 
 
-# viewsets
 class UserViewsSet(ModelViewSet):
-    model = get_user_model()
+    model = User
     queryset = model.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsAuthUser,)
+
+    def _allowed_methods(self):
+        """Запрещаем POST в список"""
+        return [m for m in super(UserViewsSet, self)._allowed_methods() if m not in ['POST']]
+
+    def list(self, request, *args, **kwargs):
+        context = {'request': request}
+        queryset = self.model.objects.filter(id=request.user.pk)
+        serializer = ThinUserSerializer(queryset, many=True, context=context)
+        return Response(serializer.data)
 
 
 class NoteViewSet(ModelViewSet):
     model = Note
     queryset = model.objects.all()
     serializer_class = NoteSerializer
-    # permission_classes = (IsAuthenticatedOrReadOnly,)  # Если не авторизован, только читать
-    permission_classes = (IsAuthorOrReadOnly,)  # Если не автор, то только читать
-
+    permission_classes = (IsAuthor,)
     # http_method_names = ['get', 'put', 'post']  # если необходимо использовать определенные методы
 
     def list(self, request, *args, **kwags):
-        # notes = Note.objects.all()  # все заметки
         notes = Note.objects.filter(author=request.user.pk)  # только свои заметки
         context = {'request': request}
         serializer = ThinNoteSerializer(notes, many=True, context=context)
