@@ -19,7 +19,7 @@ class NoteListView(ListView):
     ordering = '-created'
 
     def get_queryset(self):
-        return Note.objects.filter(author=self.request.user, is_active=True)
+        return Note.objects.filter(author=self.request.user, is_active=True).order_by('-is_favorites')
         # return Note.objects.filter(category__pk=self.kwargs.get('pk')).order_by('-is_active')
 
     def get_context_data(self, **kwargs):
