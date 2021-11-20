@@ -25,14 +25,20 @@ class ThinUserSerializer(ModelSerializer):
 
 class NoteSerializer(ModelSerializer):
     # Для связи поста к автору один к одному
-    author = SerializerMethodField(read_only=True)
+    # author = SerializerMethodField(read_only=True)
 
     class Meta:
         model = Note
-        fields = '__all__'
+        fields = ('id', 'title', 'text', 'created', 'is_active', 'is_favorites')
 
-    def get_author(self, obj):
-        return str(obj.author.id)  # obj.author.id, obj.author.name, obj.author.email
+    # def get_author(self, obj):
+    #     # return {
+    #     #     'id': f'{obj.author.id}',
+    #     #     'first_name': f'{obj.author.name}',
+    #     #     'last_name': f'{obj.author.full_name}',
+    #     #     'email': f'{obj.author.email}',
+    #     # }
+    #     return str(obj.author.id)  # obj.author.id, obj.author.name, obj.author.email
 
 
 class ThinNoteSerializer(ModelSerializer):
@@ -40,4 +46,19 @@ class ThinNoteSerializer(ModelSerializer):
 
     class Meta:
         model = Note
-        fields = ('id', 'title', 'text', 'created', 'is_active', 'url')
+        fields = ('id', 'title', 'text', 'created', 'is_active', 'is_favorites', 'url')
+
+
+# Basket
+class BasketSerializer(NoteSerializer):
+    class Meta:
+        model = Note
+        fields = ('id', 'title', 'text', 'created', 'update', 'is_active', 'is_favorites')
+
+
+class ThinBasketSerializer(ModelSerializer):
+    url = HyperlinkedIdentityField(view_name='basket-detail')
+
+    class Meta:
+        model = Note
+        fields = ('id', 'title', 'text', 'created', 'update', 'is_active', 'is_favorites', 'url')

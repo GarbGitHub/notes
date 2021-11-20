@@ -139,6 +139,7 @@ class NoteBasketDelUpdateView(SuccessMessageMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.is_active = False
+        form.instance.is_favorites = False
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
