@@ -13,4 +13,5 @@ urlpatterns = [
     path('notes/basket/detail/<int:pk>', notes.NoteBasketDetailView.as_view(), name='post_basket_detail'),
     path('notes/basket/return/<int:pk>', notes.NoteReturnActiveUpdateView.as_view(), name='post_basket_return'),
     path('notes/basket/delete/<int:pk>/', notes.NoteBasketDeleteView.as_view(), name='post_basket_delete'),
+    path('notes/favorites/', notes.NoteFavoriteListView.as_view(), name='posts_favorites')
 ]

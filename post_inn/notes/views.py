@@ -19,7 +19,7 @@ class NoteListView(ListView):
     ordering = '-created'
 
     def get_queryset(self):
-        return Note.objects.filter(author=self.request.user, is_active=True).order_by('-is_favorites')
+        return Note.objects.filter(author=self.request.user, is_active=True).order_by('-is_favorites', '-created')
         # return Note.objects.filter(category__pk=self.kwargs.get('pk')).order_by('-is_active')
 
     def get_context_data(self, **kwargs):
@@ -246,4 +246,26 @@ class NoteReturnActiveUpdateView(SuccessMessageMixin, UpdateView):
         # Если пользователь не является автором, отправляем его в свою библиотеку
         if obj.author.pk != self.request.user.pk:
             return HttpResponseRedirect(reverse('posts_basket_list'))
+        return super().dispatch(*args, **kwargs)
+
+
+class NoteFavoriteListView(ListView):
+    paginate_by = 5
+    model = Note
+    template_name = 'notes/posts.html'
+    context_object_name = 'objects'
+    ordering = '-created'
+
+    def get_queryset(self):
+        return Note.objects.filter(author=self.request.user, is_favorites=True).order_by('-is_favorites', '-created')
+        # return Note.objects.filter(category__pk=self.kwargs.get('pk')).order_by('-is_active')
+
+    def get_context_data(self, **kwargs):
+        context = super(NoteFavoriteListView, self).get_context_data(**kwargs)
+        # context = Note.objects.filter(author=self.request.user)
+        context['title_page'] = 'Список избраных'
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
+    def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
