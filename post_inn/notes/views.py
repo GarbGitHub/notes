@@ -144,9 +144,9 @@ class NoteBasketDelUpdateView(SuccessMessageMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title_page'] = f'Добавить в корзину: "{context.get(self, self.object.title)}"'
+        context['title_page'] = f'Удалить: "{context.get(self, self.object.title)}"'
         context['pk'] = self.object.id
-        context['name_button'] = 'Добавить в корзину!'
+        context['name_button'] = 'Удалить'
         context['alert_text'] = 'Вы пытаетесь добавить заметку в корзину!'
         # author_pk = context.get(self, self.object.author.pk)
         # request_user_pk = self.request.user.pk
@@ -230,7 +230,7 @@ class NoteReturnActiveUpdateView(SuccessMessageMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context['title_page'] = f'Восстановить заметку: "{context.get(self, self.object.title)}"'
         context['pk'] = self.object.id
-        context['name_button'] = 'Восстановить заметку!'
+        context['name_button'] = 'Восстановить'
         context['alert_text'] = 'Вы пытаетесь восстановить заметку.'
 
         # author_pk = context.get(self, self.object.author.pk)
