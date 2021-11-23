@@ -9,11 +9,13 @@
         <button class="btn btn-labeled btn-outline-secondary" onclick="location.href='{% url 'post_update' post.pk %}'">
             <span class="btn-label">
                 <i class="bi bi-pencil-square"></i>
+                Редактировать
             </span>
         </button>
         <button class="btn btn-labeled btn-outline-secondary" onclick="location.href='{% url 'post_basket_add' post.pk %}'">
             <span class="btn-label">
                 <i class="bi bi-x-lg"></i>
+                Удалить
             </span>
         </button>
     </div>
