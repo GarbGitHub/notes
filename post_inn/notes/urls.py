@@ -1,5 +1,4 @@
 from django.urls import path
-
 import notes.views as notes
 
 urlpatterns = [
