@@ -38,7 +38,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
     email = EmailField(unique=True, max_length=255)
     name = CharField(verbose_name='Имя', max_length=255, blank=True, null=True)
-    full_name = CharField(verbose_name='Фамилия', max_length=255, blank=True, null=True)
+    last_name = CharField(verbose_name='Фамилия', max_length=255, blank=True, null=True)
     staff = BooleanField(verbose_name='Сотрудник', default=False)
     is_active = BooleanField(verbose_name='Активный', default=True)
     admin = BooleanField(verbose_name='Администратор', default=False)

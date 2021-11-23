@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshView, )
 from accounts import urls as auth_urls
+from .yasg import urlpatterns as doc_urls
 
 urlpatterns = [
     path('', include('notes.urls')),
@@ -27,3 +28,4 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
+urlpatterns += doc_urls

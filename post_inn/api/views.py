@@ -1,35 +1,126 @@
+from django.utils.decorators import method_decorator
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from accounts.models import User
 from notes.models import Note
 from api.serializers import NoteSerializer, ThinNoteSerializer, UserSerializer, ThinUserSerializer, \
-    ThinBasketSerializer, BasketSerializer
-from .permission import IsAuthor, IsAuthUser
+    ThinBasketSerializer, BasketSerializer, UpdateBasketSerializer, SerializerWithoutEmailField, \
+    ThinFavoritesSerializer, SerializerOnlyIsFavoritesField, NoteCreateSerializer, SerializerOnlyIsActiveField
+from .permission import IsAuthor, IsAuthUser, IsAuthUserExcludePost
 
 
+# Users
+@method_decorator(
+    name='retrieve', decorator=swagger_auto_schema(
+        operation_summary="Получить детальную информацию о своем пользователе по {id}",
+        operation_description="Получить детальную информацию пользователе по {id}. "
+                              'Что бы узнать id пользователя, можно воспользоваться методом "users_list"',
+        # operation_id="Method ID",
+        manual_parameters=[
+            openapi.Parameter('id', in_=openapi.IN_PATH, type=openapi.TYPE_INTEGER,
+                              description='id пользователя (числовой тип)')
+        ],
+        responses={200: UserSerializer()}
+    )
+)
+@method_decorator(
+    name='list', decorator=swagger_auto_schema(
+        operation_summary="Узнать id текущего пользователя",
+        operation_description="Не требуется дополнительных параметров, в ответ вернется список из одного пользователя.",
+        # operation_id="Method ID",
+        responses={200: ThinUserSerializer()}
+    )
+)
+@method_decorator(
+    name='update', decorator=swagger_auto_schema(
+        operation_summary='Внести изменения в профиль пользователя',
+        operation_description='{name} - имя\n{last_name} - фамилия',
+        manual_parameters=[
+            openapi.Parameter('id', in_=openapi.IN_PATH, type=openapi.TYPE_INTEGER,
+                              description='id пользователя (числовой тип)'),
+        ],
+        responses={200: ThinUserSerializer()}
+    )
+)
 class UserViewsSet(ModelViewSet):
+    """
+    Информация о текущем пользователе
+    """
     model = User
     queryset = model.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsAuthUser,)
+    permission_classes = (IsAuthUserExcludePost,)
+    http_method_names = ['get', 'put']
 
     def _allowed_methods(self):
         """Запрещаем POST в список"""
         return [m for m in super(UserViewsSet, self)._allowed_methods() if m not in ['POST']]
 
+    def get_serializer_class(self):
+        serializer_class = self.serializer_class
+
+        if self.request.method == 'PUT' or self.request.method == 'PATCH':
+            serializer_class = SerializerWithoutEmailField
+        return serializer_class
+
     def list(self, request, *args, **kwargs):
+        """Позволяет узнать id текущего пользователя"""
         context = {'request': request}
         queryset = self.model.objects.filter(id=request.user.pk)
         serializer = ThinUserSerializer(queryset, many=True, context=context)
         return Response(serializer.data)
 
 
+# Notes
+@method_decorator(
+    name='list', decorator=swagger_auto_schema(
+        operation_summary="Список активных заметок",
+        operation_description="Не требуется дополнительных параметров, в ответ вернется список заметок.",
+        # operation_id="Method ID",
+        responses={200: NoteSerializer()}
+    )
+)
+@method_decorator(
+    name='update', decorator=swagger_auto_schema(
+        operation_summary='Изменить заметку: заголовок, текст, активность (удалить в корзину), добавить в избранное',
+        operation_description="{title} - заголовок"
+                              "\n{text} - текст заметки"
+                              "\n{is_active} - не удалена (true), удалена (false)"
+                              "\n{is_favorites} - в избранном (true), не в избранном (false)",
+        manual_parameters=[
+            openapi.Parameter('id', in_=openapi.IN_PATH, type=openapi.TYPE_INTEGER,
+                              description='id заметки (числовой тип)'),
+        ],
+        responses={200: NoteSerializer()}
+    )
+)
+@method_decorator(
+    name='retrieve', decorator=swagger_auto_schema(
+        operation_summary="Получить детальную информацию о заметке",
+        operation_description="Получить детальную информацию заметки по id. "
+                              'Что бы узнать id нужной заметки, можно воспользоваться методом "notes_list"',
+        # operation_id="Method ID",
+        manual_parameters=[
+            openapi.Parameter('id', in_=openapi.IN_PATH, type=openapi.TYPE_INTEGER,
+                              description='id заметки (числовой тип)')
+        ],
+        responses={200: NoteSerializer()}
+    )
+)
+@method_decorator(
+    name='create', decorator=swagger_auto_schema(
+        operation_summary='Создать новую заметку',
+        operation_description="{title} - заголовок"
+                              "\n{text} - текст заметки",
+        responses={200: ThinNoteSerializer()}
+    )
+)
 class NoteViewSet(ModelViewSet):
-    """
-    Все заметки пользователя: активные и удаленные (в корзине)
-    """
-    # http_method_names = ['get', 'put', 'post']  # если необходимо использовать определенные методы
+    """Активные заметки пользователя"""
+    http_method_names = ['get', 'put', 'post']  # если необходимо использовать определенные методы
 
     model = Note
     queryset = model.objects.all()
@@ -37,9 +128,14 @@ class NoteViewSet(ModelViewSet):
     permission_classes = (IsAuthor,)
 
     def get_queryset(self):
-        queryset = self.queryset
-        query_set = queryset.filter(author=self.request.user.pk, is_active=True)
-        return query_set
+        return self.queryset.filter(author=self.request.user.pk, is_active=True)
+
+    def get_serializer_class(self):
+        serializer_class = self.serializer_class
+
+        if self.request.method == 'POST':
+            serializer_class = NoteCreateSerializer
+        return serializer_class
 
     def list(self, request, *args, **kwargs):
         context = {'request': request}
@@ -51,47 +147,140 @@ class NoteViewSet(ModelViewSet):
         serializer.save(author=self.request.user)
 
 
-# class NoteActiveViewSet(ModelViewSet):
-#     """Все активные заметки пользователя"""
-#     model = Note
-#     queryset = model.objects.all()
-#     serializer_class = NoteSerializer
-#     permission_classes = (IsAuthor,)
-#
-#     def get_queryset(self):
-#         queryset = self.queryset
-#         query_set = queryset.filter(author=self.request.user.pk, is_active=True)
-#         return query_set
-#
-#     def list(self, request, *args, **kwargs):
-#         context = {'request': request}
-#         serializer = ThinActiveNoteSerializer(self.get_queryset(), many=True, context=context)
-#         return Response(serializer.data)
-#
-#     def perform_create(self, serializer):
-#         """При добавлении записи получаем автора из реквеста"""
-#         serializer.save(author=self.request.user)
-
-
-class NoteBasketViewSet(NoteViewSet):
-    """Корзина пользователя"""
-    serializer_class = BasketSerializer
-    # http_method_names = ['get', 'put', 'post']  # если необходимо использовать определенные методы
+# Favorites
+@method_decorator(
+    name='retrieve', decorator=swagger_auto_schema(
+        operation_summary='Получить детальную информацию о заметке в "Избранном"',
+        operation_description='Получить детальную информацию заметки по id.'
+                              'Что бы узнать id нужной заметки, можно воспользоваться методом "favorites_list".',
+        # operation_id="Method ID",
+        manual_parameters=[
+            openapi.Parameter('id', in_=openapi.IN_PATH, type=openapi.TYPE_INTEGER,
+                              description='id заметки (числовой тип)')
+        ],
+        responses={200: NoteSerializer()}
+    )
+)
+@method_decorator(
+    name='update', decorator=swagger_auto_schema(
+        operation_summary='Удалить из "Избранного"',
+        operation_description='Для удаления заметки из "Избранного" - для {is_favorites} установите значение false.',
+        manual_parameters=[
+            openapi.Parameter('id', in_=openapi.IN_PATH, type=openapi.TYPE_INTEGER,
+                              description='id заметки (числовой тип)'),
+        ],
+        responses={200: NoteSerializer()}
+    )
+)
+@method_decorator(
+    name='list', decorator=swagger_auto_schema(
+        operation_summary='Список заметок в "Избранном"',
+        operation_description="Не требуется дополнительных параметров.",
+        # operation_id="Method ID",
+        responses={200: NoteSerializer()}
+    )
+)
+class NoteFavoritesViewSet(ModelViewSet):
+    """Избранное"""
+    model = Note
+    queryset = model.objects.all()
+    serializer_class = NoteSerializer
+    permission_classes = (IsAuthor,)
+    http_method_names = ['get', 'put']
 
     def _allowed_methods(self):
         """Запрещаем POST в список"""
-        return [m for m in super(NoteBasketViewSet, self)._allowed_methods() if m not in ['POST']]
+        return [m for m in super(NoteFavoritesViewSet, self)._allowed_methods() if m not in ['POST']]
 
     def get_queryset(self):
-        queryset = self.queryset
-        query_set = queryset.filter(author=self.request.user.pk, is_active=False)
-        return query_set
+        return self.queryset.filter(author=self.request.user.pk, is_active=True, is_favorites=True)
+
+    def get_serializer_class(self):
+        serializer_class = self.serializer_class
+
+        if self.request.method == 'PUT' or self.request.method == 'PATCH':
+            serializer_class = SerializerOnlyIsFavoritesField
+        return serializer_class
 
     def list(self, request, *args, **kwargs):
+        context = {'request': request}
+        serializer = ThinFavoritesSerializer(self.get_queryset(), many=True, context=context)
+        return Response(serializer.data)
+
+    def perform_create(self, serializer):
+        """При добавлении записи получаем автора из реквеста"""
+        serializer.save(author=self.request.user)
+
+
+# Basket
+@method_decorator(
+    name='retrieve', decorator=swagger_auto_schema(
+        operation_summary='Получить детальную информацию о заметке в "Корзине"',
+        operation_description='Получить детальную информацию заметки по id. '
+                              'Что бы узнать id нужной заметки, можно воспользоваться методом "basket_list".',
+        # operation_id="Method ID",
+        manual_parameters=[
+            openapi.Parameter('id', in_=openapi.IN_PATH, type=openapi.TYPE_INTEGER,
+                              description='id заметки (числовой тип)')
+        ],
+        responses={200: BasketSerializer()}
+    )
+)
+@method_decorator(
+    name='list', decorator=swagger_auto_schema(
+        operation_summary='Список удаленных заметок (в корзине)',
+        operation_description="Не требуется дополнительных параметров.",
+        # operation_id="Method ID",
+        responses={200: ThinBasketSerializer()}
+    )
+)
+@method_decorator(
+    name='update', decorator=swagger_auto_schema(
+        operation_summary='Восстановить заметку из корзины',
+        operation_description='Для восстановления заметки из "Корзины" - для {is_active} установите значение true.',
+        manual_parameters=[
+            openapi.Parameter('id', in_=openapi.IN_PATH, type=openapi.TYPE_INTEGER,
+                              description='id заметки (числовой тип)'),
+        ],
+        responses={200: BasketSerializer()}
+    )
+)
+@method_decorator(
+    name='destroy', decorator=swagger_auto_schema(
+        operation_summary='Удалить заметку из корзины',
+        operation_description='Окончательно удаляет заметку без возможности восстановления. '
+                              'Что бы узнать id нужной заметки, воспользуйтесь методом "basket_list"',
+        manual_parameters=[
+            openapi.Parameter('id', in_=openapi.IN_PATH, type=openapi.TYPE_INTEGER,
+                              description='id заметки (числовой тип)'),
+        ],
+        responses={204: "Object deleted successfully"}
+    )
+)
+class NoteBasketViewSet(ModelViewSet):
+    """Корзина"""
+    model = Note
+    queryset = model.objects.all()
+    serializer_class = BasketSerializer
+    permission_classes = (IsAuthor,)
+    http_method_names = ['get', 'put', 'delete']
+
+    def get_queryset(self):
+        notes = self.queryset.filter(author=self.request.user.pk, is_active=False)
+        return notes
+
+    def get_serializer_class(self):
+        serializer_class = self.serializer_class
+
+        if self.request.method == 'PUT' or self.request.method == 'PATCH':
+            serializer_class = SerializerOnlyIsActiveField
+        return serializer_class
+
+    def list(self, request, *args, **kwags):
         context = {'request': request}
         serializer = ThinBasketSerializer(self.get_queryset(), many=True, context=context)
         return Response(serializer.data)
 
-    # def perform_create(self, serializer):
-    #     """При добавлении записи получаем автора из реквеста"""
-    #     serializer.save(author=self.request.user)
+    def perform_create(self, serializer):
+        """При добавлении записи получаем автора из реквеста"""
+        serializer.save(author=self.request.user)
