@@ -6,10 +6,10 @@ from django.urls import reverse
 from fordev.models import Page
 
 
-class FordevListView(ListView):
+class ForDevListView(ListView):
     paginate_by = 5
     model = Page
-    template_name = 'fordev/list_pages.html'
+    template_name = 'notes/posts.html'
     context_object_name = 'objects'
     ordering = '-created'
 
@@ -17,8 +17,9 @@ class FordevListView(ListView):
         return Page.objects.filter(is_active=True).order_by('-created')
 
     def get_context_data(self, **kwargs):
-        context = super(FordevListView, self).get_context_data(**kwargs)
-        context['title_page'] = 'Список заметок'
+        context = super(ForDevListView, self).get_context_data(**kwargs)
+        context['title_page'] = 'Для разработчиков'
+        context['dev'] = True
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
@@ -26,9 +27,9 @@ class FordevListView(ListView):
         return super().dispatch(*args, **kwargs)
 
 
-class FordevDetailView(DetailView):
+class ForDevDetailView(DetailView):
     model = Page
-    template_name = 'fordev/page.html'
+    template_name = 'notes/post_detail.html'
     context_object_name = 'post'
 
     def get_context_data(self, **kwargs):

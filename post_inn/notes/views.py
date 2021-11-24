@@ -10,9 +10,11 @@ from notes.models import Note
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
+PAGINATE_BY_NOTES = 5
+
 
 class NoteListView(ListView):
-    paginate_by = 5
+    paginate_by = PAGINATE_BY_NOTES
     model = Note
     template_name = 'notes/posts.html'
     context_object_name = 'objects'
@@ -107,7 +109,7 @@ class NoteCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
 
 class NoteBasketListView(ListView):
-    paginate_by = 5
+    paginate_by = PAGINATE_BY_NOTES
     model = Note
     template_name = 'notes/posts_basket.html'
     context_object_name = 'objects'
@@ -250,11 +252,10 @@ class NoteReturnActiveUpdateView(SuccessMessageMixin, UpdateView):
 
 
 class NoteFavoriteListView(ListView):
-    paginate_by = 5
+    paginate_by = PAGINATE_BY_NOTES
     model = Note
     template_name = 'notes/posts.html'
     context_object_name = 'objects'
-    ordering = '-created'
 
     def get_queryset(self):
         return Note.objects.filter(author=self.request.user, is_favorites=True).order_by('-is_favorites', '-created')
@@ -263,7 +264,7 @@ class NoteFavoriteListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(NoteFavoriteListView, self).get_context_data(**kwargs)
         # context = Note.objects.filter(author=self.request.user)
-        context['title_page'] = 'Список избраных'
+        context['title_page'] = 'Список избранных'
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))

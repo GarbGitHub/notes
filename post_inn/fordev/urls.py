@@ -1,9 +1,9 @@
 from django.urls import path
 import fordev.views as fordevs
 
-app_name = 'fordev'
+app_name = 'fordevapp'
 
 urlpatterns = [
-    path('list/', fordevs.FordevListView.as_view(), name='fordev_list'),
-    path('detail/<int:pk>', fordevs.FordevDetailView.as_view(), name='fordev_page')
+    path('', fordevs.ForDevListView.as_view(), name='list'),
+    path('page/<int:pk>', fordevs.ForDevDetailView.as_view(), name='page')
 ]
