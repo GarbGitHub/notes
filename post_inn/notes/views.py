@@ -10,7 +10,7 @@ from notes.models import Note
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
-PAGINATE_BY_NOTES = 5
+PAGINATE_BY_NOTES = 7
 
 
 class NoteListView(ListView):
