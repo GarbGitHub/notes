@@ -7,11 +7,11 @@
 {% block content %}
 {% for post in objects %}
 <div class="container">
-    {% if request.path == '/fordev/list/' %}
-    <a class="container__title" href="{% url 'fordev:fordev_page' post.pk %}">
+    {% if request.path == '/fordev/' %}
+    <a class="container__title" href="{% url 'fordev:page' post.pk %}">
         <h1 class="mt-5">{{ post.title }}</h1>
     </a>
-    <p>{{ post.description }}</p>
+    <div class="lead">{{ post.description }}</div>
     {% else %}
     <a class="container__title" href="{% url 'post_detail' post.pk %}">
         <h1 class="mt-5">{{ post.title }}</h1>
