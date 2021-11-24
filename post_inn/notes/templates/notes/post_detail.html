@@ -5,17 +5,21 @@
     <div class="lead">
         {{ post.text|safe }}
     </div>
+     {% if '/fordev/page/' not in request.path %}
     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center py-1 my-2">
         <button class="btn btn-labeled btn-outline-secondary" onclick="location.href='{% url 'post_update' post.pk %}'">
             <span class="btn-label">
                 <i class="bi bi-pencil-square"></i>
+                Редактировать
             </span>
         </button>
         <button class="btn btn-labeled btn-outline-secondary" onclick="location.href='{% url 'post_basket_add' post.pk %}'">
             <span class="btn-label">
                 <i class="bi bi-x-lg"></i>
+                Удалить
             </span>
         </button>
     </div>
+    {% endif %}
 </div>
 {% endblock %}

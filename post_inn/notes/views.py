@@ -10,16 +10,18 @@ from notes.models import Note
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
+PAGINATE_BY_NOTES = 7
+
 
 class NoteListView(ListView):
-    paginate_by = 5
+    paginate_by = PAGINATE_BY_NOTES
     model = Note
     template_name = 'notes/posts.html'
     context_object_name = 'objects'
     ordering = '-created'
 
     def get_queryset(self):
-        return Note.objects.filter(author=self.request.user, is_active=True)
+        return Note.objects.filter(author=self.request.user, is_active=True).order_by('-is_favorites', '-created')
         # return Note.objects.filter(category__pk=self.kwargs.get('pk')).order_by('-is_active')
 
     def get_context_data(self, **kwargs):
@@ -107,7 +109,7 @@ class NoteCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
 
 class NoteBasketListView(ListView):
-    paginate_by = 5
+    paginate_by = PAGINATE_BY_NOTES
     model = Note
     template_name = 'notes/posts_basket.html'
     context_object_name = 'objects'
@@ -139,13 +141,14 @@ class NoteBasketDelUpdateView(SuccessMessageMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.is_active = False
+        form.instance.is_favorites = False
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title_page'] = f'Добавить в корзину: "{context.get(self, self.object.title)}"'
+        context['title_page'] = f'Удалить: "{context.get(self, self.object.title)}"'
         context['pk'] = self.object.id
-        context['name_button'] = 'Добавить в корзину!'
+        context['name_button'] = 'Удалить'
         context['alert_text'] = 'Вы пытаетесь добавить заметку в корзину!'
         # author_pk = context.get(self, self.object.author.pk)
         # request_user_pk = self.request.user.pk
@@ -229,7 +232,7 @@ class NoteReturnActiveUpdateView(SuccessMessageMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context['title_page'] = f'Восстановить заметку: "{context.get(self, self.object.title)}"'
         context['pk'] = self.object.id
-        context['name_button'] = 'Восстановить заметку!'
+        context['name_button'] = 'Восстановить'
         context['alert_text'] = 'Вы пытаетесь восстановить заметку.'
 
         # author_pk = context.get(self, self.object.author.pk)
@@ -245,4 +248,25 @@ class NoteReturnActiveUpdateView(SuccessMessageMixin, UpdateView):
         # Если пользователь не является автором, отправляем его в свою библиотеку
         if obj.author.pk != self.request.user.pk:
             return HttpResponseRedirect(reverse('posts_basket_list'))
+        return super().dispatch(*args, **kwargs)
+
+
+class NoteFavoriteListView(ListView):
+    paginate_by = PAGINATE_BY_NOTES
+    model = Note
+    template_name = 'notes/posts.html'
+    context_object_name = 'objects'
+
+    def get_queryset(self):
+        return Note.objects.filter(author=self.request.user, is_favorites=True).order_by('-is_favorites', '-created')
+        # return Note.objects.filter(category__pk=self.kwargs.get('pk')).order_by('-is_active')
+
+    def get_context_data(self, **kwargs):
+        context = super(NoteFavoriteListView, self).get_context_data(**kwargs)
+        # context = Note.objects.filter(author=self.request.user)
+        context['title_page'] = 'Список избранных'
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
+    def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
