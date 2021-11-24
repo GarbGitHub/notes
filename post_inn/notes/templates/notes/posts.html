@@ -1,16 +1,32 @@
 {% extends 'notes/base.html' %}
 {% load static %}
 {% block css %}
-{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static 'notes/css/style-posts.css' %}">
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'notes/css/style-posts.css' %}">
 {% endblock %}
 {% block content %}
 {% for post in objects %}
 <div class="container">
+    {% if request.path == '/fordev/list/' %}
+    <a class="container__title" href="{% url 'fordev:fordev_page' post.pk %}">
+        <h1 class="mt-5">{{ post.title }}</h1>
+    </a>
+    <p>{{ post.description }}</p>
+    {% else %}
     <a class="container__title" href="{% url 'post_detail' post.pk %}">
         <h1 class="mt-5">{{ post.title }}</h1>
     </a>
-    <p>{{ post.text|truncatechars:90|safe }}</p>
-    <p>{{ post.created }}</p>
+    <div class="lead">
+        {{ post.text|truncatechars:90|safe }}
+    </div>
+    <p>
+        {{ post.created }}
+        {% if post.is_favorites %}
+        <i class="bi bi-star-fill star"></i>
+        {% endif %}
+    </p>
+    {% endif %}
+
 </div>
 {% endfor %}
 {% endblock %}

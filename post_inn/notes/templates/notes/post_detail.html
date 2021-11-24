@@ -5,6 +5,7 @@
     <div class="lead">
         {{ post.text|safe }}
     </div>
+     {% if '/fordev/detail/' not in request.path %}
     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center py-1 my-2">
         <button class="btn btn-labeled btn-outline-secondary" onclick="location.href='{% url 'post_update' post.pk %}'">
             <span class="btn-label">
@@ -19,5 +20,6 @@
             </span>
         </button>
     </div>
+    {% endif %}
 </div>
 {% endblock %}

@@ -1,7 +1,7 @@
 from django.urls import path
 import fordev.views as fordevs
 
-app_name = 'fordev'
+app_name = 'fordevapp'
 
 urlpatterns = [
     path('list/', fordevs.FordevListView.as_view(), name='fordev_list'),

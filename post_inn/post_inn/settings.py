@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from datetime import timedelta
 from pathlib import Path
-
+from django.conf import settings
 import environ
 
 env = environ.Env()
@@ -37,6 +37,10 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 TEST = 'ad'
+
+LOGIN_URL = '/auth/login/'
+LOGOUT_URL = '/auth/logout/'
+
 
 # Откуда брать переопределенного пользователя
 AUTH_USER_MODEL = 'accounts.User'
@@ -213,4 +217,35 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}
+
+SWAGGER_SETTINGS = {
+   # default inspector classes, see advanced documentation
+   'DEFAULT_AUTO_SCHEMA_CLASS': 'drf_yasg.inspectors.SwaggerAutoSchema',
+   'DEFAULT_FIELD_INSPECTORS': [
+      'drf_yasg.inspectors.CamelCaseJSONFilter',
+      'drf_yasg.inspectors.ReferencingSerializerInspector',
+      'drf_yasg.inspectors.RelatedFieldInspector',
+      'drf_yasg.inspectors.ChoiceFieldInspector',
+      'drf_yasg.inspectors.FileFieldInspector',
+      'drf_yasg.inspectors.DictFieldInspector',
+      'drf_yasg.inspectors.SimpleFieldInspector',
+      'drf_yasg.inspectors.StringDefaultFieldInspector',
+   ],
+   'DEFAULT_FILTER_INSPECTORS': [
+      'drf_yasg.inspectors.CoreAPICompatInspector',
+   ],
+   'DEFAULT_PAGINATOR_INSPECTORS': [
+      'drf_yasg.inspectors.DjangoRestResponsePagination',
+      'drf_yasg.inspectors.CoreAPICompatInspector',
+   ],
+
+   # default api Info if none is otherwise given; should be an import string to an openapi.Info object
+   'DEFAULT_INFO': None,
+   # default API url if none is otherwise given
+   'DEFAULT_API_URL': None,
+
+   'USE_SESSION_AUTH': True,  # add Django Login and Django Logout buttons, CSRF token to swagger UI page
+   'LOGIN_URL': getattr(settings, 'LOGIN_URL', None),  # URL for the login button
+   'LOGOUT_URL': getattr(settings, 'LOGOUT_URL', None),  # URL for the logout button
 }
