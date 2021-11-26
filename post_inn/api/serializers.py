@@ -15,13 +15,14 @@ class UserSerializer(ModelSerializer):
             self.fields.pop('staff', None)
             self.fields.pop('is_active', None)
             self.fields.pop('admin', None)
+
         if 'view' in self.context and self.context['view'].action in ['list']:
             self.fields.pop('email', None)
 
     class Meta:
         model = get_user_model()
         queryset = model.objects.all()
-        fields = '__all__'
+        fields = ('email', 'name', 'last_name')
 
     def create(self, validated_data):
         return UserSerializer.objects.create(**validated_data)
