@@ -1,14 +1,17 @@
 from django.utils.decorators import method_decorator
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import AllowAny, BasePermission, SAFE_METHODS
 
 from accounts.models import User
 from notes.models import Note
 from api.serializers import NoteSerializer, ThinNoteSerializer, UserSerializer, ThinUserSerializer, \
     ThinBasketSerializer, BasketSerializer, UpdateBasketSerializer, SerializerWithoutEmailField, \
-    ThinFavoritesSerializer, SerializerOnlyIsFavoritesField, NoteCreateSerializer, SerializerOnlyIsActiveField
+    ThinFavoritesSerializer, SerializerOnlyIsFavoritesField, NoteCreateSerializer, SerializerOnlyIsActiveField, \
+    UserRegistration
 from .permission import IsAuthor, IsAuthUser, IsAuthUserExcludePost
 
 
@@ -45,6 +48,14 @@ from .permission import IsAuthor, IsAuthUser, IsAuthUserExcludePost
         responses={200: ThinUserSerializer()}
     )
 )
+@method_decorator(
+    name='create', decorator=swagger_auto_schema(
+        operation_summary='Зарегистрировать нового пользователя (для неавторизованных пользователей)',
+        operation_description='Вы должны быть не авторизованными, иначе сервер ответит 500 ошибкой\n\n'
+                              '{email} - * email\n{name} - имя\n{last_name} - фамилия\n{password} - * пароль',
+        responses={201: UserRegistration()}
+    )
+)
 class UserViewsSet(ModelViewSet):
     """
     Информация о текущем пользователе
@@ -52,26 +63,54 @@ class UserViewsSet(ModelViewSet):
     model = User
     queryset = model.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsAuthUserExcludePost,)
-    http_method_names = ['get', 'put']
-
-    def _allowed_methods(self):
-        """Запрещаем POST в список"""
-        return [m for m in super(UserViewsSet, self)._allowed_methods() if m not in ['POST']]
+    permission_classes = (AllowAny,)
+    http_method_names = ['get', 'put', 'post']
 
     def get_serializer_class(self):
         serializer_class = self.serializer_class
 
+        if (self.action == 'list' and self.request.user.is_anonymous) or (
+                self.action == 'create' and self.request.user.is_anonymous):
+            serializer_class = UserRegistration
+
         if self.request.method == 'PUT' or self.request.method == 'PATCH':
             serializer_class = SerializerWithoutEmailField
+
         return serializer_class
 
     def list(self, request, *args, **kwargs):
-        """Позволяет узнать id текущего пользователя"""
         context = {'request': request}
         queryset = self.model.objects.filter(id=request.user.pk)
-        serializer = ThinUserSerializer(queryset, many=True, context=context)
+
+        if (self.action == 'list' and self.request.user.is_anonymous) or (
+                self.action == 'create' and self.request.user.is_anonymous):
+            serializer = UserRegistration(queryset, many=True, context=context)
+
+        else:
+            serializer = ThinUserSerializer(queryset, many=True, context=context)
+
         return Response(serializer.data)
+
+    def _allowed_methods(self):
+        """Запрещаем Get в список"""
+        # Для анонимов только регистрация
+        if self.request.user.is_anonymous:
+            return [m for m in super(UserViewsSet, self)._allowed_methods() if m not in ['GET']]
+
+        # Для авторизованных только просмотр и правка
+        # if self.request.user.is_authenticated:
+        else:
+            return [m for m in super(UserViewsSet, self)._allowed_methods() if m not in ['POST']]
+
+    def get_permissions(self):
+        if (self.action == 'list' and self.request.user.is_anonymous) or (
+                self.action == 'create' and self.request.user.is_anonymous):
+            self.permission_classes = [BasePermission, ]
+
+        else:
+            self.permission_classes = [IsAuthUser, ]
+
+        return super(UserViewsSet, self).get_permissions()
 
 
 # Notes
@@ -115,17 +154,16 @@ class UserViewsSet(ModelViewSet):
         operation_summary='Создать новую заметку',
         operation_description="{title} - заголовок"
                               "\n{text} - текст заметки",
-        responses={200: ThinNoteSerializer()}
+        responses={201: ThinNoteSerializer()}
     )
 )
 class NoteViewSet(ModelViewSet):
     """Активные заметки пользователя"""
-    http_method_names = ['get', 'put', 'post']  # если необходимо использовать определенные методы
-
     model = Note
     queryset = model.objects.all()
     serializer_class = NoteSerializer
     permission_classes = (IsAuthor,)
+    http_method_names = ['get', 'put', 'post']
 
     def get_queryset(self):
         return self.queryset.filter(author=self.request.user.pk, is_active=True)
@@ -135,6 +173,7 @@ class NoteViewSet(ModelViewSet):
 
         if self.request.method == 'POST':
             serializer_class = NoteCreateSerializer
+
         return serializer_class
 
     def list(self, request, *args, **kwargs):
@@ -200,6 +239,7 @@ class NoteFavoritesViewSet(ModelViewSet):
 
         if self.request.method == 'PUT' or self.request.method == 'PATCH':
             serializer_class = SerializerOnlyIsFavoritesField
+
         return serializer_class
 
     def list(self, request, *args, **kwargs):
@@ -242,7 +282,7 @@ class NoteFavoritesViewSet(ModelViewSet):
             openapi.Parameter('id', in_=openapi.IN_PATH, type=openapi.TYPE_INTEGER,
                               description='id заметки (числовой тип)'),
         ],
-        responses={200: BasketSerializer()}
+        responses={201: BasketSerializer()}
     )
 )
 @method_decorator(
@@ -274,6 +314,7 @@ class NoteBasketViewSet(ModelViewSet):
 
         if self.request.method == 'PUT' or self.request.method == 'PATCH':
             serializer_class = SerializerOnlyIsActiveField
+
         return serializer_class
 
     def list(self, request, *args, **kwags):
