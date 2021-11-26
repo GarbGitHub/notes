@@ -8,17 +8,43 @@ from django.contrib.auth import get_user_model
 
 
 class UserSerializer(ModelSerializer):
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     if 'view' in self.context and self.context['view'].action in ['update', 'partial_update']:
-    #         self.fields.pop('email', None)
-    #     if 'view' in self.context and self.context['view'].action in ['update', 'partial_update']:
-    #         self.fields.pop('id', None)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if 'view' in self.context and self.context['view'].action in ['create']:
+            self.fields.pop('last_login', None)
+            self.fields.pop('staff', None)
+            self.fields.pop('is_active', None)
+            self.fields.pop('admin', None)
+        if 'view' in self.context and self.context['view'].action in ['list']:
+            self.fields.pop('email', None)
 
     class Meta:
         model = get_user_model()
         queryset = model.objects.all()
-        fields = ('id', 'email', 'name', 'last_name')
+        fields = '__all__'
+
+    def create(self, validated_data):
+        return UserSerializer.objects.create(**validated_data)
+
+
+class UserRegistration(ModelSerializer):
+
+    class Meta:
+        model = get_user_model()
+        queryset = model.objects.all()
+        fields = ('id', 'email', 'name', 'last_name', 'password' )
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        password = validated_data.pop('password', '')
+        user = self.Meta.model(**validated_data)
+        user.set_password(password)
+        user.save()
+        return user
+
+    def update(self, instance, validated_data):
+        instance.set_password(validated_data.pop('password', ''))
+        return super().update(instance, validated_data)
 
 
 class SerializerWithoutEmailField(ModelSerializer):
@@ -58,7 +84,6 @@ class NoteSerializer(ModelSerializer):
 
 
 class NoteCreateSerializer(ModelSerializer):
-
     class Meta:
         model = Note
         fields = ('title', 'text')
