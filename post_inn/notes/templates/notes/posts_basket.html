@@ -4,7 +4,7 @@
 {{ block.super }}<link rel="stylesheet" type="text/css" href="{% static 'notes/css/style-posts.css' %}">
 {% endblock %}
 {% block content %}
-{% for post in objects %}
+{% for post in posts %}
 <div class="container">
     <a class="container__title" href="{% url 'post_basket_detail' post.pk %}">
         <h1 class="mt-5"><s>{{ post.title }}</s></h1>
