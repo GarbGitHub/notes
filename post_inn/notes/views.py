@@ -17,7 +17,7 @@ class NoteListView(ListView):
     paginate_by = PAGINATE_BY_NOTES
     model = Note
     template_name = 'notes/posts.html'
-    context_object_name = 'objects'
+    context_object_name = 'posts'
     ordering = '-created'
 
     def get_queryset(self):
@@ -112,7 +112,7 @@ class NoteBasketListView(ListView):
     paginate_by = PAGINATE_BY_NOTES
     model = Note
     template_name = 'notes/posts_basket.html'
-    context_object_name = 'objects'
+    context_object_name = 'posts'
 
     def get_queryset(self):
         return Note.objects.filter(author=self.request.user, is_active=False)
@@ -255,7 +255,7 @@ class NoteFavoriteListView(ListView):
     paginate_by = PAGINATE_BY_NOTES
     model = Note
     template_name = 'notes/posts.html'
-    context_object_name = 'objects'
+    context_object_name = 'posts'
 
     def get_queryset(self):
         return Note.objects.filter(author=self.request.user, is_favorites=True).order_by('-is_favorites', '-created')

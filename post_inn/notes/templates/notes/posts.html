@@ -5,10 +5,10 @@
 <link rel="stylesheet" type="text/css" href="{% static 'notes/css/style-posts.css' %}">
 {% endblock %}
 {% block content %}
-{% for post in objects %}
+{% for post in posts %}
 <div class="container">
-    {% if request.path == '/fordev/' %}
-    <a class="container__title" href="{% url 'fordev:page' post.pk %}">
+    {% if '/fordev/' in request.path %}
+    <a class="container__title" href="{% url 'fordev:page' post.category.pk post.pk %}">
         <h1 class="mt-5">{{ post.title }}</h1>
     </a>
     <div class="lead">{{ post.description }}</div>
@@ -22,7 +22,7 @@
     <p>
         {{ post.created }}
         {% if post.is_favorites %}
-        <i class="bi bi-star-fill star"></i>
+        <span class="star"></span>
         {% endif %}
     </p>
     {% endif %}

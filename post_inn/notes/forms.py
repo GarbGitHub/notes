@@ -21,9 +21,9 @@ class NoteEditForm(forms.ModelForm):
             else:
                 field.widget.attrs['class'] = 'form-control'
 
-            if field_name != 'is_favorites':
-                field.help_text = ''
-                field.label = ''
+            field.help_text = ''
+            field.label = ''
+
         # self.fields['is_active'].widget.attrs.update({'class': 'form-check-input'})
 
 

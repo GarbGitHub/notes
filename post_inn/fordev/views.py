@@ -6,7 +6,7 @@ from django.urls import reverse
 from fordev.models import Page
 
 
-class ForDevListView(ListView):
+class NewsView(ListView):
     paginate_by = 5
     model = Page
     template_name = 'notes/posts.html'
@@ -14,12 +14,31 @@ class ForDevListView(ListView):
     ordering = '-created'
 
     def get_queryset(self):
-        return Page.objects.filter(is_active=True).order_by('-created')
+        return Page.objects.filter(is_active=True, category=1).order_by('-created')
 
     def get_context_data(self, **kwargs):
         context = super(ForDevListView, self).get_context_data(**kwargs)
         context['title_page'] = 'Для разработчиков'
-        context['dev'] = True
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+
+class ForDevListView(ListView):
+    paginate_by = 5
+    model = Page
+    template_name = 'notes/posts.html'
+    context_object_name = 'posts'
+    ordering = '-created'
+
+    def get_queryset(self):
+        return Page.objects.filter(is_active=True, category=1).order_by('-created')
+
+    def get_context_data(self, **kwargs):
+        context = super(ForDevListView, self).get_context_data(**kwargs)
+        context['title_page'] = 'Для разработчиков'
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
@@ -36,6 +55,7 @@ class ForDevDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['pk'] = self.object.id
         context['title_page'] = f'{context.get(self, self.object.title)}'
+        context['cat_pk'] = f'Категория: "{context.get(self, self.object.category.pk)}"'
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))

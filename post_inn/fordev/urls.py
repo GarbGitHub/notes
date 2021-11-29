@@ -5,5 +5,6 @@ app_name = 'fordevapp'
 
 urlpatterns = [
     path('', fordevs.ForDevListView.as_view(), name='list'),
-    path('page/<int:pk>', fordevs.ForDevDetailView.as_view(), name='page')
+    path('1/', fordevs.ForDevListView.as_view(), name='list'),
+    path('<int:cat_pk>/page/<int:pk>', fordevs.ForDevDetailView.as_view(), name='page')
 ]
