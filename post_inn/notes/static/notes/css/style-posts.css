@@ -3,7 +3,9 @@ text-decoration: none;
 color: #343536!important;
 }
 
-.star{
-    color: #d9d914;
-    font-size: 1.3rem;
+.star:before{
+    content: '★';
+	font-size: 28px;
+	color: gold;
+	text-shadow: 1px 1px rgb(122, 122, 122);
 }
