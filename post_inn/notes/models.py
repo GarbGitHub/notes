@@ -21,5 +21,5 @@ class Note(Model):
     class Meta:
         verbose_name = 'Заметка'
         verbose_name_plural = "Заметки"
-        ordering = ['-is_active', '-is_favorites', '-update', '-created',]
+        ordering = ['-is_active', '-is_favorites', '-created',]
 
