@@ -124,7 +124,7 @@ class UserViewsSet(ModelViewSet):
 )
 @method_decorator(
     name='update', decorator=swagger_auto_schema(
-        operation_summary='Изменить заметку: заголовок, текст, активность (удалить в корзину), добавить в избранное',
+        operation_summary='Изменить заметку: заголовок, текст, удалить в корзину, добавить в избранное, дата и время',
         operation_description="{title} - заголовок"
                               "\n{text} - текст заметки"
                               "\n{is_active} - не удалена (true), удалена (false)"
