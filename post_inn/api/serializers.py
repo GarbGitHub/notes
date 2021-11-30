@@ -87,7 +87,8 @@ class NoteSerializer(ModelSerializer):
 class NoteCreateSerializer(ModelSerializer):
     class Meta:
         model = Note
-        fields = ('title', 'text')
+        fields = ('id', 'title', 'text', 'created')
+        # fields = '__all__'
 
 
 class ThinNoteSerializer(ModelSerializer):
