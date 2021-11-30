@@ -4,7 +4,7 @@ from .models import Page, PageCategory
 
 @admin.register(Page)
 class PageAdmin(admin.ModelAdmin):
-    list_display = ['category', 'title', 'description', 'text', 'created', 'update', 'is_active']
+    list_display = ['category', 'title', 'created', 'update', 'is_active']
     ordering = ['-is_active']
 
 

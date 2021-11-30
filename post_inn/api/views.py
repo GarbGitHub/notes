@@ -155,6 +155,7 @@ class UserViewsSet(ModelViewSet):
         operation_summary='Создать новую заметку',
         operation_description="{title} - заголовок"
                               "\n{text} - текст заметки"
+                              "\n{is_favorites} - избранное"
                               "\n{created} - дата и время создания: YYYY-MM-DDThh:mm:ss (2005-08-09T18:31:42)",
         responses={201: ThinNoteSerializer()}
     )
