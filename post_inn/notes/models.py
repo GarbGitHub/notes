@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db.models import Model, CharField, TextField, DateTimeField, ForeignKey, SET_NULL, BooleanField
 
 from accounts.models import User
@@ -6,9 +8,9 @@ from accounts.models import User
 class Note(Model):
     author = ForeignKey(User, null=True, blank=False, on_delete=SET_NULL)
     title = CharField(verbose_name='Заголовок', max_length=128)
-    text = TextField(verbose_name='Краткое содержание', blank=True)
+    text = TextField(verbose_name='Текст заметки', blank=True)
     full_text = TextField(verbose_name='Полное содержание', blank=True)
-    created = DateTimeField(verbose_name='Дата создания', auto_now_add=True)
+    created = DateTimeField(verbose_name='Дата и время создания', default=datetime.now)
     update = DateTimeField(verbose_name='Дата обновления', auto_now=True)
     is_favorites = BooleanField(db_index=True, verbose_name='В избранном', default=False)
     is_active = BooleanField(db_index=True, verbose_name='Активный', default=True)

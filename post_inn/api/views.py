@@ -128,7 +128,8 @@ class UserViewsSet(ModelViewSet):
         operation_description="{title} - заголовок"
                               "\n{text} - текст заметки"
                               "\n{is_active} - не удалена (true), удалена (false)"
-                              "\n{is_favorites} - в избранном (true), не в избранном (false)",
+                              "\n{is_favorites} - в избранном (true), не в избранном (false)"
+                              "\n{created} - дата и время создания: YYYY-MM-DDThh:mm:ss (2005-08-09T18:31:42)",
         manual_parameters=[
             openapi.Parameter('id', in_=openapi.IN_PATH, type=openapi.TYPE_INTEGER,
                               description='id заметки (числовой тип)'),
@@ -153,7 +154,8 @@ class UserViewsSet(ModelViewSet):
     name='create', decorator=swagger_auto_schema(
         operation_summary='Создать новую заметку',
         operation_description="{title} - заголовок"
-                              "\n{text} - текст заметки",
+                              "\n{text} - текст заметки"
+                              "\n{created} - дата и время создания: YYYY-MM-DDThh:mm:ss (2005-08-09T18:31:42)",
         responses={201: ThinNoteSerializer()}
     )
 )
