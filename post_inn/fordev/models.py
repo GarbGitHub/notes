@@ -36,12 +36,11 @@ class Page(models.Model):
         max_length=128
     )
 
-    description = models.CharField(verbose_name='описание',
-                                   max_length=256,
+    description = models.TextField(verbose_name='краткое содержание',
                                    blank=True,
                                    null=True)
 
-    text = models.TextField(verbose_name='Текст',
+    text = models.TextField(verbose_name='текст',
                             null=True)
 
     created = models.DateTimeField(auto_now_add=True)
@@ -49,6 +48,7 @@ class Page(models.Model):
     update = models.DateTimeField(auto_now=True)
 
     is_active = models.BooleanField(db_index=True, verbose_name='активный', default=True)
+    is_boxed = models.BooleanField(db_index=True, verbose_name='закрепленный', default=False)
 
     def __str__(self):
         return f'{self.title} id: {self.id} -- {self.created}'
