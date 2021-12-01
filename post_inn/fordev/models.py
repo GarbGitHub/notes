@@ -41,6 +41,7 @@ class Page(models.Model):
                                    null=True)
 
     text = models.TextField(verbose_name='текст',
+                            blank=True,
                             null=True)
 
     created = models.DateTimeField(auto_now_add=True)
