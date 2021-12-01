@@ -14,7 +14,7 @@ class NewsView(ListView):
     ordering = '-created'
 
     def get_queryset(self):
-        return Page.objects.filter(is_active=True, category=1).order_by('-created')
+        return Page.objects.filter(is_active=True, category=1).order_by('-created', '-is_boxed')
 
     def get_context_data(self, **kwargs):
         context = super(ForDevListView, self).get_context_data(**kwargs)
@@ -34,7 +34,7 @@ class ForDevListView(ListView):
     ordering = '-created'
 
     def get_queryset(self):
-        return Page.objects.filter(is_active=True, category=1).order_by('-created')
+        return Page.objects.filter(is_active=True, category=1).order_by('-is_boxed', '-created')
 
     def get_context_data(self, **kwargs):
         context = super(ForDevListView, self).get_context_data(**kwargs)
