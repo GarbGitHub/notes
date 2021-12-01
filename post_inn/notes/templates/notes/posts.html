@@ -9,7 +9,7 @@
 <div class="container">
     {% if '/fordev/' in request.path %}
     <a class="container__title" href="{% url 'fordev:page' post.category.pk post.pk %}">
-        <h1 class="mt-5">{{ post.title }}</h1>
+        <h1 class="mt-5">{% if post.is_boxed %}<i class="bi bi-bookmark-fill"></i>{% endif %} {{ post.title }}</h1>
     </a>
     <div class="lead">{{ post.description }}</div>
     {% else %}
