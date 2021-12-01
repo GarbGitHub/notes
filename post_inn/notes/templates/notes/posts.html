@@ -10,13 +10,17 @@
     {% if '/fordev/' in request.path %}
     {% if post.text %}
     <a class="container__title" href="{% url 'fordev:page' post.category.pk post.pk %}">
-        <h1 class="mt-5">{% if post.is_boxed %}<i class="bi bi-bookmark-fill"></i>{% endif %} {{ post.title }}</h1>
+        <h1 class="mt-5">{% if post.is_boxed %}<i class="bi bi-bookmark-check"></i>{% endif %} {{ post.title }}</h1>
     </a>
     {% else %}
     <h1 class="mt-5">{% if post.is_boxed %}<i class="bi bi-bookmark-fill"></i>{% endif %} {{ post.title }}</h1>
     {% endif %}
-
     <div class="lead">{{ post.description|safe }}</div>
+
+    {% if post.text %}
+    <a href="{% url 'fordev:page' post.category.pk post.pk %}" class="link-primary">
+        <i class="bi bi-arrow-right"></i> Подробнее ..</a>
+    {% endif %}
     {% else %}
     <a class="container__title" href="{% url 'post_detail' post.pk %}">
         <h1 class="mt-5">{{ post.title }}</h1>
@@ -31,7 +35,6 @@
         {% endif %}
     </p>
     {% endif %}
-
 </div>
 {% endfor %}
 {% endblock %}
