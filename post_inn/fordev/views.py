@@ -6,28 +6,8 @@ from django.urls import reverse
 from fordev.models import Page
 
 
-class NewsView(ListView):
-    paginate_by = 5
-    model = Page
-    template_name = 'notes/posts.html'
-    context_object_name = 'objects'
-    ordering = '-created'
-
-    def get_queryset(self):
-        return Page.objects.filter(is_active=True, category=1).order_by('-created', '-is_boxed')
-
-    def get_context_data(self, **kwargs):
-        context = super(ForDevListView, self).get_context_data(**kwargs)
-        context['title_page'] = 'Для разработчиков'
-        return context
-
-    @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
-
-
 class ForDevListView(ListView):
-    paginate_by = 5
+    paginate_by = 10
     model = Page
     template_name = 'notes/posts.html'
     context_object_name = 'posts'
