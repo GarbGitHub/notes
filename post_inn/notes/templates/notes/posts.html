@@ -5,6 +5,9 @@
 <link rel="stylesheet" type="text/css" href="{% static 'notes/css/style-posts.css' %}">
 {% endblock %}
 {% block content %}
+{% if no_result %}
+{{ no_result }}
+{% endif %}
 {% for post in posts %}
 <div class="container">
     {% if '/fordev/' in request.path %}

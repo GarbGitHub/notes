@@ -3,6 +3,7 @@ import notes.views as notes
 
 urlpatterns = [
     path('', notes.NoteListView.as_view(), name='index'),
+    path('search/', notes.SearchResultsView.as_view(), name='search_results'),
     path('notes/', notes.NoteListView.as_view(), name='notes_list'),
     path('notes/create/', notes.NoteCreateView.as_view(), name='post_create'),
     path('notes/detail/<int:pk>/', notes.NoteDetailView.as_view(), name='post_detail'),

@@ -3,14 +3,47 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
+from django.db.models import Q
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
 from notes.forms import NoteBasketForm, NoteEditForm, NoteReturnBasketForm
 from notes.models import Note
+from itertools import chain
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
 PAGINATE_BY_NOTES = 7
+
+
+class SearchResultsView(ListView):
+    paginate_by = PAGINATE_BY_NOTES
+    model = Note
+    template_name = 'notes/posts.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if len(query) == 0:
+            return []
+        print(query)
+        objects = Note.objects.filter(Q(title__icontains=query) | Q(text__icontains=query), author=self.request.user,
+                                      is_active=True)
+        part = list(objects.filter(title__icontains=query)) + list(objects.filter(text__icontains=query))
+        return part
+
+        #return Note.objects.filter(Q(title__icontains=query) | Q(text__icontains=query), author=self.request.user,
+        #                           is_active=True)
+
+    def get_context_data(self, **kwargs):
+        context = super(SearchResultsView, self).get_context_data(**kwargs)
+        context['title_page'] = 'Поиск заметок по названию'
+        if len(self.request.GET.get('q')) == 0:
+            context['no_result'] = 'Задан пустой запрос'
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 
 class NoteListView(ListView):
