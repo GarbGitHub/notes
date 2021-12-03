@@ -26,7 +26,7 @@
         <h1 class="mt-5">{{ post.title }}</h1>
     </a>
     <div class="lead">
-        {{ post.text|truncatechars:90|safe }}
+        {{ post.text|truncatechars:90|linebreaks  }}
     </div>
     <p>
         {{ post.created }}

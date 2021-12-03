@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'fordev',
     'rest_framework',
     'drf_yasg',
+    'django_summernote',
 ]
 
 MIDDLEWARE = [
@@ -103,6 +104,7 @@ IS_DEV_SERVER = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
+
 
 STATIC_URL = '/static/'
 
