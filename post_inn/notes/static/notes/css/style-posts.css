@@ -9,3 +9,7 @@ color: #343536!important;
 	color: gold;
 	text-shadow: 1px 1px rgb(122, 122, 122);
 }
+
+.lead p:last-child {
+
+margin-bottom:5px}
