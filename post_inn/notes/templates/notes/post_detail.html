@@ -3,7 +3,11 @@
 <div class="container">
     <h1 class="mt-5">{{ post.title }}</h1>
     <div class="lead">
-        {{ post.text|safe }}
+        {% if '/fordev/' in request.path %}
+        {{ post.text|safe}}
+        {% else %}
+        {{ post.text|linebreaks }}
+        {% endif %}
     </div>
      {% if '/fordev/' not in request.path %}
     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center py-1 my-2">
