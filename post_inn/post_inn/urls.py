@@ -19,11 +19,12 @@ from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshVie
 from accounts import urls as auth_urls
 from .yasg import urlpatterns as doc_urls
 from fordev import urls as fordev_urls
+from notes import urls as notes_urls
 from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', include('notes.urls')),
+    path('', include(notes_urls, namespace='notes'), name='notes'),
     path('fordev/', include(fordev_urls, namespace='fordev'), name='fordev'),
     path('auth/', include(auth_urls, namespace='auth'), name='auth'),
     path('admin/', admin.site.urls, name='admin'),

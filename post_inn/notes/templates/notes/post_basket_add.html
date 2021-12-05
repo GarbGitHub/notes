@@ -18,9 +18,9 @@
                         </span> {{ name_button }}
             </button>
             {% if alert_text == 'Вы пытаетесь добавить заметку в корзину!' %}
-            <a href="{% url 'post_detail' pk %}" class="btn btn-labeled btn-outline-secondary">
+            <a href="{% url 'notesapp:post_detail' pk %}" class="btn btn-labeled btn-outline-secondary">
             {% else %}
-            <a href="{% url 'posts_basket_list' %}" class="btn btn-labeled btn-outline-secondary">
+            <a href="{% url 'notesapp:posts_basket_list' %}" class="btn btn-labeled btn-outline-secondary">
             {% endif %}
                         <span class="btn-label">
                             <i class="bi bi-x-lg"></i>

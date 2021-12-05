@@ -1,8 +1,11 @@
 from django.urls import path
 import notes.views as notes
 
+app_name = 'notesapp'
+
 urlpatterns = [
     path('', notes.NoteListView.as_view(), name='index'),
+    path('search/', notes.SearchResultsView.as_view(), name='search_results'),
     path('notes/', notes.NoteListView.as_view(), name='notes_list'),
     path('notes/create/', notes.NoteCreateView.as_view(), name='post_create'),
     path('notes/detail/<int:pk>/', notes.NoteDetailView.as_view(), name='post_detail'),
