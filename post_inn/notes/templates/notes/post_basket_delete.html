@@ -10,14 +10,14 @@
 
     </div>
     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center py-1 my-2">
-        <form action="{% url 'post_basket_delete' pk=object.pk %}" method="post">
+        <form action="{% url 'notesapp:post_basket_delete' pk=object.pk %}" method="post">
             {% csrf_token %}
             <button type="submit" class="btn btn-labeled btn-outline-secondary">
                         <span class="btn-label">
                             <i class="bi bi-check2"></i>
                         </span> Точно удалить!
             </button>
-            <a href="{% url 'posts_basket_list' %}" class="btn btn-labeled btn-outline-secondary">
+            <a href="{% url 'notesapp:posts_basket_list' %}" class="btn btn-labeled btn-outline-secondary">
                         <span class="btn-label">
                             <i class="bi bi-x-lg"></i>
                         </span> Отмена

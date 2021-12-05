@@ -3,14 +3,50 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
+from django.db.models import Q
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
 from notes.forms import NoteBasketForm, NoteEditForm, NoteReturnBasketForm
 from notes.models import Note
+from itertools import chain
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
 PAGINATE_BY_NOTES = 7
+
+
+class SearchResultsView(ListView):
+    paginate_by = PAGINATE_BY_NOTES
+    model = Note
+    template_name = 'notes/posts.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if len(query) == 0:
+            return []
+        print(query)
+        objects = Note.objects.filter(Q(title__icontains=query) | Q(text__icontains=query),
+                                      author=self.request.user,
+                                      is_active=True)
+        part = list(objects.filter(title__icontains=query)) + list(objects.filter(text__icontains=query))
+        return part
+
+    def get_context_data(self, **kwargs):
+        context = super(SearchResultsView, self).get_context_data(**kwargs)
+        context['title_page'] = 'Поиск заметок'
+
+        if len(self.request.GET.get('q')) == 0:
+            context['no_search_result'] = 'Задан пустой запрос'
+
+        elif not self.get_queryset():
+            context['no_search_result'] = 'Ни чего не найдено'
+
+        return context
+
+    @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 
 class NoteListView(ListView):
@@ -50,7 +86,7 @@ class NoteDetailView(DetailView):
     def dispatch(self, *args, **kwargs):
         obj = self.get_object()
         if obj.author.pk != self.request.user.pk:
-            return HttpResponseRedirect(reverse('notes_list'))
+            return HttpResponseRedirect(reverse('notesapp:notes_list'))
         return super().dispatch(*args, **kwargs)
 
 
@@ -71,14 +107,14 @@ class NoteUpdateView(SuccessMessageMixin, UpdateView):
         return context
 
     def get_success_url(self):
-        return reverse_lazy('post_detail', args=(self.object.id,))
+        return reverse_lazy('notesapp:post_detail', args=(self.object.id,))
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
     def dispatch(self, *args, **kwargs):
         obj = self.get_object()
         # Если пользователь не является автором, отправляем его в свою библиотеку
         if obj.author.pk != self.request.user.pk:
-            return HttpResponseRedirect(reverse('notes_list'))
+            return HttpResponseRedirect(reverse('notesapp:notes_list'))
         return super().dispatch(*args, **kwargs)
 
 
@@ -101,7 +137,7 @@ class NoteCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('notes_list')
+        return reverse_lazy('notesapp:notes_list')
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
     def dispatch(self, *args, **kwargs):
@@ -155,14 +191,14 @@ class NoteBasketDelUpdateView(SuccessMessageMixin, UpdateView):
         return context
 
     def get_success_url(self):
-        return reverse_lazy('notes_list')
+        return reverse_lazy('notesapp:notes_list')
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
     def dispatch(self, *args, **kwargs):
         obj = self.get_object()
         # Если пользователь не является автором, отправляем его в свою библиотеку
         if obj.author.pk != self.request.user.pk:
-            return HttpResponseRedirect(reverse('notes_list'))
+            return HttpResponseRedirect(reverse('notesapp:notes_list'))
         return super().dispatch(*args, **kwargs)
 
 
@@ -181,7 +217,7 @@ class NoteBasketDetailView(DetailView):
     def dispatch(self, *args, **kwargs):
         obj = self.get_object()
         if obj.author.pk != self.request.user.pk:
-            return HttpResponseRedirect(reverse('notes_list'))
+            return HttpResponseRedirect(reverse('notesapp:notes_list'))
         return super().dispatch(*args, **kwargs)
 
 
@@ -197,7 +233,7 @@ class NoteBasketDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         return context
 
     def get_success_url(self):
-        return reverse_lazy('posts_basket_list')
+        return reverse_lazy('notesapp:posts_basket_list')
 
     def delete(self, request, *args, **kwargs):
         obj = self.get_object()
@@ -210,7 +246,7 @@ class NoteBasketDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     def dispatch(self, *args, **kwargs):
         obj = self.get_object()
         if obj.author.pk != self.request.user.pk:
-            return HttpResponseRedirect(reverse('posts_basket_list'))
+            return HttpResponseRedirect(reverse('notesapp:posts_basket_list'))
         return super().dispatch(*args, **kwargs)
 
 
@@ -240,14 +276,14 @@ class NoteReturnActiveUpdateView(SuccessMessageMixin, UpdateView):
         return context
 
     def get_success_url(self):
-        return reverse_lazy('posts_basket_list')
+        return reverse_lazy('notesapp:posts_basket_list')
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
     def dispatch(self, *args, **kwargs):
         obj = self.get_object()
         # Если пользователь не является автором, отправляем его в свою библиотеку
         if obj.author.pk != self.request.user.pk:
-            return HttpResponseRedirect(reverse('posts_basket_list'))
+            return HttpResponseRedirect(reverse('notesapp:posts_basket_list'))
         return super().dispatch(*args, **kwargs)
 
 
