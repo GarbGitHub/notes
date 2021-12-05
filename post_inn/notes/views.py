@@ -35,8 +35,13 @@ class SearchResultsView(ListView):
     def get_context_data(self, **kwargs):
         context = super(SearchResultsView, self).get_context_data(**kwargs)
         context['title_page'] = 'Поиск заметок'
+
         if len(self.request.GET.get('q')) == 0:
             context['no_search_result'] = 'Задан пустой запрос'
+
+        elif not self.get_queryset():
+            context['no_search_result'] = 'Ни чего не найдено'
+
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))

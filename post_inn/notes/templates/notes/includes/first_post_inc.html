@@ -17,6 +17,11 @@
     <p>"Корзина" пуста.</p>
 </div>
 {% endif %}
+{% if url_name == 'search_results' and no_search_result %}
+<div class="container">
+    <p>{{ no_search_result }}</p>
+</div>
+{% endif %}
 {% endwith %}
 
 
