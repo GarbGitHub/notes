@@ -26,6 +26,7 @@
     {% if messages %}
     {% include 'notes/includes/toasts_inc.html' %}
     {% endif %}
+    {% include 'notes/includes/first_post_inc.html' %}
     {% block content %}
     {% endblock %}
     {% if page_obj.has_other_pages %}

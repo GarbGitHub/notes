@@ -11,11 +11,12 @@ class NoteEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs['placeholder'] = field_name.title
             if field_name == 'title':
                 field.widget.attrs['class'] = 'form-control input-title'
+                field.widget.attrs['placeholder'] = field.label
             elif field_name == 'text':
                 field.widget.attrs['class'] = 'form-control input-text'
+                field.widget.attrs['placeholder'] = field.label
             elif field_name == 'is_favorites':
                 field.widget.attrs.update({'class': 'form-check-input'})
             else:
