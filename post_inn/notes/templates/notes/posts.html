@@ -5,9 +5,10 @@
 <link rel="stylesheet" type="text/css" href="{% static 'notes/css/style-posts.css' %}">
 {% endblock %}
 {% block content %}
+{% with request.resolver_match.url_name as url_name %}
 {% for post in posts %}
 <div class="container">
-    {% if '/fordev/' in request.path %}
+    {% if url_name == 'list' %}
     {% if post.text %}
     <a class="container__title" href="{% url 'fordev:page' post.category.pk post.pk %}">
         <h1 class="mt-5">{% if post.is_boxed %}<i class="bi bi-bookmark-check"></i>{% endif %} {{ post.title }}</h1>
@@ -37,4 +38,5 @@
     {% endif %}
 </div>
 {% endfor %}
+{% endwith %}
 {% endblock %}
