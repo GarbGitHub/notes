@@ -1,5 +1,6 @@
 {% extends 'notes/base.html' %}
 {% block content %}
+{% with request.resolver_match.url_name as url_name %}
 <div class="container">
     <h1 class="mt-5">{{ post.title }}</h1>
     <div class="lead">
@@ -9,7 +10,7 @@
         {{ post.text|linebreaks }}
         {% endif %}
     </div>
-     {% if '/fordev/' not in request.path %}
+     {% if url_name != 'page' %}
     <div class="d-grid gap-2 d-sm-flex justify-content-sm-center py-1 my-2">
         <button class="btn btn-labeled btn-outline-secondary" onclick="location.href='{% url 'notesapp:post_update' post.pk %}'">
             <span class="btn-label">
@@ -26,4 +27,5 @@
     </div>
     {% endif %}
 </div>
+{% endwith %}
 {% endblock %}
