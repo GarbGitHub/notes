@@ -9,7 +9,7 @@ from accounts.forms import DivErrorList, UserLoginForm, UserRegisterForm
 
 def login(request):
     if request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('index'))
+        return HttpResponseRedirect(reverse('notesapp:notes_list'))
 
     title = 'вход'
     login_form = UserLoginForm(data=request.POST or None,
@@ -30,7 +30,7 @@ def login(request):
                 return HttpResponseRedirect(request.POST['next'])
 
             else:
-                return HttpResponseRedirect(reverse('index'))
+                return HttpResponseRedirect(reverse('notesapp:notes_list'))
 
     context = {'title': title,
                'login_form': login_form,
@@ -46,7 +46,7 @@ def logout(request):
 
 def register(request):
     if request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('index'))
+        return HttpResponseRedirect(reverse('notesapp:notes_list'))
     context = {'title_page': 'Регистрация нового пользователя'}
     if request.method == 'POST':
         register_form = UserRegisterForm(request.POST, request.FILES, error_class=DivErrorList)
@@ -68,19 +68,3 @@ def register(request):
 
     context['register_form'] = register_form
     return render(request, 'accounts/register.html', context)
-
-# def register(request):
-#     # if request.user.is_authenticated:
-#     #     return HttpResponseRedirect(reverse('index'))
-#
-#     context = {}
-#
-#     if request.method == 'POST':
-#         register_form = UserRegisterForm(request.POST, request.FILES, error_class=DivErrorList)
-#
-#     else:
-#         register_form = UserRegisterForm()
-#
-#     context['register_form'] = register_form
-#
-#     return render(request, 'accounts/register.html', context)
