@@ -62,7 +62,6 @@ def register(request):
             messages.success(request, 'Успешно зарегистрирован')
             return HttpResponseRedirect(reverse('auth:login'))
 
-
     else:
         register_form = UserRegisterForm()
 
