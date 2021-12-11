@@ -52,7 +52,7 @@ class SerializerWithoutEmailField(ModelSerializer):
     class Meta:
         model = get_user_model()
         queryset = model.objects.all()
-        fields = ('id', 'name', 'last_name')
+        fields = ('id', 'name', 'last_name', 'password')
 
 
 class ThinUserSerializer(ModelSerializer):
