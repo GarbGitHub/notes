@@ -40,7 +40,7 @@ from .permission import IsAuthor, IsAuthUser, IsAuthUserExcludePost
 @method_decorator(
     name='update', decorator=swagger_auto_schema(
         operation_summary='Внести изменения в профиль пользователя',
-        operation_description='{name} - имя\n{last_name} - фамилия',
+        operation_description='{name} - имя\n{last_name} - фамилия\n{password} - пароль',
         manual_parameters=[
             openapi.Parameter('id', in_=openapi.IN_PATH, type=openapi.TYPE_INTEGER,
                               description='id пользователя (числовой тип)'),
