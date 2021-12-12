@@ -60,3 +60,51 @@ class UserRegisterForm(forms.ModelForm):
                 code='password_mismatch',
             )
         return password2
+
+
+class UserEditForm(forms.ModelForm):
+
+    class Meta:
+        model = User
+        fields = ('name', 'last_name')
+
+    def __init__(self, *args, **kwargs):
+        super(UserEditForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            print(field_name, field)
+
+
+class UserPasswordEditForm(forms.ModelForm):
+    error_messages = {
+        'password_mismatch': "Passwords don\'t match.",
+    }
+    password = forms.CharField(
+        label='Пароль',
+        widget=forms.PasswordInput,
+    )
+    password2 = forms.CharField(
+        label='Повторите пароль',
+        widget=forms.PasswordInput,
+        help_text="Введите тот же пароль, что и выше, для проверки",
+    )
+
+    class Meta:
+        model = User
+        fields = ('password', 'password2')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            print(field_name, field)
+            field.widget.attrs['class'] = 'form-control'
+            field.help_text = ''
+
+    def clean_password2(self):
+        password = self.cleaned_data.get("password")
+        password2 = self.cleaned_data.get("password2")
+        if password and password2 and password != password2:
+            raise forms.ValidationError(
+                self.error_messages['password_mismatch'],
+                code='password_mismatch',
+            )
+        return password2

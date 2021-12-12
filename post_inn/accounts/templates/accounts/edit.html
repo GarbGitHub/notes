@@ -1,0 +1,30 @@
+{% extends 'notes/base.html' %}
+{% load static %}
+{% block css %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'accounts/css/forms.css' %}">
+{% endblock %}
+{% block content %}
+{% with request.resolver_match.url_name as url_name %}
+<div class="container">
+    <div class="row">
+        <div class="auth-form position-absolute top-50 start-50 translate-middle shadow p-3 mb-5 bg-body rounded">
+            {% if url_name != 'edit_password' %}
+            <a class="nav-link" aria-current="page" href="{% url 'auth:edit_password' user.pk %}">
+                    Смена пароля</a>
+            {% endif %}
+            <form class="form-horizontal" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center py-1">
+                    <button type="submit" class="btn btn-labeled btn-outline-secondary">
+                        <span class="btn-label">
+                            <i class="bi bi-box-arrow-in-right"></i></span> Сохранить
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endwith %}
+{% endblock %}

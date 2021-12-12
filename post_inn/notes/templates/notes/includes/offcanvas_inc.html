@@ -19,9 +19,22 @@
 </nav>
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
     <div class="offcanvas-header">
-
         <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
-            {% if user.is_authenticated %} {{ user.email }} {% else %} Hello! {% endif %}
+            {% if user.is_authenticated %}
+            <a href="{% url 'authapp:edit' user.pk %}">
+                {% if user.name and not user.last_name %}
+                    {{ user.name }}
+                {% elif not user.name and user.last_name %}
+                    {{ user.last_name }}
+                {% elif user.name and user.last_name %}
+                    {{ user.name }} {{ user.last_name|slice:1 }}.
+                {% else %}
+                    {{ user.email }}
+                {% endif %}
+            </a>
+            {% else %}
+                Hello!
+            {% endif %}
         </h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>

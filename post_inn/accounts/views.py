@@ -3,8 +3,14 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib import messages
+from django.views.generic import UpdateView
+from accounts.models import User
+from django.contrib.messages.views import SuccessMessageMixin
+from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import user_passes_test
 
-from accounts.forms import DivErrorList, UserLoginForm, UserRegisterForm
+from accounts.forms import DivErrorList, UserLoginForm, UserRegisterForm, UserEditForm, UserPasswordEditForm
 
 
 def login(request):
@@ -67,3 +73,53 @@ def register(request):
 
     context['register_form'] = register_form
     return render(request, 'accounts/register.html', context)
+
+
+class EditUserPasswordUpdateView(SuccessMessageMixin, UpdateView):
+    success_message = "Успешно изменён пароль"
+    model = User
+    template_name = 'accounts/edit.html'
+
+    def get_form(self, form_class=UserPasswordEditForm):
+        """Вернет экземпляр формы, которая будет использоваться в этом представлении."""
+        return form_class(**self.get_form_kwargs())
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.object.name:
+            context['title_page'] = f'Настройка пользователя: "{context.get(self, self.object.name)}"'
+        else:
+            context['title_page'] = f'Настройка пользователя: "{context.get(self, self.object.email)}"'
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('notesapp:notes_list')
+
+    @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+
+class EditUserUpdateView(SuccessMessageMixin, UpdateView):
+    success_message = "Успешно отредактирован пользователь"
+    model = User
+    template_name = 'accounts/edit.html'
+
+    def get_form(self, form_class=UserEditForm):
+        """Вернет экземпляр формы, которая будет использоваться в этом представлении."""
+        return form_class(**self.get_form_kwargs())
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.object.name:
+            context['title_page'] = f'Настройка пользователя: "{context.get(self, self.object.name)}"'
+        else:
+            context['title_page'] = f'Настройка пользователя: "{context.get(self, self.object.email)}"'
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('notesapp:notes_list')
+
+    @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
