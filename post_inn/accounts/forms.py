@@ -71,7 +71,7 @@ class UserEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserEditForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            print(field_name, field)
+            field.widget.attrs['class'] = 'form-control'
 
 
 class UserPasswordEditForm(forms.ModelForm):

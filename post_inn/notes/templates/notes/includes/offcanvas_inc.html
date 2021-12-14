@@ -21,7 +21,7 @@
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
             {% if user.is_authenticated %}
-            <a href="{% url 'authapp:edit' user.pk %}">
+            <a href="{% url 'authapp:edit' %}">
                 {% if user.name and not user.last_name %}
                     {{ user.name }}
                 {% elif not user.name and user.last_name %}

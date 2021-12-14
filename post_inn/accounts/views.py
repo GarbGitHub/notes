@@ -95,6 +95,9 @@ class EditUserPasswordUpdateView(SuccessMessageMixin, UpdateView):
     def get_success_url(self):
         return reverse_lazy('notesapp:notes_list')
 
+    def get_object(self):
+        return User.objects.get(pk=self.request.user.id)
+
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
@@ -116,6 +119,9 @@ class EditUserUpdateView(SuccessMessageMixin, UpdateView):
         else:
             context['title_page'] = f'Настройка пользователя: "{context.get(self, self.object.email)}"'
         return context
+
+    def get_object(self):
+        return User.objects.get(pk=self.request.user.id)
 
     def get_success_url(self):
         return reverse_lazy('notesapp:notes_list')
