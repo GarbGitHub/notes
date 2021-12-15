@@ -1,27 +1,14 @@
-{% extends 'notes/base.html' %}
+{% extends 'notes/base_page.html' %}
 {% block content %}
-<div class="container">
-    <div class="lead">
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <h4 class="alert-heading text-center">Внимание!</h4>
-            <p class="text-center">Вы пытаетесь полностью удалить заметку с названием <b>"{{ post.title }}"</b>.</p>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-
-    </div>
-    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center py-1 my-2">
+<div class="alert alert-danger shadow-lg" role="alert">
+    <h4 class="alert-heading">Внимание!</h4>
+    <p>Вы пытаетесь полностью удалить заметку. Последующее восстановление будет невозможно!</p>
+    <p class="mb-0 text-center"><strong>Вы точно хотите удалить заметку?</strong></p>
+    <div class="alert-menu d-flex justify-content-center w-100">
         <form action="{% url 'notesapp:post_basket_delete' pk=object.pk %}" method="post">
             {% csrf_token %}
-            <button type="submit" class="btn btn-labeled btn-outline-secondary">
-                        <span class="btn-label">
-                            <i class="bi bi-check2"></i>
-                        </span> Точно удалить!
-            </button>
-            <a href="{% url 'notesapp:posts_basket_list' %}" class="btn btn-labeled btn-outline-secondary">
-                        <span class="btn-label">
-                            <i class="bi bi-x-lg"></i>
-                        </span> Отмена
-            </a>
+        <button type="submit" class="btn alert-button">Да</button>
+        <a href="{% url 'notesapp:posts_basket_list' %}" type="button" class="btn alert-button">Нет</a>
         </form>
     </div>
 </div>
