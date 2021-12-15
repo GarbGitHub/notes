@@ -1,0 +1,21 @@
+{% extends 'notes/base_page.html' %}
+{% block content %}
+<!--Edit user form-->
+<div class="position-absolute top-50 start-50 translate-middle edit-profile-form">
+    <div class="link-form">
+        <span class="link-form--span">Профиль</span>
+        <a class="link-form--link" href="{% url 'auth:edit_password' %}">Сменить пароль</a>
+    </div>
+    <form class="form-horizontal" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <button type="submit" class="btn btn-profile-form">
+            Сохранить
+            </button>
+        </div>
+    </form>
+</div>
+<!--END-->
+
+{% endblock %}

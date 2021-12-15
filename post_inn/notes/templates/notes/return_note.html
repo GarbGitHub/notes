@@ -1,0 +1,15 @@
+{% extends 'notes/base_page.html' %}
+{% block content %}
+<div class="alert alert-danger shadow-lg" role="alert">
+    <h4 class="alert-heading">Внимание!</h4>
+    <p>Вы пытаетесь восстановить заметку из Корзины.</p>
+    <p class="mb-0 text-center"><strong>Вы точно хотите восстановить заметку?</strong></p>
+    <div class="alert-menu d-flex justify-content-center w-100">
+         <form action="" method="post">
+            {% csrf_token %}
+             <button type="submit" class="btn alert-button">Да</button>
+             <a href="{% url 'notesapp:posts_basket_list' %}" type="button" class="btn alert-button">Нет</a>
+         </form>
+    </div>
+</div>
+{% endblock %}

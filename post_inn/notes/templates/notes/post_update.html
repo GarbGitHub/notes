@@ -1,23 +1,15 @@
-{% extends 'notes/base.html' %}
-{% load static %}
-{% block css %}
-{{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% static 'notes/css/post-update.css' %}">
-{% endblock %}
+{% extends 'notes/base_page.html' %}
 {% block content %}
-<div class="container">
-    <h1 class="mt-5">{{ post.title }}</h1>
-    <form class="form-horizontal text-center" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form }}
-       <label for="id_is_favorites" class="m-4"></label>
-        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center py-1 my-2">
-            <button type="submit" class="btn btn-labeled btn-outline-secondary" id="liveToastBtn">
-                        <span class="btn-label">
-                            <i class="bi bi-check2-circle"></i>
-                        </span> Сохранить
-            </button>
-        </div>
-    </form>
-</div>
+<form class="form-horizontal text-center" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}
+    <label for="id_is_favorites" class="m-4"></label>
+    <div class="">
+        <button type="submit" class="btn btn-labeled btn-edit-form">
+            <span class="btn-label">
+                <i class="bi bi-check2-circle"></i>
+            </span> Сохранить
+        </button>
+    </div>
+</form>
 {% endblock %}

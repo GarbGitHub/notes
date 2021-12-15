@@ -14,6 +14,7 @@ class NoteEditForm(forms.ModelForm):
             if field_name == 'title':
                 field.widget.attrs['class'] = 'form-control input-title'
                 field.widget.attrs['placeholder'] = field.label
+                field.widget.attrs['maxlength'] = "128"
             elif field_name == 'text':
                 field.widget.attrs['class'] = 'form-control input-text'
                 field.widget.attrs['placeholder'] = field.label
