@@ -14,10 +14,6 @@ body, .form-control.input-text {
     font-family: 'Merriweather', serif;
     }
 
-
-
-
-
 b, strong {
   font-weight: bold;
 }
@@ -29,7 +25,6 @@ p {
 h1,  .form-control.input-title{
     font-size: 32px;
     }
-
 
 h1, h2, h3, h4, h5, h6, .form-control.input-title {
     letter-spacing: -0.04em;
