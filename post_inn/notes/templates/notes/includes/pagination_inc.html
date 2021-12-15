@@ -1,29 +1,41 @@
-<hr>
-<p class="text-center">
-    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-</p>
+<p class="text-center">Page 1 of 4.</p>
 <nav aria-label="Page navigation bootstrap">
     <ul class="pagination justify-content-center">
         {% if page_obj.has_previous %}
-        <li class="page-item"><a class="page-link" href="{{ request.path }}">First page</a></li>
-        <li class="page-item">
-            <a class="page-link" href="{{ request.path }}?page={{ page_obj.previous_page_number }}">
-                <span aria-hidden="true">&laquo;</span>
+        <li class="page-item" aria-current="page">
+            <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">
+                <div class="pg-item">
+                    <span>&laquo;</span>
+                </div>
             </a>
         </li>
         {% endif %}
         {% for num in page_obj.paginator.page_range %}
         {% if page_obj.number == num %}
-        <li class="page-item active" aria-current="page"><span class="page-link">{{ num }}</span>
+        <li class="page-item" aria-current="page">
+            <a href="#">
+                <div class="pg-item active">
+                    <span>{{ num }}</span>
+                </div>
+            </a>
         </li>
         {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-        <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ num }}">{{ num }}</a></li>
+        <li class="page-item" aria-current="page">
+            <a href="{{ request.path }}?page={{ num }}">
+                <div class="pg-item">
+                    <span>{{ num }}</span>
+                </div>
+            </a>
+        </li>
         {% endif %}
         {% endfor %}
         {% if page_obj.has_next %}
-        <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ page_obj.next_page_number }}"><span
-                aria-hidden="true">&raquo;</span></a></li>
-        <li class="page-item"><a class="page-link" href="{{ request.path }}?page={{ page_obj.paginator.num_pages }}">Last page</a>
+        <li class="page-item" aria-current="page">
+            <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">
+                <div class="pg-item">
+                    <span>&raquo;</span>
+                </div>
+            </a>
         </li>
         {% endif %}
     </ul>

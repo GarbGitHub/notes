@@ -40,7 +40,7 @@ class SearchResultsView(ListView):
             context['no_search_result'] = 'Задан пустой запрос'
 
         elif not self.get_queryset():
-            context['no_search_result'] = 'Ни чего не найдено'
+            context['no_search_result'] = 'Ничего не найдено'
 
         return context
 
@@ -63,7 +63,7 @@ class NoteListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(NoteListView, self).get_context_data(**kwargs)
         # context = Note.objects.filter(author=self.request.user)
-        context['title_page'] = 'Список заметок'
+        context['title_page'] = 'Заметки'
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
@@ -79,7 +79,7 @@ class NoteDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['pk'] = self.object.id
-        context['title_page'] = f'{context.get(self, self.object.title)}'
+        context['title_page'] = 'Заметки'
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
@@ -182,10 +182,8 @@ class NoteBasketDelUpdateView(SuccessMessageMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title_page'] = f'Удалить: "{context.get(self, self.object.title)}"'
+        context['title_page'] = 'В Корзину'
         context['pk'] = self.object.id
-        context['name_button'] = 'Удалить'
-        context['alert_text'] = 'Вы пытаетесь добавить заметку в корзину!'
         # author_pk = context.get(self, self.object.author.pk)
         # request_user_pk = self.request.user.pk
         return context
@@ -210,7 +208,7 @@ class NoteBasketDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['pk'] = self.object.id
-        context['title_page'] = f'{context.get(self, self.object.title)}'
+        context['title_page'] = 'Корзина'
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
@@ -229,7 +227,7 @@ class NoteBasketDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title_page'] = f'Удалить: "{context.get(self, self.object.title)}"'
+        context['title_page'] = 'Удалить'
         return context
 
     def get_success_url(self):
@@ -253,8 +251,8 @@ class NoteBasketDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
 class NoteReturnActiveUpdateView(SuccessMessageMixin, UpdateView):
     model = Note
     context_object_name = 'post'
-    template_name = 'notes/post_basket_add.html'
-    success_message = "Успешно восстановленно"
+    template_name = 'notes/return_note.html'
+    success_message = "Успешно восстановлено"
 
     def get_form(self, form_class=NoteReturnBasketForm):
         """Вернет экземпляр формы, которая будет использоваться в этом представлении."""
@@ -266,10 +264,8 @@ class NoteReturnActiveUpdateView(SuccessMessageMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title_page'] = f'Восстановить заметку: "{context.get(self, self.object.title)}"'
+        context['title_page'] = f'Восстановить'
         context['pk'] = self.object.id
-        context['name_button'] = 'Восстановить'
-        context['alert_text'] = 'Вы пытаетесь восстановить заметку.'
 
         # author_pk = context.get(self, self.object.author.pk)
         # request_user_pk = self.request.user.pk
@@ -300,7 +296,7 @@ class NoteFavoriteListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(NoteFavoriteListView, self).get_context_data(**kwargs)
         # context = Note.objects.filter(author=self.request.user)
-        context['title_page'] = 'Список избранных'
+        context['title_page'] = 'Избранное'
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))

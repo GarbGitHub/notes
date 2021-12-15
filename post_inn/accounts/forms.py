@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms.utils import ErrorList
 from django import forms
+from django.contrib.auth.hashers import check_password
 from accounts.models import User
 
 
@@ -62,7 +63,6 @@ class UserRegisterForm(forms.ModelForm):
 
 
 class UserEditForm(forms.ModelForm):
-
     class Meta:
         model = User
         fields = ('name', 'last_name')
@@ -77,6 +77,11 @@ class UserPasswordEditForm(forms.ModelForm):
     error_messages = {
         'password_mismatch': "Passwords don\'t match.",
     }
+    old_password = forms.CharField(
+        label='Старый пароль',
+        widget=forms.PasswordInput,
+        help_text="Введите старый пароль",
+    )
     password = forms.CharField(
         label='Пароль',
         widget=forms.PasswordInput,
@@ -89,12 +94,12 @@ class UserPasswordEditForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('password', 'password2')
+        fields = ('old_password', 'password', 'password2')
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, hash_password, *args, **kwargs):
+        self.hash_password = hash_password
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            print(field_name, field)
             field.widget.attrs['class'] = 'form-control'
             field.help_text = ''
 
@@ -107,3 +112,13 @@ class UserPasswordEditForm(forms.ModelForm):
                 code='password_mismatch',
             )
         return password2
+
+    def clean_old_password(self):
+        old_password = self.cleaned_data.get("old_password")
+        hash_old_password = self.hash_password
+        if old_password and not check_password(old_password, hash_old_password):
+            raise forms.ValidationError(
+                self.error_messages['password_mismatch'],
+                code='password_mismatch'
+            )
+        return old_password

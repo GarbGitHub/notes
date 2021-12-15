@@ -82,14 +82,11 @@ class EditUserPasswordUpdateView(SuccessMessageMixin, UpdateView):
 
     def get_form(self, form_class=UserPasswordEditForm):
         """Вернет экземпляр формы, которая будет использоваться в этом представлении."""
-        return form_class(**self.get_form_kwargs())
+        return form_class(self.request.user.password, error_class=DivErrorList, **self.get_form_kwargs())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if self.object.name:
-            context['title_page'] = f'Настройка пользователя: "{context.get(self, self.object.name)}"'
-        else:
-            context['title_page'] = f'Настройка пользователя: "{context.get(self, self.object.email)}"'
+        context['title_page'] = 'Пароль'
         return context
 
     def get_success_url(self):
@@ -104,7 +101,7 @@ class EditUserPasswordUpdateView(SuccessMessageMixin, UpdateView):
 
 
 class EditUserUpdateView(SuccessMessageMixin, UpdateView):
-    success_message = "Успешно отредактирован пользователь"
+    success_message = "Профиль отредактирован"
     model = User
     template_name = 'accounts/edit.html'
 
@@ -114,10 +111,7 @@ class EditUserUpdateView(SuccessMessageMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if self.object.name:
-            context['title_page'] = f'Настройка пользователя: "{context.get(self, self.object.name)}"'
-        else:
-            context['title_page'] = f'Настройка пользователя: "{context.get(self, self.object.email)}"'
+        context['title_page'] = 'Профиль'
         return context
 
     def get_object(self):
