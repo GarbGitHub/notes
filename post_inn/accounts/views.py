@@ -17,11 +17,11 @@ def login(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('notesapp:notes_list'))
 
-    title = 'вход'
+    title = 'Выполнить вход'
     login_form = UserLoginForm(data=request.POST or None,
                                error_class=DivErrorList)  # Все данные из формы полученные методом POST
 
-    _next = request.GET['next'] if 'next' in request.GET.keys() else ''  # next=/basket/add/3/
+    _next = request.GET['next'] if 'next' in request.GET.keys() else ''
 
     if request.method == 'POST' and login_form.is_valid():  # если POST
         username = request.POST['username']
@@ -38,11 +38,11 @@ def login(request):
             else:
                 return HttpResponseRedirect(reverse('notesapp:notes_list'))
 
-    context = {'title': title,
-               'login_form': login_form,
+    context = {'title_page': title,
+               'form': login_form,
                'next': _next}
 
-    return render(request, 'accounts/login.html', context)
+    return render(request, 'accounts/register_base.html', context)
 
 
 def logout(request):
@@ -71,8 +71,8 @@ def register(request):
     else:
         register_form = UserRegisterForm()
 
-    context['register_form'] = register_form
-    return render(request, 'accounts/register.html', context)
+    context['form'] = register_form
+    return render(request, 'accounts/register_base.html', context)
 
 
 class EditUserPasswordUpdateView(SuccessMessageMixin, UpdateView):

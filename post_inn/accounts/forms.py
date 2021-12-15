@@ -28,7 +28,7 @@ class UserLoginForm(AuthenticationForm):
 
 class UserRegisterForm(forms.ModelForm):
     error_messages = {
-        'password_mismatch': "Passwords don\'t match.",
+        'password_mismatch': "Пароли не совпадают",
     }
     password1 = forms.CharField(
         label='Пароль',
@@ -47,7 +47,6 @@ class UserRegisterForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            print(field_name, field)
             field.widget.attrs['class'] = 'form-control'
             field.help_text = ''
 
