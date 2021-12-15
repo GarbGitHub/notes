@@ -78,7 +78,7 @@ def register(request):
 class EditUserPasswordUpdateView(SuccessMessageMixin, UpdateView):
     success_message = "Успешно изменён пароль"
     model = User
-    template_name = 'accounts/edit.html'
+    template_name = 'accounts/edit_password.html'
 
     def get_form(self, form_class=UserPasswordEditForm):
         """Вернет экземпляр формы, которая будет использоваться в этом представлении."""
