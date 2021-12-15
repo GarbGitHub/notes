@@ -101,7 +101,7 @@ class NoteUpdateView(SuccessMessageMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title_page'] = f'Править: "{context.get(self, self.object.title)}"'
+        context['title_page'] = 'Править'
         # author_pk = context.get(self, self.object.author.pk)
         # request_user_pk = self.request.user.pk
         return context
