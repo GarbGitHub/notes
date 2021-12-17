@@ -29,6 +29,10 @@
     max-width: 42em;
 }
 
+.header-logo,
+.header-logo:hover {
+    color: white;
+}
 
 /*
 * Header

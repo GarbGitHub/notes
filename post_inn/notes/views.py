@@ -1,10 +1,11 @@
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.contrib import messages
 from django.db.models import Q
 from django.utils.decorators import method_decorator
+from django.views import View
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
 from notes.forms import NoteBasketForm, NoteEditForm, NoteReturnBasketForm
 from notes.models import Note
@@ -13,6 +14,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
 PAGINATE_BY_NOTES = 7
+
+
+def index(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('notesapp:notes_list'))
+    return render(request, 'notes/index.html')
 
 
 class SearchResultsView(ListView):
@@ -34,7 +41,7 @@ class SearchResultsView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(SearchResultsView, self).get_context_data(**kwargs)
-        context['title_page'] = 'Поиск заметок'
+        context['title_page'] = 'Поиск'
 
         if len(self.request.GET.get('q')) == 0:
             context['no_search_result'] = 'Задан пустой запрос'

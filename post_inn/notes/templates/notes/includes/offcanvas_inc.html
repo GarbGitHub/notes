@@ -1,111 +1,115 @@
-<nav class="navbar navbar-light bg-white fixed-top">
-    <div class="container-fluid">
-        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasNavbar"
-                aria-controls="offcanvasNavbar">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sliders"
-                 viewBox="0 0 16 16">
-                <path fill-rule="evenodd"
-                      d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z"/>
-            </svg>
-        </button>
-        <form action="{% url 'notesapp:search_results' %}" method="get">
-            <div class="input-group">
-                <input class="form-control" name="q" type="text" aria-describedby="btn-search" placeholder="Поиск...">
-                <button class="btn btn-outline-secondary" type="submit" id="btn-search"><i class="bi bi-search"></i></button>
-            </div>
-        </form>
-    </div>
-</nav>
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" data-bs-scroll="true" aria-labelledby="offcanvasNavbarLabel">
     <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
-            {% if user.is_authenticated %}
-            <a href="{% url 'authapp:edit' %}">
+        {% if user.is_authenticated %}
+        <a href="{% url 'authapp:edit' %}" class="offcanvas-header--link">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
                 {% if user.name and not user.last_name %}
-                    {{ user.name }}
+                {{ user.name }}
                 {% elif not user.name and user.last_name %}
-                    {{ user.last_name }}
+                {{ user.last_name }}
                 {% elif user.name and user.last_name %}
-                    {{ user.name }} {{ user.last_name|slice:1 }}.
+                {{ user.name }}
+                {{ user.last_name|slice:1 }}.
                 {% else %}
-                    {{ user.email }}
-                {% endif %}
-            </a>
-            {% else %}
-                Hello!
+                {{ user.email }}
             {% endif %}
-        </h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </h5>
+        </a>
+        {% else %}
+        Hello!
+        {% endif %}
+        <button class="btn close-offcanvas" type="button" data-bs-dismiss="offcanvas"><i
+                class="bi bi-x-lg"></i></button>
     </div>
     <div class="offcanvas-body">
+        <div class="offcanvas-search">
+            <div class="position-relative offcanvas-search-form px-3 py-3">
+                <form class="search-form-top" action="/search/" method="get">
+                    <div class="input-group">
+                        <input class="form-control search" name="q" type="text" aria-describedby="btn-search" placeholder="Поиск...">
+                        <button class="btn btn-navbar" type="submit" id="btn-search"><i class="bi bi-search"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
         {% if user.is_authenticated %}
-        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-            <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="{% url 'notesapp:index' %}"><i
-                        class="bi bi-house-door"></i>
-                    Главная</a>
+        {% with request.resolver_match.url_name as url_name %}
+        <ul class="list-group">
+            <li class="list-group-item">
+                <div class="list-group-item--div">
+                    <a class="d-flex justify-content-between" href="{% url 'notesapp:index' %}">
+                        <div class="icanvas"><i class="bi bi-house-door"></i> Главная</div>
+                    </a>
+                </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="{% url 'notesapp:post_create' %}"><i
-                        class="bi bi-file-earmark-plus"></i>
-                    Создать заметку</a>
+            <li class="list-group-item {% if url_name == 'post_create' %}active{% endif %}">
+                <div class="list-group-item--div">
+                    <a class="d-flex justify-content-between" href="{% url 'notesapp:post_create' %}">
+                        <div class="icanvas"><i class="bi bi-file-earmark-plus"></i> Создать заметку
+                        </div>
+                    </a>
+                </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="{% url 'notesapp:notes_list' %}"><i
-                        class="bi bi-list-ul"></i>
-                    Мои заметки
-                    {% if count_is_active %}
-                    <span class="badge rounded-pill bg-success">{{ count_is_active }}</span>
-                    {% endif %}
-                </a>
+            {% if url_name == 'notes_list' or url_name == 'search_results' or url_name == 'post_detail' or url_name == 'post_update' or url_name == 'post_basket_add'%}
+            <li class="list-group-item active">
+            {% else %}
+            <li class="list-group-item">
+            {% endif %}
+                <div class="list-group-item--div">
+                    <a class="d-flex justify-content-between" href="{% url 'notesapp:notes_list' %}">
+                        <div class="icanvas"><i class="bi bi-list-ul"></i> Мои заметки</div>
+                        {% if count_is_active %}
+                        <span class="badge rounded-pill bg-success">{{ count_is_active }}</span>
+                        {% endif %}
+                    </a>
+                </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="{% url 'notesapp:posts_favorites' %}"><i
-                        class="bi bi-star"></i>
-                    Избранное
-                    {% if count_is_favorites %}
-                    <span class="badge rounded-pill bg-warning text-dark">{{ count_is_favorites }}</span>
-                    {% endif %}
-                </a>
+            <li class="list-group-item {% if url_name == 'posts_favorites' %}active{% endif %}">
+                <div class="list-group-item--div">
+                    <a class="d-flex justify-content-between" href="{% url 'notesapp:posts_favorites' %}">
+                        <div class="icanvas"><i class="bi bi-star"></i> Избранное</div>
+                        {% if count_is_favorites %}
+                        <span class="badge rounded-pill bg-warning text-dark">{{ count_is_favorites }}</span>
+                        {% endif %}
+                    </a>
+                </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="{% url 'notesapp:posts_basket_list' %}"><i
-                        class="bi bi-basket2"></i>
-                    Корзина
-                    {% if count_is_basket %}
-                    <span class="badge rounded-pill bg-secondary">{{ count_is_basket }}</span>
-                    {% endif %}
-                </a>
+            {% if url_name == 'posts_basket_list' or url_name == 'post_basket_detail' or url_name == 'post_basket_return' or url_name == 'post_basket_delete' %}
+            <li class="list-group-item active">
+            {% else %}
+            <li class="list-group-item">
+            {% endif %}
+                <div class="list-group-item--div">
+                    <a class="d-flex justify-content-between" href="{% url 'notesapp:posts_basket_list' %}">
+                        <div class="icanvas"><i class="bi bi-basket2"></i> Корзина</div>
+                        {% if count_is_basket %}
+                        <span class="badge rounded-pill bg-secondary">{{ count_is_basket }}</span>
+                        {% endif %}
+                    </a>
+                </div>
             </li>
         </ul>
         <hr>
-        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-            <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="{% url 'fordevapp:list' %}"><i
-                        class="bi bi-person-workspace"></i>
-                    Для разработчиков</a>
+        <ul class="list-group">
+            <li class="list-group-item {% if url_name == 'list' or url_name == 'page' %}active{% endif %}">
+                <div class="list-group-item--div">
+                    <a class="d-flex justify-content-between" href="{% url 'fordevapp:list' %}">
+                        <div class="icanvas"><i class="bi bi-person-workspace"></i> Для разработчиков
+                        </div>
+                    </a>
+                </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="{% url 'auth:logout' %}"><i
-                        class="bi bi-box-arrow-left"></i>
-                    Выйти</a>
+            <li class="list-group-item">
+                <div class="list-group-item--div">
+                    <a class="d-flex justify-content-between" href="{% url 'auth:logout' %}">
+                        <div class="icanvas"><i class="bi bi-box-arrow-left">
+                            </i> Выйти</div>
+                    </a>
+                </div>
             </li>
+            <li class="list-group-item">
         </ul>
-        {% else %}
-        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-            <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="{% url 'auth:login' %}"><i
-                        class="bi bi-box-arrow-in-right"></i>
-                    Войти</a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="{% url 'auth:register' %}"><i
-                        class="bi bi-person-plus"></i>
-                    Зарегистрироваться</a>
-            </li>
-        </ul>
+        {% endwith %}
         {% endif %}
     </div>
 </div>
