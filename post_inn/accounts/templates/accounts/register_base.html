@@ -24,7 +24,9 @@
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <header class="mb-auto">
             <div>
+                <a href="{% url 'notesapp:index' %}" class="header-logo">
                 <h3 class="float-md-start mb-0">Заметочник</h3>
+                </a>
                 {% with request.resolver_match.url_name as url_name %}
                 {% if url_name != 'login' %}
                 <nav class="nav nav-masthead justify-content-center float-md-end">

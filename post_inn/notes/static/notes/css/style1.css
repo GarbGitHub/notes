@@ -229,7 +229,7 @@ h3.card-title {
     height: 15px;
 }
 
-.card:hover svg,
+.star-card:hover svg,
 .addnote:hover svg,
 .addnote-top:hover svg,
 svg:hover {
@@ -253,6 +253,11 @@ svg:hover {
 
 .card-date {
     align-self: center;
+    min-width: auto;
+}
+
+.card-bottom--obj {
+    width:40px;
 }
 
 .toggle-action,
@@ -314,6 +319,9 @@ svg:hover {
     }
     h1.header {
         font-size: 28px;
+    }
+    .card{
+        margin-bottom:30px;
     }
 }
 
