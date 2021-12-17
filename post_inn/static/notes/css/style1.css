@@ -172,6 +172,9 @@ p {
     width: 100%;
     height: 100%;
 }
+.link-action li a.dropdown-item{
+    padding: .5rem 1rem;
+}
 
 h3.card-title {
     margin-right: 15px;
@@ -226,7 +229,7 @@ h3.card-title {
     height: 15px;
 }
 
-.card:hover svg,
+.star-card:hover svg,
 .addnote:hover svg,
 .addnote-top:hover svg,
 svg:hover {
@@ -250,6 +253,11 @@ svg:hover {
 
 .card-date {
     align-self: center;
+    min-width: auto;
+}
+
+.card-bottom--obj {
+    width:40px;
 }
 
 .toggle-action,
@@ -311,6 +319,9 @@ svg:hover {
     }
     h1.header {
         font-size: 28px;
+    }
+    .card{
+        margin-bottom:30px;
     }
 }
 
