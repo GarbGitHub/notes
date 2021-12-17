@@ -18,7 +18,7 @@ class ForDevListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ForDevListView, self).get_context_data(**kwargs)
-        context['title_page'] = 'Для разработчиков'
+        context['title_page'] = 'Разработчику'
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
@@ -34,7 +34,8 @@ class ForDevDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['pk'] = self.object.id
-        context['title_page'] = f'{context.get(self, self.object.title)}'
+        # context['title_page'] = f'{context.get(self, self.object.title)}'
+        context['title_page'] = 'API'
         context['cat_pk'] = f'Категория: "{context.get(self, self.object.category.pk)}"'
         return context
 

@@ -4,21 +4,20 @@
     {% if next %}
     <input type="hidden" name="next" value="{{ next }}">
     {% endif %}
-{% for field, errors in form.errors.items %}
+    {% for field, errors in form.errors.items %}
     <div class="alert alert-danger" role="alert">
     {% for error in errors %}
         <div class="error">{{ error }}</div>
     {% endfor %}
     </div>
-{% endfor %}
+    {% endfor %}
     <div class="form-floating">
-        <input type="email" name="username" class="form-control sing" id="id_email" placeholder="name@example.com">
+        <input type="email" name="username" class="form-control sing" id="id_email" placeholder="name@example.com" required>
         <label for="id_email">Email</label>
     </div>
     <div class="form-floating">
-        <input type="password" name="password" class="form-control sing" id="id_password" placeholder="Password">
+        <input type="password" name="password" class="form-control sing" id="id_password" placeholder="password" required>
         <label for="id_password">Password</label>
     </div>
-
     <button class="w-100 btn btn-lg btn form-sigin-submit" type="submit">Отправить</button>
 </form>
