@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshView, )
 from accounts import urls as auth_urls
+from .views import robots_txt
 from .yasg import urlpatterns as doc_urls
 from fordev import urls as fordev_urls
 from notes import urls as notes_urls
@@ -25,6 +26,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', include(notes_urls, namespace='notes'), name='notes'),
+    path("robots.txt", robots_txt),
     path('fordev/', include(fordev_urls, namespace='fordev'), name='fordev'),
     path('auth/', include(auth_urls, namespace='auth'), name='auth'),
     path('admin/', admin.site.urls, name='admin'),
