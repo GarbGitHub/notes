@@ -35,13 +35,6 @@
         {% if user.is_authenticated %}
         {% with request.resolver_match.url_name as url_name %}
         <ul class="list-group">
-            <li class="list-group-item">
-                <div class="list-group-item--div">
-                    <a class="d-flex justify-content-between" href="{% url 'notesapp:index' %}">
-                        <div class="icanvas"><i class="bi bi-house-door"></i> Главная</div>
-                    </a>
-                </div>
-            </li>
             <li class="list-group-item {% if url_name == 'post_create' %}active{% endif %}">
                 <div class="list-group-item--div">
                     <a class="d-flex justify-content-between" href="{% url 'notesapp:post_create' %}">
@@ -107,9 +100,27 @@
                     </a>
                 </div>
             </li>
-            <li class="list-group-item">
         </ul>
         {% endwith %}
+        {% else %}
+        <ul class="list-group">
+            <li class="list-group-item {% if url_name == 'list' or url_name == 'page' %}active{% endif %}">
+                <div class="list-group-item--div">
+                    <a class="d-flex justify-content-between" href="{% url 'fordevapp:list' %}">
+                        <div class="icanvas"><i class="bi bi-person-workspace"></i> Для разработчиков
+                        </div>
+                    </a>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="list-group-item--div">
+                    <a class="d-flex justify-content-between" href="{% url 'auth:login' %}">
+                        <div class="icanvas"><i class="bi bi-box-arrow-left">
+                            </i> Войти</div>
+                    </a>
+                </div>
+            </li>
+        </ul>
         {% endif %}
     </div>
 </div>
