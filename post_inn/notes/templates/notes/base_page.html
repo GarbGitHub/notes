@@ -17,7 +17,51 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
     <link rel="stylesheet" type="text/css" href="{% static 'notes/css/style1.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'notes/css/forms-style.css' %}">
+        <style>
+        @media (min-height: 700px) {
+            .offcanvas-body {
+                background-color: white;
+                {% with request.resolver_match.url_name as url_name %}
+
+                {% if url_name == 'post_create' %}
+                background-image: url('/media/undraw_add_notes_re_ln36.svg');
+
+                {% elif url_name == 'posts_favorites' %}
+                background-image: url('/media/undraw_bookmarks_re_mq1u.svg');
+
+                {% elif url_name == 'search_results' %}
+                background-image: url('/media/undraw_web_search_re_efla.svg');
+
+                {% elif url_name == 'post_detail' %}
+                background-image: url('/media/undraw_noted_pc-9-f.svg');
+
+                {% elif url_name == 'edit' or url_name == 'edit_password' %}
+                background-image: url('/media/undraw_personal_information_re_vw8a.svg');
+
+                {% elif url_name == 'posts_basket_list' or url_name == 'post_basket_detail' or url_name == 'post_basket_return' or url_name == 'post_basket_delete' %}
+                background-image: url('/media/undraw_throw_away_re_x60k.svg');
+                {% else %}
+                background-image: url('/media/undraw_notes_re_pxhw.svg');
+                {% endif %}
+                {% endwith %}
+                background-position: bottom right;
+                background-repeat: no-repeat;
+                background-size: 300px;
+            }
+        }
+    </style>
+
     <title>{% if title_page %} {{ title_page }} {% else %} My notes {% endif %}</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/media/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/media/favicon-16x16.png">
+    <link rel="manifest" href="/media/site.webmanifest">
+    <link rel="mask-icon" href="/media/safari-pinned-tab.svg" color="#5bbad5">
+
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
 </head>
 
 <body class="d-flex flex-column h-100">
