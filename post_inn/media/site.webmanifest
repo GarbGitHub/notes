@@ -1,6 +1,6 @@
 {
-    "name": "\u0417\u0430\u043c\u0435\u0442\u043e\u0447\u043d\u0438\u043a",
-    "short_name": "\u0417\u0430\u043c\u0435\u0442\u043e\u0447\u043d\u0438\u043a",
+    "name": "Заметочник",
+    "short_name": "Заметочник",
     "icons": [
         {
             "src": "/media/android-chrome-192x192.png",
@@ -11,6 +11,12 @@
             "src": "/media/android-chrome-512x512.png",
             "sizes": "512x512",
             "type": "image/png"
+        },
+        {
+          "src": "/media/maskable_icon.png",
+          "sizes": "196x196",
+          "type": "image/png",
+          "purpose": "maskable"
         }
     ],
     "theme_color": "#d6bbb2",
