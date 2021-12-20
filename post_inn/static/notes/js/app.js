@@ -1,20 +1,11 @@
-window.addEventListener('load', async() => {
-    if ('serviceWorker' in navigator) {
-        try {
-            const reg = await navigator.serviceWorker.register(sworker)
-            console.log('Service worker register success', reg)
-        } catch (e) {
-            console.log('Service worker register fail')
-        }
-    }
-})
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+        .register('sw.js', { scope: '/' })
+        .then(function(reg) {
+            console.log('Achieng Service worker Registration worked!');
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
 
-function sworker() {
-    self.addEventListener('install', event => {
-        console.log('[SW]: install')
-    })
-
-    self.addEventListener('activate', event => {
-        console.log('[SW]: activate')
-    })
 }
