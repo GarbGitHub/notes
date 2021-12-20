@@ -16,3 +16,7 @@ def robots_txt(request):
         "Allow: /",
     ]
     return HttpResponse("\n".join(lines), content_type="text/plain")
+
+
+def offline(request):
+    return HttpResponse("Ваше приложение сейчас не в сети. Попробуйте позже")

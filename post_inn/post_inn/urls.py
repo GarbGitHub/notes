@@ -18,7 +18,7 @@ from django.urls import path, include
 from django.views.generic import TemplateView
 from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshView, )
 from accounts import urls as auth_urls
-from .views import robots_txt
+from .views import robots_txt, offline
 from .yasg import urlpatterns as doc_urls
 from fordev import urls as fordev_urls
 from notes import urls as notes_urls
@@ -28,6 +28,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', include(notes_urls, namespace='notes'), name='notes'),
     path("robots.txt", robots_txt),
+    path("offline/", offline),
     path('sw.js', (TemplateView.as_view(template_name='notes/sw.js', content_type='application/javascript', )), name='sw.js'),
     path('fordev/', include(fordev_urls, namespace='fordev'), name='fordev'),
     path('auth/', include(auth_urls, namespace='auth'), name='auth'),
