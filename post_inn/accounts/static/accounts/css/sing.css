@@ -29,9 +29,10 @@
     max-width: 42em;
 }
 
-.header-logo,
-.header-logo:hover {
-    color: white;
+
+.header-logo img,
+.header-logo img:hover {
+ height: 35px;
 }
 
 /*
