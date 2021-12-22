@@ -1,5 +1,6 @@
-const staticCacheName = 's-app-v6'
-const dynamicCacheName = 'd-app-v6'
+const staticCacheName = 's-app-v4'
+const dynamicCacheName = 'd-app-v4'
+
 
 const assetUrls = [
     "/media/apple-touch-icon.png",
