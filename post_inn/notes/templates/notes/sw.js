@@ -1,10 +1,7 @@
-const staticCacheName = 's-app-v3'
-const dynamicCacheName = 'd-app-v3'
+const staticCacheName = 's-app-v6'
+const dynamicCacheName = 'd-app-v6'
 
 const assetUrls = [
-    "/",
-    "/auth/register/",
-    "/auth/login/",
     "/media/apple-touch-icon.png",
     "/media/favicon-32x32.png",
     "/media/android-chrome-192x192.png",
@@ -57,6 +54,6 @@ async function networkFirst(request) {
         return response
     } catch (e) {
         const cached = await cache.match(request)
-        return cached ?? await caches.match('/')
+        return cached ?? await caches.match('/offline/')
     }
 }
