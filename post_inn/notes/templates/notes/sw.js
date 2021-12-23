@@ -1,5 +1,5 @@
-const staticCacheName = 's-app-v4'
-const dynamicCacheName = 'd-app-v4'
+const staticCacheName = 's-app-v9'
+const dynamicCacheName = 'd-app-v9'
 
 
 const assetUrls = [
@@ -7,12 +7,20 @@ const assetUrls = [
     "/media/favicon-32x32.png",
     "/media/android-chrome-192x192.png",
     "/media/favicon-16x16.png",
-    "/media/site.webmanifest",
     "/media/safari-pinned-tab.svg",
     "/media/browserconfig.xml",
     "/static/notes/css/forms-style.css",
-    "/static/notes/css/style1.css",
-    "/static/accounts/css/sing.css"
+    "/static/notes/js/app.js",
+    "/static/accounts/css/sing.css",
+    "/static/accounts/images/bg-cover.jpg",
+    "/static/accounts/images/logo-f.svg",
+    "/media/undraw_add_notes_re_ln36.svg",
+    "/media/undraw_bookmarks_re_mq1u.svg",
+    "/media/undraw_web_search_re_efla.svg",
+    "/media/undraw_noted_pc-9-f.svg",
+    "/media/undraw_personal_information_re_vw8a.svg",
+    "/media/undraw_throw_away_re_x60k.svg",
+    "/media/undraw_notes_re_pxhw.svg"
 ]
 
 self.addEventListener('install', async event => {
