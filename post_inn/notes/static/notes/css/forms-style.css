@@ -1,3 +1,11 @@
+html.light {
+    --card-family: 'Lobster', cursive;
+}
+
+html.dark {
+    --card-family: 'Merriweather', serif;
+}
+
 form.form-horizontal {
     border: 0;
     border-radius: 15px;
@@ -6,7 +14,7 @@ form.form-horizontal {
 }
 
 .form-control.input-title {
-    font-family: 'Lobster', cursive;
+    font-family: var(--card-family);
     font-size: 1.75rem;
     margin: 0;
     margin-bottom: 0px;
@@ -46,7 +54,7 @@ form p,
 }
 
 textarea.form-control.input-text {
-    font-family: 'Lobster', cursive;
+    font-family: var(--card-family);
     background-color: #ffede4;
     color: #000;
     flex: 1 1 auto;
@@ -226,12 +234,40 @@ textarea.form-control.input-text:focus::placeholder {
     margin-top: 6px;
     box-shadow: 0.2rem 0.2rem 0.2rem rgba(107, 107, 107, 0.35) !important;
 }
-/*
-.form-control.input-title:active,
-.form-control.input-title:focus {
-    background-color: white;
-    border: 1 solid;
-    border-color: #60403e;
-    outline: none #60403e;
-    box-shadow: none !important;
-} */
+
+.accordion-body {
+    padding-top: 0;
+}
+
+.form-check-input.ch {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+    height: 30px;
+}
+
+.form-check-input.ch+label {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    box-shadow: 0.2rem 0.2rem 0.2rem rgba(107, 107, 107, 0.35) !important;
+}
+
+.form-check-input.ch+label::before {
+    color: #d6bbb2;
+    padding: 0;
+    cursor: pointer;
+    font-size: 40px;
+    line-height: 30px;
+}
+
+.form-check-label.fon.fon1::before {
+    content: "A";
+    font-family: 'Lobster', cursive;
+}
+
+.form-check-label.fon.fon2::before {
+    content: "B";
+    font-family: 'Merriweather', serif;
+}

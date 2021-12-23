@@ -3,21 +3,10 @@
         {% if user.is_authenticated %}
         <a href="{% url 'authapp:edit' %}" class="offcanvas-header--link">
             <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
-                {% if user.name and not user.last_name %}
-                {{ user.name }}
-                {% elif not user.name and user.last_name %}
-                {{ user.last_name }}
-                {% elif user.name and user.last_name %}
-                {{ user.name }}
-                {{ user.last_name|slice:1 }}.
-                {% else %}
-                {{ user.email }}
-            {% endif %}
+                {% if user.name and not user.last_name %} {{ user.name }} {% elif not user.name and user.last_name %} {{ user.last_name }} {% elif user.name and user.last_name %} {{ user.name }} {{ user.last_name|slice:1 }}. {% else %} {{ user.email }} {% endif %}
             </h5>
         </a>
-        {% else %}
-        Hello!
-        {% endif %}
+        {% else %} Hello! {% endif %}
         <button class="btn close-offcanvas" type="button" data-bs-dismiss="offcanvas"><i
                 class="bi bi-x-lg"></i></button>
     </div>
@@ -32,8 +21,7 @@
                 </form>
             </div>
         </div>
-        {% if user.is_authenticated %}
-        {% with request.resolver_match.url_name as url_name %}
+        {% if user.is_authenticated %} {% with request.resolver_match.url_name as url_name %}
         <ul class="list-group">
             <li class="list-group-item {% if url_name == 'post_create' %}active{% endif %}">
                 <div class="list-group-item--div">
@@ -45,44 +33,62 @@
             </li>
             {% if url_name == 'notes_list' or url_name == 'search_results' or url_name == 'post_detail' or url_name == 'post_update' or url_name == 'post_basket_add'%}
             <li class="list-group-item active">
-            {% else %}
-            <li class="list-group-item">
-            {% endif %}
-                <div class="list-group-item--div">
-                    <a class="d-flex justify-content-between" href="{% url 'notesapp:notes_list' %}">
-                        <div class="icanvas"><i class="bi bi-list-ul"></i> Мои заметки</div>
-                        {% if count_is_active %}
-                        <span class="badge rounded-pill bg-success">{{ count_is_active }}</span>
+                {% else %}
+                <li class="list-group-item">
+                    {% endif %}
+                    <div class="list-group-item--div">
+                        <a class="d-flex justify-content-between" href="{% url 'notesapp:notes_list' %}">
+                            <div class="icanvas"><i class="bi bi-list-ul"></i> Мои заметки</div>
+                            {% if count_is_active %}
+                            <span class="badge rounded-pill bg-success">{{ count_is_active }}</span> {% endif %}
+                        </a>
+                    </div>
+                </li>
+                <li class="list-group-item {% if url_name == 'posts_favorites' %}active{% endif %}">
+                    <div class="list-group-item--div">
+                        <a class="d-flex justify-content-between" href="{% url 'notesapp:posts_favorites' %}">
+                            <div class="icanvas"><i class="bi bi-star"></i> Избранное</div>
+                            {% if count_is_favorites %}
+                            <span class="badge rounded-pill bg-warning text-dark">{{ count_is_favorites }}</span> {% endif %}
+                        </a>
+                    </div>
+                </li>
+                {% if url_name == 'posts_basket_list' or url_name == 'post_basket_detail' or url_name == 'post_basket_return' or url_name == 'post_basket_delete' %}
+                <li class="list-group-item active">
+                    {% else %}
+                    <li class="list-group-item">
                         {% endif %}
-                    </a>
-                </div>
-            </li>
-            <li class="list-group-item {% if url_name == 'posts_favorites' %}active{% endif %}">
-                <div class="list-group-item--div">
-                    <a class="d-flex justify-content-between" href="{% url 'notesapp:posts_favorites' %}">
-                        <div class="icanvas"><i class="bi bi-star"></i> Избранное</div>
-                        {% if count_is_favorites %}
-                        <span class="badge rounded-pill bg-warning text-dark">{{ count_is_favorites }}</span>
-                        {% endif %}
-                    </a>
-                </div>
-            </li>
-            {% if url_name == 'posts_basket_list' or url_name == 'post_basket_detail' or url_name == 'post_basket_return' or url_name == 'post_basket_delete' %}
-            <li class="list-group-item active">
-            {% else %}
-            <li class="list-group-item">
-            {% endif %}
-                <div class="list-group-item--div">
-                    <a class="d-flex justify-content-between" href="{% url 'notesapp:posts_basket_list' %}">
-                        <div class="icanvas"><i class="bi bi-basket2"></i> Корзина</div>
-                        {% if count_is_basket %}
-                        <span class="badge rounded-pill bg-secondary">{{ count_is_basket }}</span>
-                        {% endif %}
-                    </a>
-                </div>
-            </li>
+                        <div class="list-group-item--div">
+                            <a class="d-flex justify-content-between" href="{% url 'notesapp:posts_basket_list' %}">
+                                <div class="icanvas"><i class="bi bi-basket2"></i> Корзина</div>
+                                {% if count_is_basket %}
+                                <span class="badge rounded-pill bg-secondary">{{ count_is_basket }}</span> {% endif %}
+                            </a>
+                        </div>
+                    </li>
         </ul>
-        <hr>
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+            <div class="accordion-item">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                        <span class="icanvas"><i class="bi bi-gear"></i> Шрифт</span></button>
+                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div class="themes small">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input ch" type="radio" name="inlineRadioOptions" id="RadioLight" value="light">
+                                <label class="form-check-label fon fon1" for="RadioLight"></label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input ch" type="radio" name="inlineRadioOptions" id="RadioDark" value="dark">
+                                <label class="form-check-label fon fon2" for="RadioDark"></label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <ul class="list-group">
             <li class="list-group-item {% if url_name == 'list' or url_name == 'page' %}active{% endif %}">
                 <div class="list-group-item--div">
@@ -101,8 +107,7 @@
                 </div>
             </li>
         </ul>
-        {% endwith %}
-        {% else %}
+        {% endwith %} {% else %}
         <ul class="list-group">
             <li class="list-group-item {% if url_name == 'list' or url_name == 'page' %}active{% endif %}">
                 <div class="list-group-item--div">

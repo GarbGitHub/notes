@@ -136,7 +136,7 @@ class NoteCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title_page'] = f'Создать: '
+        context['title_page'] = f'Создать'
         return context
 
     def form_valid(self, form):
