@@ -7,7 +7,7 @@ from fordev.models import Page
 
 
 class ForDevListView(ListView):
-    paginate_by = 10
+    paginate_by = 30
     model = Page
     template_name = 'fordev/index.html'
     context_object_name = 'posts'
