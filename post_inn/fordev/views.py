@@ -9,7 +9,7 @@ from fordev.models import Page
 class ForDevListView(ListView):
     paginate_by = 10
     model = Page
-    template_name = 'notes/posts.html'
+    template_name = 'fordev/index.html'
     context_object_name = 'posts'
     ordering = '-created'
 
@@ -18,17 +18,17 @@ class ForDevListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ForDevListView, self).get_context_data(**kwargs)
-        context['title_page'] = 'Разработчику'
+        context['title_page'] = 'API Заметочник для разработчиков'
         return context
 
-    @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    # @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
+    # def dispatch(self, *args, **kwargs):
+    #     return super().dispatch(*args, **kwargs)
 
 
 class ForDevDetailView(DetailView):
     model = Page
-    template_name = 'notes/post_detail.html'
+    template_name = 'fordev/iner-page.html'
     context_object_name = 'post'
 
     def get_context_data(self, **kwargs):
@@ -39,7 +39,7 @@ class ForDevDetailView(DetailView):
         context['cat_pk'] = f'Категория: "{context.get(self, self.object.category.pk)}"'
         return context
 
-    @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
-    def dispatch(self, *args, **kwargs):
-        obj = self.get_object()
-        return super().dispatch(*args, **kwargs)
+    # @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
+    # def dispatch(self, *args, **kwargs):
+    #     obj = self.get_object()
+    #     return super().dispatch(*args, **kwargs)
