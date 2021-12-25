@@ -1,0 +1,19 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+{% include 'fordev/includes/meta_inc.html' %}
+<body>
+
+    <div class="col-lg-8 mx-auto p-3 py-md-5">
+    {% include 'fordev/includes/header_inc.html' %}
+        <main>
+            <div class="container">
+                <h1 class="mt-5">{{ post.title }}</h1>
+                {{ post.text|safe}}
+            </div>
+        </main>
+        {% include 'fordev/includes/bottom_inc.html' %}
+    </div>
+</body>
+
+</html>

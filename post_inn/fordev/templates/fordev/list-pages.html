@@ -1,0 +1,27 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+{% include 'fordev/includes/meta_inc.html' %}
+<body>
+    <div class="col-lg-8 mx-auto p-3 py-md-5">
+    {% include 'fordev/includes/header_inc.html' %}
+        <main>
+            <div class="container">
+                <h1>{{ title_page }}</h1>
+                <p class="fs-5 col-md-8">Уважаемый Пользователь! Используя сервис <a href="/">«Заметочник»</a>, вы подтверждаете, что ознакомлены со следующими документами, и соглашаетесь с ними.</p>
+                <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+                    <ul class="icon-list">
+                    {% for post in posts %}
+                    <li>
+                        <a href="{% url 'fordev:page' post.category.pk post.pk %}" rel="noopener">{{ post.title }}</a>
+                    </li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </main>
+        {% include 'fordev/includes/bottom_inc.html' %}
+    </div>
+</body>
+
+</html>
