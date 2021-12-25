@@ -3,7 +3,13 @@
     <a href="https://www.zametochnik.ru" class="d-flex">
         <img src="{% static 'fordev/img/logo-api.svg' %}" alt="logo" style="height:60px;">
     </a>
-    <a href="{% url 'fordev:list' %}" class="d-flex link-top">
+    {% if 'fordev/2' not in request.path  %}
+    <a href="{% url 'fordev:list-dev' %}" class="d-flex link-top">
         Разработчику
     </a>
+    {% else %}
+    <a href="{% url 'fordev:list-pages' %}" class="d-flex link-top">
+        Пользователю
+    </a>
+    {% endif  %}
 </header>
