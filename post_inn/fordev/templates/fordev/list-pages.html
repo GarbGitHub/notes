@@ -8,8 +8,10 @@
         <main>
             <div class="container">
                 <h1>{{ title_page }}</h1>
-                <p class="fs-5 col-md-8">Уважаемый Пользователь! Используя сервис <a href="/">«Заметочник»</a>, вы подтверждаете, что ознакомлены со следующими документами, и соглашаетесь с ними.</p>
-                <div class="row g-4 py-5 row-cols-1">
+                <p class="fs-5 col-md-8">
+                    {% include 'fordev/includes/soglashenie.html' %}
+                </p>
+                <div class="row g-4 row-cols-1">
                     <ul class="icon-list">
                     {% for post in posts %}
                     <li>
