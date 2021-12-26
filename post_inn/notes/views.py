@@ -19,7 +19,7 @@ PAGINATE_BY_NOTES = 7
 def index(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('notesapp:notes_list'))
-    return render(request, 'notes/index.html')
+    return render(request, 'notes/landing.html')
 
 
 class SearchResultsView(ListView):
