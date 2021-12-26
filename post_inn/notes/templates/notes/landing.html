@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="apple-touch-icon" sizes="180x180" href="/media/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/media/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/media/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/media/favicon-16x16.png">
+    <link rel="manifest" href="/media/site.webmanifest">
+    <link rel="mask-icon" href="/media/safari-pinned-tab.svg" color="#c26c1d">
+    <link rel="shortcut icon" href="/media/favicon.ico">
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="msapplication-config" content="/media/browserconfig.xml">
+    <meta name="theme-color" content="#d6bbb2">
+
+    <title>Заметочник - ваши заметки всегда с вами</title>
+    <meta name="description" content="Создавайте и сохраняйте свои заметки на любимых устройствах.">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'notes/css/landing/bootstrap.min.css' %}">
+    <!-- Font -->
+    <link rel="stylesheet" type="text/css" href="{% static 'notes/css/landing/font-awesome.min.css' %}">
+    <!-- Slicknav -->
+    <link rel="stylesheet" type="text/css" href="{% static 'notes/css/landing/slicknav.css' %}">
+    <!-- Owl carousel -->
+    <link rel="stylesheet" type="text/css" href="{% static 'notes/css/landing/owl.carousel.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'notes/css/landing/owl.theme.css' %}">
+    <!-- Animate -->
+    <link rel="stylesheet" type="text/css" href="{% static 'notes/css/landing/animate.css' %}">
+    <!-- Main Style -->
+    <link rel="stylesheet" type="text/css" href="{% static 'notes/css/landing/main.css' %}">
+    <!-- Extras Style -->
+    <link rel="stylesheet" type="text/css" href="{% static 'notes/css/landing/extras.css' %}">
+    <!-- Responsive Style -->
+    <link rel="stylesheet" type="text/css" href="{% static 'notes/css/landing/responsive.css' %}">
+
+</head>
+
+<body>
+
+    <!-- Header Area wrapper Starts -->
+    <header id="header-wrap">
+        <!-- Navbar Start -->
+        <nav class="navbar navbar-expand-lg fixed-top scrolling-navbar indigo">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            <span class="icon-menu"></span>
+            <span class="icon-menu"></span>
+            <span class="icon-menu"></span>
+          </button>
+                    <a href="/" class="navbar-brand"><img src="{% static 'notes/img/img/logo.svg' %}" alt="logo"></a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-navbar">
+                    <ul class="navbar-nav mr-auto w-100 justify-content-end clearfix">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#sliders">
+                Главная
+              </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#about">
+                Платформы
+              </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#services">
+                Возможности
+              </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#portfolio">
+                Галерея
+              </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Start -->
+            <ul class="mobile-menu navbar-nav">
+                <li>
+                    <a class="page-scroll" href="#sliders">
+            Главная
+          </a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#about">
+            Платформы
+          </a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#services">
+            Возможности
+          </a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#portfolio">
+            Галерея
+          </a>
+                </li>
+            </ul>
+            <!-- Mobile Menu End -->
+
+        </nav>
+        <!-- Navbar End -->
+
+        <!-- sliders -->
+        <div id="sliders">
+            <div class="full-width">
+                <!-- light slider -->
+                <div id="light-slider" class="carousel slide">
+                    <div id="carousel-area">
+                        <div id="carousel-slider" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner" role="listbox">
+                                <div class="carousel-item active">
+                                    <img src="{% static 'notes/img/slider/bg-1.jpg' %}" alt="bg">
+                                    <div class="carousel-caption">
+                                        <div class="sl-top">
+                                            <h3 class="slide-title animated fadeInDown"><span class="sl-top-title">Бесплатный сервис для создания и хранения
+                        заметок</span> </h3>
+                                            <h5 class="slide-text animated fadeIn">Заметочник работает на 3 видах устройств <br> Android, iOS, Web app
+                                            </h5>
+                                            <a href="https://www.zametochnik.ru/auth/login/" class="btn btn-lg btn-common animated fadeInUp">Вход</a>
+                                            <a href="https://www.zametochnik.ru/auth/register/" class="btn btn-lg btn-border animated fadeInUp">Регистрация</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End sliders -->
+
+    </header>
+    <!-- Header Area wrapper End -->
+
+    <!-- About Section Start -->
+    <div id="about" class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-xs-12">
+                    <div class="about block text-center">
+                        <a href="https://play.google.com/store/apps/details?id=com.cocos.develop.noteadvanced"><img src="{% static 'notes/img/os-logo/android-logo.png' %}" alt="android"></a>
+                        <h5><a href="https://play.google.com/store/apps/details?id=com.cocos.develop.noteadvanced">Android</a></h5>
+                        <p>Поддержка создания и настроек учетной записи пользователя. Добавление данных в избранный контент. Создание, редактирования, удаления заметок. Локальное сохранение данных.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-xs-12">
+                    <div class="about block text-center">
+                        <a href="#">
+                            <img src="{% static 'notes/img/os-logo/ios-logo.png' %}" alt="ios"></a>
+                        <h5><a href="#">iOS</a></h5>
+                        <p>Поддержка создания и настроек учетной записи пользователя. Добавление данных в избранный контент. Создание, редактирования, удаления заметок. Локальное сохранение данных.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-xs-12">
+                    <div class="about block text-center">
+                        <a href="/auth/login"><img src="{% static 'notes/img/os-logo/web-logo.png' %}" alt="web"></a>
+                        <h5><a href="/auth/login">Web</a></h5>
+                        <p>Создавайте заметки в вашем любимом браузере на любых устройствах. Все данные синхронизируются под уникальной учетной записью пользователя.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About Section End -->
+
+    <!-- Services Section Start -->
+    <section id="services" class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="section-title wow fadeInDown animated" data-wow-delay="0.3s">Возможности</h2>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Start Service Icon 1 -->
+                <div class="col-md-6 col-lg-4 col-xs-12">
+                    <div class="service-box">
+                        <div class="service-icon">
+                            <i class="fa fa-cogs"></i>
+                        </div>
+                        <div class="service-content">
+                            <h4>Кроссплатформенность</h4>
+                            <p>
+                                Ваши заметки всегда с вами на устройствах Android, iOS, или на сайте.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Service Icon 1 -->
+
+                <!-- Start Service Icon 2 -->
+                <div class="col-md-6 col-lg-4 col-xs-12">
+                    <div class="service-box">
+                        <div class="service-icon">
+                            <i class="fa fa-cubes"></i>
+                        </div>
+                        <div class="service-content">
+                            <h4>Функциональные возможности</h4>
+                            <p>
+                                Полнотекстовый поиск. Cоздание, редактирование, удаление заметок. Отправляйте самое важное в избранное.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Service Icon 2 -->
+
+                <!-- Start Service Icon 3 -->
+                <div class="col-md-6 col-lg-4 col-xs-12">
+                    <div class="service-box">
+                        <div class="service-icon">
+                            <i class="fa fa-tachometer"></i>
+                        </div>
+                        <div class="service-content">
+                            <h4>Простой и дружелюбный интерфейс</h4>
+                            <p>
+                                На всех устройствах включает только базовые функции.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Service Icon 3 -->
+
+                <!-- Start Service Icon 4 -->
+                <div class="col-md-6 col-lg-4 col-xs-12">
+                    <div class="service-box">
+                        <div class="service-icon">
+                            <i class="fa fa-check"></i>
+                        </div>
+                        <div class="service-content">
+                            <h4>Легкий взгляд</h4>
+                            <p>
+                                Простой и удобный интерфейс.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Service Icon 4 -->
+
+                <!-- Start Service Icon 5 -->
+                <div class="col-md-6 col-lg-4 col-xs-12">
+                    <div class="service-box">
+                        <div class="service-icon">
+                            <i class="fa fa-flash"></i>
+                        </div>
+                        <div class="service-content">
+                            <h4>Синхронизация</h4>
+                            <p>
+                                Записи синхронизируются на всех устройствах, ими можно поделиться с другими людьми.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Service Icon 5 -->
+
+                <!-- Start Service Icon 6 -->
+                <div class="col-md-6 col-lg-4 col-xs-12">
+                    <div class="service-box">
+                        <div class="service-icon">
+                            <i class="fa fa-hand-pointer-o"></i>
+                        </div>
+                        <div class="service-content">
+                            <h4>Расширенные функции</h4>
+                            <p>
+                                Так же можете скачать приложение на ПК.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Service Icon 6 -->
+            </div>
+        </div>
+    </section>
+    <!-- Services Section End -->
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="section-padding">
+        <!-- Container Starts -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="section-title wow fadeInDown animated" data-wow-delay="0.3s">Галерея</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12">
+                    <!-- Portfolio Controller/Buttons -->
+                    <div class="controls text-center wow fadeInUpQuick" data-wow-delay=".6s">
+                        <a class="filter active btn btn-common" data-filter="all">
+              All
+            </a>
+                        <a class="filter btn btn-common" data-filter=".branding">
+              Android
+            </a>
+                        <a class="filter btn btn-common" data-filter=".marketing">
+              iOS
+            </a>
+                        <!--<a class="filter btn btn-common" data-filter=".planning">
+              1
+            </a>-->
+                        <a class="filter btn btn-common" data-filter=".research">
+              Desktop
+            </a>
+                    </div>
+                    <!-- Portfolio Controller/Buttons Ends-->
+                </div>
+
+                <!-- Portfolio Recent Projects -->
+                <div id="portfolio" class="row wow fadeInUpQuick" data-wow-delay="0.8s">
+                    <div class="col-lg-4 col-md-6 col-xs-12 mix marketing planning">
+                        <div class="portfolio-item">
+                            <div class="portfolio-img">
+                                <img src="{% static 'notes/img/portfolio/ios/img1.PNG' %}" alt="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-xs-12 mix branding planning">
+                        <div class="portfolio-item">
+                            <div class="portfolio-img">
+                                <img src="{% static 'notes/img/portfolio/Android/home_ru.jpg' %}" alt="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-xs-12 mix branding research">
+                        <div class="portfolio-item">
+                            <div class="portfolio-img">
+                                <img src="{% static 'notes/img/portfolio/Android/profile_ru.jpg' %}" alt="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-xs-12 mix marketing research">
+                        <div class="portfolio-item">
+                            <div class="portfolio-img">
+                                <img src="{% static 'notes/img/portfolio/Decstop/img2.png' %}" alt="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-xs-12 mix marketing planning">
+                        <div class="portfolio-item">
+                            <div class="portfolio-img">
+                                <img src="{% static 'notes/img/portfolio/ios/img5.jpg' %}" alt="" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 col-xs-12 mix planning research">
+                        <div class="portfolio-item">
+                            <div class="portfolio-img">
+                                <img src="{% static 'img/portfolio/Decstop/img1.png' %}" alt="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Container Ends -->
+    </section>
+    <!-- Portfolio Section Ends -->
+
+
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <!-- Copyright -->
+        <div id="copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-xs-12">
+                        <p class="copyright-text"><i>© 2021-2022 <a href="/" class="">www.zametochnik.ru</a></i>
+                        </p>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-xs-12">
+                        <ul class="nav nav-inline  justify-content-end ">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="https://www.zametochnik.ru/fordev/">API для разработчиков</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="https://www.zametochnik.ru/fordev/2/">Пользовательское соглашение </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Copyright  End-->
+    </footer>
+    <!-- Footer Section End-->
+
+    <!-- Go to Top Link -->
+    <a href="#" class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader" id="loader-1"></div>
+    </div>
+    <!-- End Preloader -->
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="{% static 'notes/js/landing/jquery-min.js' %}"></script>
+    <script src="{% static 'notes/js/landing/popper.min.js' %}"></script>
+    <script src="{% static 'notes/js/landing/bootstrap.min.js' %}"></script>
+    <script src="{% static 'notes/js/landing/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'notes/js/landing/jquery.mixitup.js' %}"></script>
+    <script src="{% static 'notes/js/landing/jquery.countTo.js' %}"></script>
+    <script src="{% static 'notes/js/landing/jquery.nav.js' %}"></script>
+    <script src="{% static 'notes/js/landing/scrolling-nav.js' %}"></script>
+    <script src="{% static 'notes/js/landing/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'notes/js/landing/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'notes/js/landing/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'notes/js/landing/jquery.slicknav.js' %}"></script>
+    <script src="{% static 'notes/js/landing/main.js' %}"></script>
+    <script src="{% static 'notes/js/app.js' %}"></script>
+</body>
+
+</html>
