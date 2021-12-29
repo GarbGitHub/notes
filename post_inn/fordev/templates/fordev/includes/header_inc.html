@@ -1,15 +1,23 @@
 {% load static %}
-<header class="d-flex align-items-center pb-3 mb-5 border-bottom">
-    <a href="https://www.zametochnik.ru" class="d-flex">
-        <img src="{% static 'fordev/img/logo-api.svg' %}" alt="logo" style="height:60px;">
-    </a>
-    {% if 'fordev/2' not in request.path  %}
-    <a href="{% url 'fordev:list-dev' %}" class="d-flex link-top">
-        Разработчику
-    </a>
-    {% else %}
-    <a href="{% url 'fordev:list-pages' %}" class="d-flex link-top">
-        Пользователю
-    </a>
-    {% endif  %}
+<header class="pb-3 mb-5 border-bottom">
+    <div class="row">
+        <div class="col" style="max-width:305px;">
+            <a href="https://www.zametochnik.ru" class="d-flex">
+            <img src="{% static 'fordev/img/logo-api.svg' %}" alt="logo" style="height:60px;">
+            </a>
+        </div>
+        {% if 'fordev/2' not in request.path  %}
+        <div class="col">
+        <a href="{% url 'fordev:list-dev' %}" class="d-flex link-top">
+            Разработчику
+        </a>
+        </div>
+        {% else %}
+        <div class="col">
+        <a href="{% url 'fordev:list-pages' %}" class="d-flex link-top">
+            Пользователю
+        </a>
+        </div>
+        {% endif  %}
+    </div>
 </header>
