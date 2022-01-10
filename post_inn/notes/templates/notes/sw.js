@@ -1,5 +1,5 @@
-const staticCacheName = 's-app-v9'
-const dynamicCacheName = 'd-app-v9'
+const staticCacheName = 's-app-v3'
+const dynamicCacheName = 'd-app-v3'
 
 const assetUrls = [
     "/media/apple-touch-icon.png",
@@ -9,7 +9,6 @@ const assetUrls = [
     "/media/safari-pinned-tab.svg",
     "/media/browserconfig.xml",
     "/static/notes/css/forms-style.css",
-    "/static/notes/js/app.js",
     "/static/accounts/css/sing.css",
     "/static/accounts/images/bg-cover.jpg",
     "/static/accounts/images/logo-f.svg",
