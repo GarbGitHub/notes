@@ -1,4 +1,4 @@
-<p class="text-center">Page 1 of 4.</p>
+<p class="text-center">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
 <nav aria-label="Page navigation bootstrap">
     <ul class="pagination justify-content-center">
         {% if page_obj.has_previous %}

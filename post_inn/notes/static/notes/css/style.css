@@ -59,6 +59,10 @@ h3 {
     font-family: var(--card-family);
 }
 
+.form-label {
+    font-family: var(--card-family);
+}
+
 h1.header {
     color: white;
 }
@@ -565,4 +569,15 @@ div.list-group-item--div {
     border: 0;
     box-shadow: none;
     ;
+}
+.form-range::-webkit-slider-thumb {
+    background: #a48b83;
+    cursor: pointer;
+    outline: solid #60403e;
+}
+
+.form-range::-moz-range-thumb {
+    background: #a48b83;
+    cursor: pointer;
+    outline: solid #60403e;
 }
