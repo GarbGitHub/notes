@@ -1,5 +1,5 @@
-const staticCacheName = 's-app-v3'
-const dynamicCacheName = 'd-app-v3'
+const staticCacheName = 's-app-v4'
+const dynamicCacheName = 'd-app-v4'
 
 
 const assetUrls = [
@@ -20,6 +20,7 @@ const assetUrls = [
     "/media/undraw_personal_information_re_vw8a.svg",
     "/media/undraw_throw_away_re_x60k.svg",
     "/media/undraw_notes_re_pxhw.svg"
+    "/static/notes/js/autosize.min.js"
 ]
 
 self.addEventListener('install', async event => {
