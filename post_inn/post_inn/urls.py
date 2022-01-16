@@ -30,6 +30,7 @@ urlpatterns = [
     path("robots.txt", robots_txt),
     path("offline/", offline),
     path('sw.js', (TemplateView.as_view(template_name='notes/sw.js', content_type='application/javascript', )), name='sw.js'),
+    path('pwabuilder-sw.js', (TemplateView.as_view(template_name='notes/pwabuilder-sw.js', content_type='application/javascript', )), name='pwabuilder-sw.js'),
     path('fordev/', include(fordev_urls, namespace='fordev'), name='fordev'),
     path('auth/', include(auth_urls, namespace='auth'), name='auth'),
     path('admin/', admin.site.urls, name='admin'),
