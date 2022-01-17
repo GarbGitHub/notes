@@ -25,6 +25,10 @@ class UserLoginForm(AuthenticationForm):
         super(UserLoginForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+            if field_name == 'username':
+                field.widget.attrs['autocomplete'] = 'username'
+            if field_name == 'password':
+                field.widget.attrs['autocomplete'] = 'current-password'
 
 
 class UserRegisterForm(forms.ModelForm):
@@ -71,6 +75,10 @@ class UserEditForm(forms.ModelForm):
         super(UserEditForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+            if field_name == 'name':
+                field.widget.attrs['autocomplete'] = 'given-name'
+            if field_name == 'last_name':
+                field.widget.attrs['autocomplete'] = 'family-name'
 
 
 class UserPasswordEditForm(forms.ModelForm):
@@ -102,6 +110,10 @@ class UserPasswordEditForm(forms.ModelForm):
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
             field.help_text = ''
+            if field_name != 'old_password':
+                field.widget.attrs['autocomplete'] = 'new-password'
+            else:
+                field.widget.attrs['autocomplete'] = 'current-password'
 
     def clean_password2(self):
         password = self.cleaned_data.get("password")
