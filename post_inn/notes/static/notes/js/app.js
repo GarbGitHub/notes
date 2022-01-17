@@ -1,15 +1,3 @@
-// Register serviceWorker
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/pwabuilder-sw.js', {scope: '/'})
-    .then((reg) => {
-    // регистрация сработала
-    console.log('Registration succeeded. Scope is ' + reg.scope);
-    }).catch((error) => {
-    // регистрация прошла неудачно
-    console.log('Registration failed with ' + error);
-  });
-}
-
 // Cookies
 defineThemeFromCookies()
 defineSizeFromCookies()
@@ -139,8 +127,8 @@ function set_cookie(name, value, exp_y, exp_m, exp_d, path, domain, secure) {
 
 // Deletion cookies
 function deletion_cookie(cookie_name) {
-    let cookie_date = new Date(); // Текущая дата и время
-    cookie_date.setTime(cookie_date.getTime() - 1); // Срок хранения куки на 1 сек меньше текущего времени
+    let cookie_date = new Date(); // Current date and time
+    cookie_date.setTime(cookie_date.getTime() - 1); // Cookie expiration is 1 second less than the current time
     document.cookie = cookie_name += "=; expires=" + cookie_date.toGMTString();
     console.log("cookie", "удалены");
 }
