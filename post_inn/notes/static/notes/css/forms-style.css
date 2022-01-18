@@ -9,7 +9,6 @@ html.dark {
 form.form-horizontal {
     border: 0;
     border-radius: 15px;
-    background-color: #EEEEEE;
     color: #000;
 }
 
@@ -270,4 +269,31 @@ textarea.form-control.input-text:focus::placeholder {
 .form-check-label.fon.fon2::before {
     content: "B";
     font-family: 'Merriweather', serif;
+}
+
+.chbox-changetheme {
+    position: absolute;
+    z-index: -1;
+    opacity: 0;
+    height: 30px;
+}
+
+.chbox-changetheme+label {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    box-shadow: 0.2rem 0.2rem 0.2rem rgba(107, 107, 107, 0.35) !important;
+}
+
+.chbox-changetheme:disabled+label {
+    box-shadow: 0.2rem 0.2rem 0.2rem #2b77e7 !important;
+}
+
+.form-check-label.clrbg {
+    background-color: #EEEEEE;
+}
+
+.form-check-label.imgbg {
+    background-color: #60403e;
 }
