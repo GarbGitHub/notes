@@ -6,8 +6,29 @@ html.dark {
     --card-family: 'Merriweather', serif;
 }
 
+html.bgcolor {
+    --bgcolor: #EEEEEE;
+    --bgimage: none;
+    --over: none;
+}
+
+html.over {
+    --bgcolor: #EEEEEE;
+    --bgimage: url('/static/accounts/images/bg-cover.jpg');
+    --over: rgba(53, 25, 24, 0.9);
+}
+
 body {
-    background-color: #EEEEEE;
+    background-color: var(--bgcolor);
+    background-image: var(--bgimage);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.body-over {
+    background: var(--over)
 }
 
 body,
@@ -58,6 +79,11 @@ h3 {
 .card-title {
     font-family: var(--card-family);
 }
+
+
+/* .form-label.light {
+    font-family: 'Lobster', cursive;
+} */
 
 .form-label {
     font-family: var(--card-family);
@@ -379,10 +405,10 @@ a.nav-link i.bi {
 }
 
 
-/* Старый список */
+/* РЎС‚Р°СЂС‹Р№ СЃРїРёСЃРѕРє */
 
 .star:before {
-    content: '★';
+    content: 'в…';
     font-size: 28px;
     color: gold;
     text-shadow: 1px 1px rgb(122, 122, 122);
@@ -570,14 +596,20 @@ div.list-group-item--div {
     box-shadow: none;
     ;
 }
+
+/*Ползунок обработчик (использовать -webkit- (Chrome, Opera, Safari, Edge) и -moz- (Firefox) чтобы переопределить внешний вид по умолчанию ) */
 .form-range::-webkit-slider-thumb {
     background: #a48b83;
+    /* Зеленый фон */
     cursor: pointer;
+    /* Курсор при наведении */
     outline: solid #60403e;
 }
 
 .form-range::-moz-range-thumb {
     background: #a48b83;
+    /* Зеленый фон */
     cursor: pointer;
+    /* Курсор при наведении */
     outline: solid #60403e;
 }

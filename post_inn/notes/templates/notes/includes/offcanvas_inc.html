@@ -70,7 +70,7 @@
         <div class="accordion accordion-flush" id="accordionFlushExample">
             <div class="accordion-item">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                        <span class="icanvas"><i class="bi bi-gear"></i> Шрифт</span></button>
+                        <span class="icanvas"><i class="bi bi-gear"></i> Настройки</span></button>
                 <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <div class="themes small">
@@ -88,6 +88,18 @@
                         </div>
                         <div class="slidecontainer">
                             <input type="range" class="form-range" min="10" max="50" value="30" id="sizeRange">
+                        </div>
+                        <!--change theme-->
+                        <div class="bgthemes small">
+                            <div class="form-check">Фон</div>
+                            <div class="form-check form-check-inline">
+                                <input class="chbox-changetheme" type="checkbox" name="inlineRadioOptions" id="backgroundColor" value="bgcolor">
+                                <label class="form-check-label clrbg" for="backgroundColor"></label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="chbox-changetheme" type="checkbox" name="inlineRadioOptions" id="backgroundImage" value="over">
+                                <label class="form-check-label imgbg" for="backgroundImage"></label>
+                            </div>
                         </div>
                     </div>
                 </div>
