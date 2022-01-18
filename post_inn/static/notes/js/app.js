@@ -1,31 +1,52 @@
 // Cookies
+const html = document.getElementsByTagName('HTML')[0];
+const lead = document.getElementsByClassName('lead');
+const slider = document.getElementById("sizeRange");
+const output = document.getElementById("sizeValue");
+const inputText = document.getElementById("id_text");
+const userFontSize = document.getElementById('sizeRange');
+
 defineThemeFromCookies()
-defineSizeFromCookies()
 tagClassChange()
 setFontSizeForRange()
+ThemeTagClassChange()
 
 function defineThemeFromCookies() {
-    let html = document.getElementsByTagName('HTML')[0];
-    let theme = get_cookie("theme");
-    if (theme) {
-        html.classList.add(theme);
-        radioButtonChecked(theme);
+    let fontFamily = get_cookie("theme");
+    let bgtheme = get_cookie("background");
+    let cookFs = get_cookie("cookieFs");
+
+    if (fontFamily) {
+        html.classList.add(fontFamily);
+        radioButtonChecked(fontFamily);
     } else {
         radioButtonChecked("light");
         html.classList.add("light");
     }
-}
-
-function defineSizeFromCookies() {
-    let lead = document.getElementsByClassName('lead');
-    let userFontSize = document.getElementById('sizeRange');
-    let cookFs = get_cookie("cookieFs");
-    // If there are cookies, set the styles
+    if (bgtheme) {
+        html.classList.add(bgtheme);
+        checkButtonChecked(bgtheme);
+    } else {
+        checkButtonChecked("over");
+        html.classList.add("over");
+    }
     if (cookFs) {
         userFontSize.value = cookFs;
         for (let i = 0; i < lead.length; ++i)
             lead[i].style.fontSize = '1.' + cookFs + 'rem';
     }
+}
+
+function ThemeTagClassChange() {
+    document.querySelector('.bgthemes').addEventListener('change', (event) => {
+        if (event.target.nodeName === 'INPUT') {
+            let background = event.target.value;
+            html.classList.remove('bgcolor', 'over');
+            html.classList.add(background);
+            create_cookie("background", background);
+            checkButtonChecked(background);
+        }
+    });
 }
 
 function tagClassChange() {
@@ -34,7 +55,6 @@ function tagClassChange() {
             document.documentElement.classList.remove('dark', 'light');
             let theme = event.target.value;
             document.documentElement.classList.add(theme);
-            let output = document.getElementById("sizeValue");
             output.classList.remove('dark', 'light');
             output.classList.add(theme);
             create_cookie("theme", theme);
@@ -42,11 +62,8 @@ function tagClassChange() {
         }
     });
     document.querySelector('.slidecontainer').addEventListener('change', (event) => {
-
         // If the user chooses the font size
         if (event.target.nodeName === 'INPUT') {
-            let lead = document.getElementsByClassName('lead');
-            let inputText = document.getElementById("id_text");
             let sizeValue = event.target.value;
 
             // Remove existing styles and install new ones
@@ -64,19 +81,31 @@ function tagClassChange() {
     });
 }
 
-function radioButtonChecked(theme) {
-    let r1 = document.getElementById("RadioLight");
-    let r2 = document.getElementById("RadioDark");
-    if (theme === 'light') {
-        if (r2.checked) {
-            r2.removeAttribute("checked");
-        }
-        r1.setAttribute("checked", "checked");
+function checkButtonChecked(theme) {
+    let inputBgColor = document.getElementById("backgroundColor");
+    let inputBgImage = document.getElementById("backgroundImage");
+    if (theme === 'over') {
+        inputBgColor.removeAttribute("disabled");
+        inputBgImage.setAttribute("disabled", "disabled");
     } else {
-        if (r1.checked) {
-            r1.removeAttribute("checked");
+        inputBgImage.removeAttribute("disabled");
+        inputBgColor.setAttribute("disabled", "disabled");
+    }
+}
+
+function radioButtonChecked(theme) {
+    let inpurLight = document.getElementById("RadioLight");
+    let inputDark = document.getElementById("RadioDark");
+    if (theme === 'light') {
+        if (inputDark.checked) {
+            inputDark.removeAttribute("checked");
         }
-        r2.setAttribute("checked", "checked");
+        inpurLight.setAttribute("checked", "checked");
+    } else {
+        if (inpurLight.checked) {
+            inpurLight.removeAttribute("checked");
+        }
+        inputDark.setAttribute("checked", "checked");
     }
 }
 
@@ -90,16 +119,11 @@ function get_cookie(cookie_name) {
 }
 
 function create_cookie(cookieName, cookieValue) {
-    console.log("Будем создавать", cookieName, ": ", cookieValue);
-
     // If there is a "cookieName" cookie
     if (get_cookie(cookieName)) {
         // Removing old cookies
         deletion_cookie(cookieName);
-    } else {
-        console.log("Нет cookie");
     }
-
     let current_date = new Date;
     let cookie_year = current_date.getFullYear() + 1;
     let cookie_month = current_date.getMonth();
@@ -130,7 +154,7 @@ function deletion_cookie(cookie_name) {
     let cookie_date = new Date(); // Current date and time
     cookie_date.setTime(cookie_date.getTime() - 1); // Cookie expiration is 1 second less than the current time
     document.cookie = cookie_name += "=; expires=" + cookie_date.toGMTString();
-    console.log("cookie", "удалены");
+    console.log("deleted cookies");
 }
 
 // Activating an additional field in an encryption form
@@ -152,16 +176,10 @@ function definingKeyType() {
 }
 
 function setFontSizeForRange() {
-    let slider = document.getElementById("sizeRange");
-    let output = document.getElementById("sizeValue");
-    let inputText = document.getElementById("id_text");
-    let lead = document.getElementsByClassName('lead');
-
     output.style.fontSize = '1.' + slider.value + 'rem';
     if (inputText) {
         inputText.style.fontSize = '1.' + slider.value + 'rem';
     }
-
     slider.oninput = function() {
         if (inputText) {
             inputText.style.fontSize = '1.' + slider.value + 'rem';
