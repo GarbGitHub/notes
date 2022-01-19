@@ -28,7 +28,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', include(notes_urls, namespace='notes'), name='notes'),
     path("robots.txt", robots_txt),
-    path("offline/", offline),
+    path("offline.html", offline),
     path('sw.js', (TemplateView.as_view(template_name='notes/sw.js', content_type='application/javascript', )), name='sw.js'),
     path('pwabuilder-sw.js', (TemplateView.as_view(template_name='notes/pwabuilder-sw.js', content_type='application/javascript', )), name='pwabuilder-sw.js'),
     path('fordev/', include(fordev_urls, namespace='fordev'), name='fordev'),
