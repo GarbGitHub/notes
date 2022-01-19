@@ -9,7 +9,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import user_passes_test
-
+from post_inn import get_config
 from accounts.forms import DivErrorList, UserLoginForm, UserRegisterForm, UserEditForm, UserPasswordEditForm
 
 
@@ -40,7 +40,9 @@ def login(request):
 
     context = {'title_page': title,
                'form': login_form,
-               'next': _next}
+               'next': _next,
+               'static_get_param': get_config.GET_CONFIG
+               }
 
     return render(request, 'accounts/register_base.html', context)
 
@@ -53,7 +55,10 @@ def logout(request):
 def register(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('notesapp:notes_list'))
-    context = {'title_page': 'Регистрация нового пользователя'}
+    context = {
+        'title_page': 'Регистрация нового пользователя',
+        'static_get_param': get_config.GET_CONFIG
+    }
     if request.method == 'POST':
         register_form = UserRegisterForm(request.POST, request.FILES, error_class=DivErrorList)
         if register_form.is_valid():
@@ -87,6 +92,7 @@ class EditUserPasswordUpdateView(SuccessMessageMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title_page'] = 'Пароль'
+        context['static_get_param'] = get_config.GET_CONFIG
         return context
 
     def get_success_url(self):
@@ -112,6 +118,7 @@ class EditUserUpdateView(SuccessMessageMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title_page'] = 'Профиль'
+        context['static_get_param'] = get_config.GET_CONFIG
         return context
 
     def get_object(self):

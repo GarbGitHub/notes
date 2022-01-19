@@ -9,6 +9,7 @@ from django.views import View
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
 from notes.forms import NoteBasketForm, NoteEditForm, NoteReturnBasketForm
 from notes.models import Note
+from post_inn import get_config
 from itertools import chain
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -42,6 +43,7 @@ class SearchResultsView(ListView):
     def get_context_data(self, **kwargs):
         context = super(SearchResultsView, self).get_context_data(**kwargs)
         context['title_page'] = 'Поиск'
+        context['static_get_param'] = get_config.GET_CONFIG
 
         if len(self.request.GET.get('q')) == 0:
             context['no_search_result'] = 'Задан пустой запрос'
@@ -71,6 +73,7 @@ class NoteListView(ListView):
         context = super(NoteListView, self).get_context_data(**kwargs)
         # context = Note.objects.filter(author=self.request.user)
         context['title_page'] = 'Заметки'
+        context['static_get_param'] = get_config.GET_CONFIG
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
@@ -87,6 +90,7 @@ class NoteDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['pk'] = self.object.id
         context['title_page'] = 'Заметки'
+        context['static_get_param'] = get_config.GET_CONFIG
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
@@ -111,6 +115,7 @@ class NoteUpdateView(SuccessMessageMixin, UpdateView):
         context['title_page'] = 'Править'
         # author_pk = context.get(self, self.object.author.pk)
         # request_user_pk = self.request.user.pk
+        context['static_get_param'] = get_config.GET_CONFIG
         return context
 
     def get_success_url(self):
@@ -136,7 +141,8 @@ class NoteCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title_page'] = f'Создать'
+        context['title_page'] = 'Создать'
+        context['static_get_param'] = get_config.GET_CONFIG
         return context
 
     def form_valid(self, form):
@@ -165,6 +171,7 @@ class NoteBasketListView(ListView):
         context = super(NoteBasketListView, self).get_context_data(**kwargs)
         # context = Note.objects.filter(author=self.request.user)
         context['title_page'] = 'Корзина'
+        context['static_get_param'] = get_config.GET_CONFIG
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
@@ -193,6 +200,7 @@ class NoteBasketDelUpdateView(SuccessMessageMixin, UpdateView):
         context['pk'] = self.object.id
         # author_pk = context.get(self, self.object.author.pk)
         # request_user_pk = self.request.user.pk
+        context['static_get_param'] = get_config.GET_CONFIG
         return context
 
     def get_success_url(self):
@@ -216,6 +224,7 @@ class NoteBasketDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['pk'] = self.object.id
         context['title_page'] = 'Корзина'
+        context['static_get_param'] = get_config.GET_CONFIG
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
@@ -235,6 +244,7 @@ class NoteBasketDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title_page'] = 'Удалить'
+        context['static_get_param'] = get_config.GET_CONFIG
         return context
 
     def get_success_url(self):
@@ -273,7 +283,7 @@ class NoteReturnActiveUpdateView(SuccessMessageMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context['title_page'] = f'Восстановить'
         context['pk'] = self.object.id
-
+        context['static_get_param'] = get_config.GET_CONFIG
         # author_pk = context.get(self, self.object.author.pk)
         # request_user_pk = self.request.user.pk
         return context
@@ -304,6 +314,7 @@ class NoteFavoriteListView(ListView):
         context = super(NoteFavoriteListView, self).get_context_data(**kwargs)
         # context = Note.objects.filter(author=self.request.user)
         context['title_page'] = 'Избранное'
+        context['static_get_param'] = get_config.GET_CONFIG
         return context
 
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
