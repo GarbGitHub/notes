@@ -12,7 +12,7 @@
 
 .bcover::after {
     content: "";
-    background-image: url('../images/bg-cover.jpg');
+    background-image: url('../images/bg-cover-pwa.jpg');
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
