@@ -14,7 +14,8 @@ html.bgcolor {
 
 html.over {
     --bgcolor: #EEEEEE;
-    --bgimage: url('/static/accounts/images/bg-cover.jpg');
+    --bgimage: url('/static/accounts/images/bg-cover-pwa.jpg');
+    --bgimage-xs: url('/static/accounts/images/bg-cover-pwa-xs.jpg');
     --over: rgba(53, 25, 24, 0.9);
 }
 
@@ -25,6 +26,12 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
+}
+
+@media (max-width: 600px) {
+    body {
+        background-image: var(--bgimage-xs);
+    }
 }
 
 .body-over {
