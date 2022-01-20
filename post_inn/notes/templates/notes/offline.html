@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Нет соединения</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            background-color: #d6bbb2;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container___block {
+            width: 50%;
+            margin: 0;
+        }
+
+        .container__logo {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .container__logo svg {
+            max-width: 100px;
+        }
+
+        .container__text {
+            text-align: center;
+        }
+
+        .container__text p:nth-child(1) {
+            font-size: 1.5rem;
+        }
+
+        .container__button {
+            display: flex;
+            justify-content: center;
+        }
+
+        .button {
+            background-color: #60403e;
+            border: none;
+            color: white;
+            padding: 13px 25px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .button:active {
+            background-color: #6c4a48;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="container___block">
+            <div class="container__logo">
+                <svg width="60%" height="60%" viewBox="0 0 568 527" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="60" y="25" width="508" height="502" rx="15" fill="#ADADAC"/>
+                <rect x="42" width="512" height="512" rx="15" fill="#CB8909"/>
+                <g clip-path="url(#clip0_101_3)">
+                <path d="M298 271C298 262.716 304.716 256 313 256H554V497C554 505.284 547.284 512 539 512H298V271Z" fill="white"/>
+                <path d="M47.5762 280.71C41.7351 274.836 41.7623 265.338 47.6369 259.497L338.795 -30L582.07 214.671C587.911 220.545 587.884 230.043 582.009 235.884L290.851 525.381L47.5762 280.71Z" fill="#60403E"/>
+                <path d="M262.931 567.358C257.284 561.679 257.311 552.498 262.989 546.852L553.793 257.707L796.715 502.023C802.362 507.702 802.336 516.883 796.657 522.529L505.853 811.674L262.931 567.358Z" fill="#A56D00"/>
+                <path d="M262.931 567.358C257.284 561.679 257.311 552.498 262.989 546.852L553.793 257.707L796.715 502.023C802.362 507.702 802.336 516.883 796.657 522.529L505.853 811.674L262.931 567.358Z" stroke="black"/>
+                </g>
+                <ellipse cx="42" cy="162.5" rx="42" ry="24.5" fill="#60403E"/>
+                <ellipse cx="42" cy="359.5" rx="42" ry="24.5" fill="#60403E"/>
+                <ellipse cx="42" cy="256.5" rx="42" ry="24.5" fill="#60403E"/>
+                <defs>
+                <clipPath id="clip0_101_3">
+                <path d="M298 271C298 262.716 304.716 256 313 256H554V497C554 505.284 547.284 512 539 512H298V271Z" fill="white"/>
+                </clipPath>
+                </defs>
+                </svg>
+            </div>
+            <div class="container__text">
+                <p>Нет соединения</p>
+                <p>Проверьте соединение с сетью и обновите страницу.</p>
+            </div>
+            <div class="container__button">
+                <input type="button" class="button" onClick="window.location.href=window.location.href" value="Обновить">
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
