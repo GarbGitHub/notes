@@ -320,3 +320,7 @@ class NoteFavoriteListView(ListView):
     @method_decorator(user_passes_test(lambda u: u.is_authenticated, login_url='auth:login'))
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
+
+
+def offline(request):
+    return render(request, 'notes/offline.html')
