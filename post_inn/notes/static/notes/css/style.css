@@ -13,7 +13,7 @@ html.bgcolor {
 }
 
 html.over {
-    --bgcolor: #EEEEEE;
+    --bgcolor: rgba(53, 25, 24);
     --bgimage: url('/static/accounts/images/bg-cover-pwa.jpg');
     --bgimage-xs: url('/static/accounts/images/bg-cover-pwa-xs.jpg');
     --over: rgba(53, 25, 24, 0.9);
