@@ -1,3 +1,31 @@
+@font-face {
+    font-family: 'Lobster';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/static/notes/fonts/lobster-v23-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-regular.eot');
+    /* IE9 Compat Modes */
+    src: local(''), url('/static/notes/fonts/lobster-v23-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('/static/notes/fonts/lobster-v23-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-regular.woff2') format('woff2'), /* Super Modern Browsers */
+    url('/static/notes/fonts/lobster-v23-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-regular.woff') format('woff'), /* Modern Browsers */
+    url('/static/notes/fonts/lobster-v23-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+    url('/static/notes/fonts/lobster-v23-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-regular.svg#Lobster') format('svg');
+    /* Legacy iOS */
+}
+
+@font-face {
+    font-family: 'Merriweather';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/static/notes/fonts/merriweather-v28-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-regular.eot');
+    /* IE9 Compat Modes */
+    src: local(''), url('/static/notes/fonts/merriweather-v28-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('/static/notes/fonts/merriweather-v28-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-regular.woff2') format('woff2'), /* Super Modern Browsers */
+    url('/static/notes/fonts/merriweather-v28-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-regular.woff') format('woff'), /* Modern Browsers */
+    url('/static/notes/fonts/merriweather-v28-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+    url('/static/notes/fonts/merriweather-v28-vietnamese_latin-ext_latin_cyrillic-ext_cyrillic-regular.svg#Merriweather') format('svg');
+    /* Legacy iOS */
+}
+
 html.light {
     --card-family: 'Lobster', cursive;
 }
@@ -19,6 +47,10 @@ html.over {
     --over: rgba(53, 25, 24, 0.9);
 }
 
+.body-over {
+    background: var(--over);
+}
+
 body {
     background-color: var(--bgcolor);
     background-image: var(--bgimage);
@@ -30,12 +62,9 @@ body {
 
 @media (max-width: 600px) {
     body {
+        background-color: var(--bgcolor);
         background-image: var(--bgimage-xs);
     }
-}
-
-.body-over {
-    background: var(--over)
 }
 
 body,
@@ -604,19 +633,50 @@ div.list-group-item--div {
     ;
 }
 
-/*Ползунок обработчик (использовать -webkit- (Chrome, Opera, Safari, Edge) и -moz- (Firefox) чтобы переопределить внешний вид по умолчанию ) */
 .form-range::-webkit-slider-thumb {
     background: #a48b83;
-    /* Зеленый фон */
     cursor: pointer;
-    /* Курсор при наведении */
     outline: solid #60403e;
 }
 
 .form-range::-moz-range-thumb {
     background: #a48b83;
-    /* Зеленый фон */
     cursor: pointer;
-    /* Курсор при наведении */
     outline: solid #60403e;
+}
+
+.preloader {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: #a48b83;
+    z-index: 1001;
+}
+
+.preloader__image {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    width: 70px;
+    height: 70px;
+    margin-top: -35px;
+    margin-left: -35px;
+    text-align: center;
+    animation: preloader-rotate 2s infinite linear;
+}
+
+@keyframes preloader-rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loaded_hiding .preloader {
+    transition: 0.3s opacity;
+    opacity: 0;
+}
+
+.loaded .preloader {
+    display: none;
 }
