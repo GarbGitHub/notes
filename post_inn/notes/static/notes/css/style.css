@@ -489,15 +489,11 @@ a.nav-link i.bi {
     color: rgb(255, 255, 255);
 }
 
-@media (max-width: 450px) {
+@media (max-width: 550px) {
     .pg-item {
         width: 50px;
         height: 50px;
-        border-radius: 100%;
-        position: relative;
-        transition: .3s;
         border-width: 4px;
-        border-style: solid;
         margin: 3px;
     }
     .pg-item span {
@@ -506,6 +502,22 @@ a.nav-link i.bi {
     .pg-item:hover span,
     .pg-item.active span {
         font-size: 17px;
+    }
+}
+
+@media (max-width: 415px) {
+    .pg-item {
+        width: 37px;
+        height: 37px;
+        border-width: 4px;
+        margin: 3px;
+    }
+    .pg-item span {
+        font-size: 14px;
+    }
+    .pg-item:hover span,
+    .pg-item.active span {
+        font-size: 14px;
     }
 }
 
