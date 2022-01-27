@@ -126,8 +126,8 @@
                         заметок</span> </h3>
                                             <h5 class="slide-text animated fadeIn">Заметочник работает на 3 видах устройств <br> Android, iOS, Web app
                                             </h5>
-                                            <a href="https://www.zametochnik.ru/auth/login/" class="btn btn-lg btn-border animated fadeInUp">Вход</a>
-                                            <a href="https://www.zametochnik.ru/auth/register/" class="btn btn-lg btn-border animated fadeInUp">Регистрация</a>
+                                            <a href="{% url 'auth:login' %}" class="btn btn-lg btn-border animated fadeInUp">Вход</a>
+                                            <a href="{% url 'auth:logout' %}" class="btn btn-lg btn-border animated fadeInUp">Регистрация</a>
                                         </div>
                                     </div>
                                 </div>
@@ -162,8 +162,8 @@
                 </div>
                 <div class="col-lg-4 col-md-4 col-xs-12">
                     <div class="about block text-center">
-                        <a href="/auth/login"><img src="{% static 'notes/img/os-logo/web-logo.png' %}" alt="web"></a>
-                        <h5><a href="/auth/login">Web</a></h5>
+                        <a href="{% url 'auth:login' %}"><img src="{% static 'notes/img/os-logo/web-logo.png' %}" alt="web"></a>
+                        <h5><a href="/{% url 'auth:login' %}">Web</a></h5>
                         <p>Создавайте заметки в вашем любимом браузере на любых устройствах. Все данные синхронизируются под уникальной учетной записью пользователя.
                         </p>
                     </div>
