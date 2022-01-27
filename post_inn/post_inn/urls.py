@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshView, )
+
+import notes.views as notes
 from accounts import urls as auth_urls
 from notes.views import offline
 from .views import robots_txt
@@ -27,11 +29,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', include(notes_urls, namespace='notes'), name='notes'),
-    path("robots.txt", robots_txt),
-    path("offline.html", offline),
-    path('sw.js', (TemplateView.as_view(template_name='notes/sw.js', content_type='application/javascript', )), name='sw.js'),
+    path('', notes.index, name='index'),
     path('pwabuilder-sw.js', (TemplateView.as_view(template_name='notes/pwabuilder-sw.js', content_type='application/javascript', )), name='pwabuilder-sw.js'),
+    path('app/', include(notes_urls, namespace='notes'), name='notes'),
+    path("robots.txt", robots_txt),
     path('fordev/', include(fordev_urls, namespace='fordev'), name='fordev'),
     path('app/auth/', include(auth_urls, namespace='auth'), name='auth'),
     path('admin/', admin.site.urls, name='admin'),

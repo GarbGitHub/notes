@@ -38,8 +38,8 @@ ALLOWED_HOSTS = ['*']
 
 TEST = 'ad'
 
-LOGIN_URL = '/auth/login/'
-LOGOUT_URL = '/auth/logout/'
+LOGIN_URL = '/app/auth/login/'
+LOGOUT_URL = '/app/auth/logout/'
 
 
 # Откуда брать переопределенного пользователя
