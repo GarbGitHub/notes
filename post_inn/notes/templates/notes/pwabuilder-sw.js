@@ -5,7 +5,7 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox
 const CACHE = "pwabuilder-page";
 const QUEUE_NAME = "bgSyncQueue";
 
-const offlineFallbackPage = "offline.html";
+const offlineFallbackPage = "/app/offline.html";
 
 self.addEventListener("message", (event) => {
   if (event.data && event.data.type === "SKIP_WAITING") {

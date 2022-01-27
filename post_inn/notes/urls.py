@@ -1,10 +1,13 @@
 from django.urls import path
+from django.views.generic import TemplateView
+
 import notes.views as notes
 
 app_name = 'notesapp'
 
 urlpatterns = [
-    path('', notes.index, name='index'),
+    path('', notes.NoteListView.as_view(), name='app'),
+    path("offline.html", notes.offline),
     path('search/', notes.SearchResultsView.as_view(), name='search_results'),
     path('notes/', notes.NoteListView.as_view(), name='notes_list'),
     path('notes/create/', notes.NoteCreateView.as_view(), name='post_create'),

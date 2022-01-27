@@ -13,7 +13,7 @@
     <div class="offcanvas-body">
         <div class="offcanvas-search">
             <div class="position-relative offcanvas-search-form px-3 py-3">
-                <form class="search-form-top" action="/search/" method="get">
+                <form class="search-form-top" action="/app/search/" method="get">
                     <div class="input-group">
                         <input class="form-control search" name="q" type="text" aria-describedby="btn-search" placeholder="Поиск...">
                         <button class="btn btn-navbar" type="submit" id="btn-search"><i class="bi bi-search"></i></button>
@@ -107,14 +107,6 @@
         </div>
 
         <ul class="list-group">
-            <li class="list-group-item {% if url_name == 'list' or url_name == 'page' %}active{% endif %}">
-                <div class="list-group-item--div">
-                    <a class="d-flex justify-content-between" href="{% url 'fordevapp:list' %}">
-                        <div class="icanvas"><i class="bi bi-person-workspace"></i> Для разработчиков
-                        </div>
-                    </a>
-                </div>
-            </li>
             <li class="list-group-item">
                 <div class="list-group-item--div">
                     <a class="d-flex justify-content-between" href="{% url 'auth:logout' %}">
