@@ -6,10 +6,18 @@ const output = document.getElementById("sizeValue");
 const inputText = document.getElementById("id_text");
 const userFontSize = document.getElementById('sizeRange');
 
+// Local datetime
+const datetimeField = document.getElementById("id_created");
+
+// Functions
 defineThemeFromCookies()
 tagClassChange()
 setFontSizeForRange()
 ThemeTagClassChange()
+
+if (datetimeField != null) {
+    localDateTimeNow();
+}
 
 function defineThemeFromCookies() {
     let fontFamily = get_cookie("theme");
@@ -194,4 +202,21 @@ function updateStyleValue(element, styleValue) {
         element[i].style.removeProperty('font-size');
         element[i].style.fontSize = '1.' + styleValue + 'rem';
     }
+}
+
+// Local datetime
+function localDateTimeNow() {
+	let now = new Date();
+	let utcString = now.toISOString().substring(0,19);
+	let year = now.getFullYear();
+	let month = now.getMonth() + 1;
+	let day = now.getDate();
+	let hour = now.getHours();
+	let minute = now.getMinutes();
+	let localDatetime = year + "-" +
+    (month < 10 ? "0" + month.toString() : month) + "-" +
+    (day < 10 ? "0" + day.toString() : day) + "T" +
+    (hour < 10 ? "0" + hour.toString() : hour) + ":" +
+    (minute < 10 ? "0" + minute.toString() : minute);
+	datetimeField.value = localDatetime;
 }

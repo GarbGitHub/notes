@@ -5,16 +5,14 @@ from django.shortcuts import get_object_or_404, render
 from django.contrib import messages
 from django.db.models import Q
 from django.utils.decorators import method_decorator
-from django.views import View
 from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
-from notes.forms import NoteBasketForm, NoteEditForm, NoteReturnBasketForm
+from notes.forms import NoteBasketForm, NoteReturnBasketForm, NoteUpdateForm, NoteCreateForm
 from notes.models import Note
 from post_inn import get_config
-from itertools import chain
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
-PAGINATE_BY_NOTES = 7
+PAGINATE_BY_NOTES = 10
 
 
 def index(request):
@@ -106,7 +104,7 @@ class NoteUpdateView(SuccessMessageMixin, UpdateView):
     template_name = 'notes/post_update.html'
     success_message = "Успешно отредактировано"
 
-    def get_form(self, form_class=NoteEditForm):
+    def get_form(self, form_class=NoteUpdateForm):
         """Вернет экземпляр формы, которая будет использоваться в этом представлении."""
         return form_class(**self.get_form_kwargs())
 
@@ -135,7 +133,7 @@ class NoteCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     template_name = 'notes/post_create.html'
     success_message = "Успешно добавленно"
 
-    def get_form(self, form_class=NoteEditForm):
+    def get_form(self, form_class=NoteCreateForm):
         """Вернет экземпляр формы, которая будет использоваться в этом представлении."""
         return form_class(**self.get_form_kwargs())
 
