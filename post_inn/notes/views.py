@@ -16,9 +16,15 @@ PAGINATE_BY_NOTES = 10
 
 
 def index(request):
+    context = {
+        'title_page': 'Заметочник - ваши заметки всегда с вами',
+        'description': 'Заметочник - то простой способ создавать и сохранять ваши заметки. Получите доступ к вашим заметкам с любых устройств.',
+        'static_get_param': get_config.GET_CONFIG
+    }
+
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('notesapp:notes_list'))
-    return render(request, 'notes/landing.html')
+    return render(request, 'accounts/register_base.html', context)
 
 
 class SearchResultsView(ListView):
