@@ -1,4 +1,5 @@
- <form class="form-sing rounded" action="{% url 'auth:register' %}" method="post">
+{% load static %}
+<form class="form-sing rounded" action="{% url 'auth:register' %}" method="post">
     <h1 class="form-sigin-h1 mb-3 fw-normal">Зарегистрироваться</h1>
     {% csrf_token %}
     {% if next %}
