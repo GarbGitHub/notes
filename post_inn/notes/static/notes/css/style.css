@@ -524,6 +524,7 @@ a.nav-link i.bi {
 
 .offcanvas-body {
     padding: 0;
+    position: relative;
 }
 
 .list-group-item {
@@ -692,4 +693,17 @@ div.list-group-item--div {
 
 .loaded .preloader {
     display: none;
+}
+
+.install-pwa {
+    margin-top:20px;
+    position: relative;
+    width: 100%;
+
+}
+
+.install-pwa img {
+    position: absolute;
+    right: 15px;
+    cursor: pointer;
 }

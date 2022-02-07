@@ -119,17 +119,14 @@
             {% endif %}
         </main>
 		<script src="{% static 'notes/js/register-sw.js' %}"></script>
-		<script src="{% static 'notes/js/app.js' %}{{ static_get_param }}"></script>
         <script src="{% static 'notes/js/popper.min.js' %}"></script>
         <script src="{% static 'notes/js/bootstrap.min.js' %}"></script>
         {% with request.resolver_match.url_name as url_name %}
         {% if url_name == 'post_create' or url_name == 'post_update' %}
-        <script src="{% static 'notes/js/autosize.min.js' %}"></script>
-        <script>
-            autosize(document.querySelectorAll('textarea'));
-        </script>
+        <script src="{% static 'notes/js/jquery-1.12.4.min.js' %}"></script>
         {% endif %}
         {% endwith %}
+        <script src="{% static 'notes/js/app.js' %}{{ static_get_param }}"></script>
     {% include 'notes/includes/metrika.html' %}
     </div>
 </body>

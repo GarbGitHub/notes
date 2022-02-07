@@ -9,11 +9,15 @@ const userFontSize = document.getElementById('sizeRange');
 // Local datetime
 const datetimeField = document.getElementById("id_created");
 
+// Button install PWA
+const buttonInstall = document.getElementById('btnPwaInstall');
+
 // Functions
 defineThemeFromCookies()
 tagClassChange()
 setFontSizeForRange()
 ThemeTagClassChange()
+pwaInstall()
 
 if (datetimeField != null) {
     localDateTimeNow();
@@ -73,13 +77,11 @@ function tagClassChange() {
         // If the user chooses the font size
         if (event.target.nodeName === 'INPUT') {
             let sizeValue = event.target.value;
-
             // Remove existing styles and install new ones
             if (inputText) {
                 inputText.style.removeProperty('font-size');
                 inputText.style.fontSize = '1.' + sizeValue + 'rem';
             }
-
             for (let i = 0; i < lead.length; ++i) {
                 lead[i].style.removeProperty('font-size');
                 lead[i].style.fontSize = "1." + sizeValue + 'rem';
@@ -206,17 +208,85 @@ function updateStyleValue(element, styleValue) {
 
 // Local datetime
 function localDateTimeNow() {
-	let now = new Date();
-	let utcString = now.toISOString().substring(0,19);
-	let year = now.getFullYear();
-	let month = now.getMonth() + 1;
-	let day = now.getDate();
-	let hour = now.getHours();
-	let minute = now.getMinutes();
-	let localDatetime = year + "-" +
-    (month < 10 ? "0" + month.toString() : month) + "-" +
-    (day < 10 ? "0" + day.toString() : day) + "T" +
-    (hour < 10 ? "0" + hour.toString() : hour) + ":" +
-    (minute < 10 ? "0" + minute.toString() : minute);
-	datetimeField.value = localDatetime;
+    let now = new Date();
+    let utcString = now.toISOString().substring(0, 19);
+    let year = now.getFullYear();
+    let month = now.getMonth() + 1;
+    let day = now.getDate();
+    let hour = now.getHours();
+    let minute = now.getMinutes();
+    let localDatetime = year + "-" +
+        (month < 10 ? "0" + month.toString() : month) + "-" +
+        (day < 10 ? "0" + day.toString() : day) + "T" +
+        (hour < 10 ? "0" + hour.toString() : hour) + ":" +
+        (minute < 10 ? "0" + minute.toString() : minute);
+    datetimeField.value = localDatetime;
+    console.log(datetimeField.value);
+}
+
+// PWA Install
+let deferredPrompt;
+
+function pwaInstall() {
+    if (!localStorage.getItem('pwa')) {
+        if (buttonInstall != null) {
+            visibleBtnInstallPwa();
+        }
+    }
+    window.addEventListener('beforeinstallprompt', (e) => {
+        console.log('beforeinstallprompt Event fired');
+        deferredPrompt = e;
+        localStorage.removeItem('pwa');
+        return false;
+    });
+
+    buttonInstall.addEventListener('click', function() {
+        if (deferredPrompt !== undefined) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(function(choiceResult) {
+                console.log(choiceResult.outcome);
+                if (choiceResult.outcome == 'dismissed') {
+                    console.log('User cancelled home screen install');
+                } else {
+                    localStorage.setItem('pwa', 'install');
+                    hideBtnInstallPwa();
+                    console.log('User added to home screen');
+                }
+                deferredPrompt = null;
+            });
+        }
+    });
+}
+
+function visibleBtnInstallPwa() {
+    buttonInstall.classList.remove('d-none');
+    buttonInstall.classList.add('d-block');
+}
+
+function hideBtnInstallPwa() {
+    buttonInstall.classList.remove('d-block');
+    buttonInstall.classList.add('d-none');
+}
+
+// Textarea size
+
+// Textarea size
+if (inputText != null) {
+    $("#id_text").keyup(function(e) {
+        autoheight(this);
+    });
+
+    function autoheight(a) {
+        if (!$(a).prop('scrollTop')) {
+            do {
+                var b = $(a).prop('scrollHeight');
+                var h = $(a).height();
+                $(a).height(h - 5);
+            }
+            while (b && (b != $(a).prop('scrollHeight')));
+        };
+        $(a).height($(a).prop('scrollHeight') + 20);
+    }
+
+    autoheight($("#id_text"));
 }

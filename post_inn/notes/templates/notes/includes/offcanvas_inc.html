@@ -1,3 +1,4 @@
+{% load static %}
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" data-bs-scroll="true" aria-labelledby="offcanvasNavbarLabel">
     <div class="offcanvas-header">
         {% if user.is_authenticated %}
@@ -115,6 +116,9 @@
                 </div>
             </li>
         </ul>
+        <div class="install-pwa d-none d-md-block">
+            <img src="{% static 'notes/img/img/banner-install-app.svg' %}" class="banner__install-pwa d-none" width="100px" id="btnPwaInstall" alt="install pwa">
+        </div>
         {% endwith %} {% else %}
         <ul class="list-group">
             <li class="list-group-item">
@@ -126,5 +130,8 @@
             </li>
         </ul>
         {% endif %}
+<!--        <div class="d-none d-md-block install-pwa">-->
+<!--            <img src="{% static 'notes/img/img/icon-notes.svg' %}" class="banner__install-pwa d-none" width="100px" id="btnPwaInstall" alt="install pwa">-->
+<!--        </div>-->
     </div>
 </div>
