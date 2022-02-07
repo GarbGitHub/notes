@@ -1,6 +1,6 @@
 {% with request.resolver_match.url_name as url_name %}
 {% if url_name == 'notes_list' and count_is_active == 0 or url_name == 'index' and count_is_active == 0 %}
-<div class="alert alert-warning alert-warning-note shadow-lg" role="alert">
+<div class="alert alert-warning alert-warning-note shadow-lg text-center" role="alert">
     <p>
         У вас нет заметок. <a href="{% url 'notesapp:post_create' %}">Создайте</a> первую заметку, или воспользуйтесь другими
         возможностями, нажав на иконку меню в верхнем левом углу.
@@ -8,17 +8,17 @@
 </div>
 {% endif %}
 {% if url_name == 'posts_favorites' and count_is_favorites == 0 %}
-<div class="alert alert-warning alert-warning-note shadow-lg" role="alert">
+<div class="alert alert-warning alert-warning-note shadow-lg text-center" role="alert">
     <p>В списке "Избранное" пока нет ни одной заметки.</p>
 </div>
 {% endif %}
 {% if url_name == 'posts_basket_list' and count_is_basket == 0 %}
-<div class="alert alert-warning alert-warning-note shadow-lg" role="alert">
+<div class="alert alert-warning alert-warning-note shadow-lg text-center" role="alert">
     <p>"Корзина" пуста.</p>
 </div>
 {% endif %}
 {% if url_name == 'search_results' and no_search_result %}
-<div class="alert alert-warning alert-warning-note shadow-lg" role="alert">
+<div class="alert alert-warning alert-warning-note shadow-lg text-center" role="alert">
     <p>{{ no_search_result }}</p>
 </div>
 {% endif %}
