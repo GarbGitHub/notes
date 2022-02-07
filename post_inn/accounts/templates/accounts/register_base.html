@@ -5,7 +5,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
@@ -18,6 +17,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'notes/css/style.css' %}{{ static_get_param }}">
     <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/sing.css' %}{{ static_get_param }}">
     <title>{% if title_page %} {{ title_page }} {% else %} My notes {% endif %}</title>
+    <meta name="description" content="{% if description %}{{ description }}{% else %}Заметочник{% endif %}">
     <link rel="apple-touch-icon" sizes="180x180" href="/media/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/media/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="192x192" href="/media/android-chrome-192x192.png">
@@ -37,14 +37,19 @@
             <div class="header-logo">
                 <h3 class="float-md-start mb-0"><img src="{% static 'accounts/images/logo-f.svg' %}"></h3>
                 {% with request.resolver_match.url_name as url_name %}
-                {% if url_name != 'login' %}
+                {% if url_name == 'register' %}
                 <nav class="nav nav-masthead justify-content-center float-md-end">
                     <a class="nav-link" aria-current="page" href="{% url 'auth:login' %}">Войти</a>
                     <a class="nav-link active" href="{% url 'auth:register' %}">Зарегистрироваться</a>
                 </nav>
-                {% else %}
+                {% elif url_name == 'login' %}
                 <nav class="nav nav-masthead justify-content-center float-md-end">
                     <a class="nav-link active" aria-current="page" href="{% url 'auth:login' %}">Войти</a>
+                    <a class="nav-link" href="{% url 'auth:register' %}">Зарегистрироваться</a>
+                </nav>
+                {% else %}
+                <nav class="nav nav-masthead justify-content-center float-md-end">
+                    <a class="nav-link" aria-current="page" href="{% url 'auth:login' %}">Войти</a>
                     <a class="nav-link" href="{% url 'auth:register' %}">Зарегистрироваться</a>
                 </nav>
                 {% endif %}
@@ -55,12 +60,17 @@
             {% with request.resolver_match.url_name as url_name %}
                 {% if url_name == 'login' %}
                     {% include 'accounts/includes/login_form_inc.html' %}
-                {% else %}
+                {% elif url_name == 'register' %}
                     {% include 'accounts/includes/register_form_inc.html' %}
+                {% else %}
+                    {% include 'accounts/includes/index_inc.html' %}
                 {% endif %}
             {% endwith %}
         </main>
         <footer class="mt-auto text-white-50">
+             <div class="banner d-none d-md-block">
+                <img src="{% static 'notes/img/img/banner-install-app-1.svg' %}" class="banner__install-pwa d-none" width="120px" id="btnPwaInstall" alt="install pwa">
+            </div>
             <p><a href="{% url 'fordev:list-pages' %}" class="footer--link">Пользовательское соглашение</a></p>
             <p>© 2021-2022 zametochnik.ru</p>
         </footer>
@@ -72,5 +82,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js " integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB " crossorigin="anonymous "></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js " integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13 " crossorigin="anonymous "></script>
 <script src="{% static 'notes/js/register-sw.js' %}"></script>
+<script src="{% static 'notes/js/pwa-install.js' %}"></script>
 {% include 'notes/includes/metrika.html' %}
 </html>

@@ -41,6 +41,7 @@ def login(request):
     context = {'title_page': title,
                'form': login_form,
                'next': _next,
+               'description': 'Выполните вход, чтобы получить доступ доступ к вашим заметкам.',
                'static_get_param': get_config.GET_CONFIG
                }
 
@@ -57,6 +58,7 @@ def register(request):
         return HttpResponseRedirect(reverse('notesapp:notes_list'))
     context = {
         'title_page': 'Регистрация нового пользователя',
+        'description': 'Зарегистрируйтесь, чтобы получить доступ к вашим заметкам с любых устройств.',
         'static_get_param': get_config.GET_CONFIG
     }
     if request.method == 'POST':

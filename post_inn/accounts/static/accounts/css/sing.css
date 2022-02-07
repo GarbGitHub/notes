@@ -75,6 +75,10 @@
     box-shadow: 0px 0px 92px 22px rgba(0, 0, 0, 1);
 }
 
+.form-sing.text {
+    max-width: 100%;
+}
+
 .form-sing .checkbox {
     font-weight: 400;
 }
@@ -159,4 +163,17 @@ input.sing:focus::placeholder {
 
 .footer--link:hover {
     color: white;
+}
+
+.banner{
+ margin-bottom: 20px;
+}
+
+.banner img {
+    cursor: pointer;
+    margin: 0 auto;
+}
+
+.form-sing a {
+    color: rgb(219 193 184);
 }
