@@ -87,6 +87,8 @@ local_settings.py
 .env
 db.sqlite3
 media/
+post_in/notes/migrations/
+*.migrations/
 
 ### IDE ###
 *.idea/
