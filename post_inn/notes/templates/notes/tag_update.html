@@ -1,0 +1,11 @@
+{% extends 'notes/base_page.html' %}
+{% block content %}
+<form class="search-form-top m-3" method="post">
+    {% csrf_token %}
+    <div class="input-group" role="group" aria-label="Tag Create">
+        <span class="input-group-text btn btn-navbar" id="basic-addon1 disabled">#</span>
+    {{ form }}
+    <button type="submit" class="btn btn-navbar"><i class="bi bi-check-lg"></i></button>
+  </div>
+</form>
+{% endblock %}

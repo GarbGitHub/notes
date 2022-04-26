@@ -1,0 +1,15 @@
+{% extends 'notes/base_page.html' %}
+{% block content %}
+<div class="alert alert-danger shadow-lg text-center" role="alert">
+    <h4 class="alert-heading">Внимание!</h4>
+    <p>Вы пытаетесь удалить тег. Последующее восстановление будет невозможно! Заметки, прикрепленные к тегу удалены не будут.</p>
+    <p class="mb-0 text-center"><strong>Вы точно хотите удалить тег?</strong></p>
+    <div class="alert-menu d-flex justify-content-center w-100">
+        <form action="{% url 'notesapp:tag_delete' pk=object.pk %}" method="post">
+            {% csrf_token %}
+        <button type="submit" class="btn alert-button">Да</button>
+        <a href="{% url 'notesapp:tags' %}" type="button" class="btn alert-button">Нет</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

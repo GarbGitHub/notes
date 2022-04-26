@@ -8,6 +8,7 @@
     <meta name="description" content="Заметочник">
     <link rel="stylesheet" type="text/css" href="{% static 'notes/css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'notes/css/bootstrap-icons.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'notes/css/bootstrap-select.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'notes/css/style.css' %}{{ static_get_param }}">
     <link rel="stylesheet" type="text/css" href="{% static 'notes/css/forms-style.css' %}{{ static_get_param }}">
     <style>
@@ -120,12 +121,13 @@
         </main>
 		<script src="{% static 'notes/js/register-sw.js' %}"></script>
         <script src="{% static 'notes/js/popper.min.js' %}"></script>
-        <script src="{% static 'notes/js/bootstrap.min.js' %}"></script>
         {% with request.resolver_match.url_name as url_name %}
         {% if url_name == 'post_create' or url_name == 'post_update' %}
-        <script src="{% static 'notes/js/jquery-1.12.4.min.js' %}"></script>
+        <script src="{% static 'notes/js/jquery-2.2.4.min.js' %}"></script>
         {% endif %}
         {% endwith %}
+        <script src="{% static 'notes/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'notes/js/bootstrap-select.min.js' %}"></script>
         <script src="{% static 'notes/js/app.js' %}{{ static_get_param }}"></script>
     {% include 'notes/includes/metrika.html' %}
     </div>
@@ -138,5 +140,9 @@ window.onload = function() {
         document.body.classList.remove('loaded_hiding');
     }, 500);
 }
+</script>
+<!-- Initialize the plugin: -->
+<script type="text/javascript">
+    $('.selectpicker').selectpicker();
 </script>
 </html>

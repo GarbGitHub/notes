@@ -331,6 +331,7 @@ h3.card-title {
 .card-date {
     align-self: center;
     min-width: auto;
+    color: #627495;
 }
 
 .card-bottom--obj {
@@ -644,7 +645,10 @@ div.list-group-item--div {
 .accordion-item:first-of-type .accordion-button {
     border: 0;
     box-shadow: none;
-    ;
+}
+
+.accordion-body.tags {
+    padding-right: 0px;
 }
 
 .form-range::-webkit-slider-thumb {
@@ -706,4 +710,62 @@ div.list-group-item--div {
     position: absolute;
     right: 15px;
     cursor: pointer;
+}
+
+.obj-tag {
+    margin-left: 1rem;
+    margin-bottom: 10px;
+}
+
+.obj-tag object {
+    margin: 0;
+    padding: 0;
+    height: 0px;
+}
+
+.link__obj-tag {
+    font-size: 12px;
+    background: #e1e1e1;
+    border-radius: 3px 0 0 3px;
+    color: #627495;
+    display: inline-block;
+    height: 24px;
+    line-height: 24px;
+    padding: 0 20px 0 23px;
+    position: relative;
+    margin: 0 10px 10px 0;
+    text-decoration: none;
+    -webkit-transition: color 0.2s;
+}
+
+.link__obj-tag::before {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+    content: '';
+    height: 6px;
+    left: 10px;
+    position: absolute;
+    width: 6px;
+    top: 9px;
+}
+
+.link__obj-tag::after {
+    background: #ffede4;
+    border-bottom: 12px solid transparent;
+    border-left: 10px solid #e1e1e1;
+    border-top: 12px solid transparent;
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.link__obj-tag:hover {
+    background-color: #60403e;
+    color: white;
+}
+
+.link__obj-tag:hover::after {
+    border-left-color: #60403e;
 }

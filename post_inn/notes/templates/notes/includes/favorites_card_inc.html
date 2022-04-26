@@ -1,5 +1,5 @@
+{% if post.is_favorites %}
 <object class="card-bottom--obj">
-    {% if post.is_favorites %}
     <a href="{% url 'notesapp:posts_favorites' %}">
     <div class="star-card">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
@@ -8,5 +8,5 @@
         </svg>
     </div>
     </a>
-    {% endif %}
 </object>
+{% endif %}
