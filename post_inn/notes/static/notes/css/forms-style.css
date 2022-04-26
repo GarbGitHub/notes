@@ -158,10 +158,17 @@ textarea.form-control.input-text:focus::placeholder {
     background-color: #a48b83;
     color: white;
     border: 1px solid #60403e;
-    box-shadow: 0.2rem 0.2rem 0.2rem rgba(107, 107, 107, 0.35) !important;
+    box-shadow: 0.2rem 0.2rem 0.2rem rgba(107, 107, 107, 0.65) !important;
+}
+
+.btn-edit-form.tag {
+    background-color: #60403e;
+    border: 0px solid #60403e;
+    box-shadow: 0rem 0.2rem 0rem rgba(255, 255, 255, 0.65) !important;
 }
 
 .btn-edit-form:hover {
+    background-color: #a48b83;
     color: white;
 }
 
@@ -298,4 +305,58 @@ textarea.form-control.input-text:focus::placeholder {
 
 .form-check-label.imgbg {
     background-color: #60403e;
+}
+
+form .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+    margin-top: 25px;
+    width: 100%;
+}
+
+form .bootstrap-select>.dropdown-toggle.bs-placeholder,
+form .bootstrap-select>.dropdown-toggle.bs-placeholder:active,
+form .bootstrap-select>.dropdown-toggle.bs-placeholder:hover {
+    color: rgb(0, 0, 0)
+}
+
+form .bootstrap-select>.dropdown-toggle {
+    background-color: #ffede4;
+    color: rgb(0, 0, 0);
+}
+
+form .dropdown-menu.show {
+    border: #f8f9fa 1px solid;
+    width: 100%;
+    background-color: #ffede4;
+    margin: 0;
+    padding: 3px;
+}
+
+form .dropdown-menu.show a:hover {
+    width: 100%;
+    background-color: #d6bbb2;
+}
+
+form .bootstrap-select.show-tick .dropdown-menu li a:hover span.text {
+    margin-right: 34px;
+}
+
+form .dropdown-menu li {
+    border-radius: 5px;
+    margin: 7px;
+    border: #998179 1px solid;
+}
+
+form .dropdown-menu li:hover {
+    border-radius: 5px;
+    margin: 7px;
+    border: #998179 1px solid;
+}
+
+form .dropdown-menu li.selected {
+    background-color: #d6bbb2;
+    border: #998179 1px solid;
+}
+
+span.text::before {
+    content: '#';
 }

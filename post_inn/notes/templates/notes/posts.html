@@ -36,14 +36,23 @@
             </object>
         </div>
         <div class="card-body lead">
-           {{ post.text|truncatechars:90|linebreaks  }}
+           {{ post.text|truncatechars:180|linebreaks  }}
             <div class="card-bottom">
                 <div>
                     {% include 'notes/includes/favorites_card_inc.html' %}
                 </div>
-                <div class="card-date align-middle"><span class="align-middle">{{ post.created }}</span></div>
+                <div class="card-date align-middle"><span class="align-middle">{{ post.created|date:'d.m.Y' }}</span></div>
             </div>
         </div>
+        {% if post.tags.first %}
+        <div class="obj-tag">
+           <object>
+           {% for tag in post.tags.all %}
+            <a class="link__obj-tag" href="{% url 'notesapp:tag_posts_list' tag.pk %}">{{ tag|truncatechars:13 }}</a>
+           {% endfor %}
+           </object>
+        </div>
+        {% endif %}
     </div>
 </a>
 {% endif %}

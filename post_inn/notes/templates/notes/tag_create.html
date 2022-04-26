@@ -1,0 +1,29 @@
+{% extends 'notes/base_page.html' %}
+{% block content %}
+<form class="search-form-top m-3" method="post">
+    {% csrf_token %}
+    <div class="input-group" role="group" aria-label="Tag Create">
+        <span class="input-group-text btn btn-navbar" id="basic-addon1">#</span>
+    {{ form }}
+    <button type="submit" class="btn btn-navbar"><i class="bi bi-plus-lg"></i></button>
+  </div>
+</form>
+<div class="row">
+{% for tag in user_tags reversed  %}
+<div class="col-md-4 col-sm-6">
+  <div class="btn-group m-3" role="group" aria-label="Basic example">
+      <a href="{% url 'notesapp:tag_update' tag.tag_id %}" class="btn btn-edit-form tag position-relative" title="Править тег «{{ tag.tag_name }}»">
+      #{{ tag.tag_name|truncatechars:8 }}
+      {% if tag.tag_count != 0 %}
+      <span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
+        {{ tag.tag_count }}
+        <span class="visually-hidden">unread messages</span>
+      </span>
+      {% endif %}
+    </a>
+    <a href="{% url 'notesapp:tag_delete' tag.tag_id %}" class="btn btn-edit-form tag" title="Удалить тег"><i class="bi bi-x-square"></i></a>
+  </div>
+</div>
+{% endfor %}
+</div>
+{% endblock %}

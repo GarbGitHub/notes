@@ -1,0 +1,23 @@
+{% extends 'notes/base_page.html' %}
+{% load static %}
+{% block content %}
+<div class="row">
+{% for tag in user_tags %}
+<div class="col-md-12">
+  <div class="btn-group m-4" role="group" aria-label="Basic example">
+    <a href="{% url 'notesapp:tag_posts_list' tag.tag_id %}" class="btn btn-edit-form position-relative">
+      #{{ tag.tag_name }}
+      {% if tag.tag_count != 0 %}
+      <span class="position-absolute top-0 start-0 translate-middle badge rounded-pill bg-danger">
+        {{ tag.tag_count }}
+        <span class="visually-hidden">unread messages</span>
+      </span>
+      {% endif %}
+    </a>
+    <button type="button" class="btn btn-edit-form"><i class="bi bi-pencil-square"></i></button>
+    <button type="button" class="btn btn-edit-form"><i class="bi bi-x-square"></i></button>
+  </div>
+</div>
+{% endfor %}
+</div>
+{% endblock %}
