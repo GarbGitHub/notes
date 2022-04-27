@@ -86,6 +86,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'notes.context_processors.counter_obj',
+                'notes.context_processors.get_tags_list',
             ],
         },
     },

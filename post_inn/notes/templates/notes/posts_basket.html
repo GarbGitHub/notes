@@ -17,22 +17,24 @@
                 </div>
             </object>
         </div>
-        <div class="card-body lead">
-           {{ post.text|truncatechars:90|linebreaks  }}
-            <div class="card-bottom">
-                <div>
-                    {% if post.is_favorites %}
-                    <div class="star-card">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
-                            <path
-                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                        </svg>
-                    </div>
-                    {% endif %}
-                </div>
-                <div class="card-date align-middle"><span class="align-middle">{{ post.created }}</span></div>
+            <div class="card-body lead">
+       {{ post.text|truncatechars:180|linebreaks  }}
+        <div class="card-bottom">
+            <div>
+                {% include 'notes/includes/favorites_card_inc.html' %}
             </div>
+            <div class="card-date align-middle"><span class="align-middle">{{ post.created|date:'d.m.Y' }}</span></div>
         </div>
+    </div>
+    {% if post.tags.first %}
+    <div class="obj-tag">
+       <object>
+       {% for tag in post.tags.all %}
+        <a class="link__obj-tag" href="{% url 'notesapp:tag_posts_list' tag.pk %}">{{ tag|truncatechars:13 }}</a>
+       {% endfor %}
+       </object>
+    </div>
+    {% endif %}
     </div>
 </a>
 {% endfor %}
