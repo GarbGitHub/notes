@@ -308,53 +308,60 @@ textarea.form-control.input-text:focus::placeholder {
 }
 
 form .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+    border-radius: 5px;
     margin-top: 25px;
     width: 100%;
+    box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%);
 }
 
 form .bootstrap-select>.dropdown-toggle.bs-placeholder,
 form .bootstrap-select>.dropdown-toggle.bs-placeholder:active,
 form .bootstrap-select>.dropdown-toggle.bs-placeholder:hover {
-    color: rgb(0, 0, 0)
-}
-
-form .bootstrap-select>.dropdown-toggle {
-    background-color: #ffede4;
+    border: 1px solid #d6bbb2;
     color: rgb(0, 0, 0);
 }
 
-form .dropdown-menu.show {
-    border: #f8f9fa 1px solid;
+form .bootstrap-select>.dropdown-toggle,
+form .bootstrap-select>.dropdown-toggle:focus {
+    background-color: #ffede4;
+    border: 1px solid #d6bbb2;
+    box-shadow: none;
+    color: rgb(0, 0, 0);
+}
+
+form .dropdown-menu.show,
+form .dropdown-menu.show:focus {
+    border: 1px solid #d6bbb2;
+    border-radius: 0;
+    border-bottom: 0;
+    border-top: 0;
     width: 100%;
     background-color: #ffede4;
     margin: 0;
+    margin-bottom: 0px;
     padding: 3px;
 }
 
-form .dropdown-menu.show a:hover {
-    width: 100%;
-    background-color: #d6bbb2;
-}
-
-form .bootstrap-select.show-tick .dropdown-menu li a:hover span.text {
-    margin-right: 34px;
-}
-
-form .dropdown-menu li {
+form .dropdown-menu.show li {
     border-radius: 5px;
     margin: 7px;
     border: #998179 1px solid;
 }
 
-form .dropdown-menu li:hover {
+form .dropdown-menu.show li a {
     border-radius: 5px;
-    margin: 7px;
-    border: #998179 1px solid;
 }
 
-form .dropdown-menu li.selected {
+form .dropdown-menu.show li.selected a {
+    background-color: #998179;
+}
+
+form .dropdown-menu.show li.selected a.selected {
     background-color: #d6bbb2;
-    border: #998179 1px solid;
+}
+
+form .dropdown-menu.show li a:focus {
+    background-color: #998179;
 }
 
 span.text::before {
