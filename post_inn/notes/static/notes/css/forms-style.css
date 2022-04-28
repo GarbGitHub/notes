@@ -338,7 +338,6 @@ form .dropdown-menu.show:focus {
     width: 100%;
     background-color: #ffede4;
     margin: 0;
-    margin-bottom: 0px;
     padding: 3px;
 }
 
@@ -350,17 +349,17 @@ form .dropdown-menu.show li {
 
 form .dropdown-menu.show li a {
     border-radius: 5px;
-}
-
-form .dropdown-menu.show li.selected a {
-    background-color: #998179;
+    background-color: #ffede4;
 }
 
 form .dropdown-menu.show li.selected a.selected {
     background-color: #d6bbb2;
 }
 
-form .dropdown-menu.show li a:focus {
+form .dropdown-menu.inner.show li a.dropdown-item:focus,
+form .dropdown-menu.inner.show li a.dropdown-item:active,
+form .dropdown-menu.inner.show li a.dropdown-item:hover:active,
+form .dropdown-menu.inner.show li.selected a.dropdown-item.selected:focus {
     background-color: #998179;
 }
 
