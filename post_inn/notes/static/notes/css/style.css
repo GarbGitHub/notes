@@ -104,7 +104,11 @@ body,
     color: #4a4a4a;
 }
 
-code{font-size: 100%}
+code{
+font-size: 100%;
+background-color: #ccc;
+padding: 2px;
+}
 
 h1,h2,h3{font-family: 'Lobster', cursive}
 
