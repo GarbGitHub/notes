@@ -96,7 +96,6 @@ body,
     font-size: medium;
 }
 
-h1,
 .form-control.input-title {
     font-size: 32px;
     letter-spacing: -0.04em;
@@ -111,11 +110,17 @@ h3 {
     font-family: 'Lobster', cursive;
 }
 
+h1.header,
 .card-body,
-.card-title {
+.card-title,
+.card-body.lead h1,
+.card-body.lead h2,
+.card-body.lead h3,
+.card-body.lead h4,
+.card-body.lead h5,
+.card-body.lead h6 {
     font-family: var(--card-family);
 }
-
 
 /* .form-label.light {
     font-family: 'Lobster', cursive;
