@@ -1,0 +1,40 @@
+{% load notes_extras %}
+{% with request.resolver_match.url_name as url_name %}
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">{{ post.title }}</h3>
+        <div class="dropdown">
+            <button type="button" class="btn dropdown-toggle toggle-action" id="dropdownCardMenu" data-bs-toggle="dropdown" aria-expanded="false">
+              <span><i class="bi bi-grip-vertical"></i></span>
+            </button>
+            <ul class="dropdown-menu link-action" aria-labelledby="dropdownCardMenu">
+            {% if url_name == 'post_basket_detail' %}
+                <li><a class="dropdown-item" href="{% url 'notesapp:post_basket_return' post.pk %}">Восстановить</a></li>
+                <li><a class="dropdown-item" href="{% url 'notesapp:post_basket_delete' post.pk %}">Удалить</a></li>
+            {% else %}
+                <li><a class="dropdown-item" href="{% url 'notesapp:post_update' post.pk %}">Править</a></li>
+                <li><a class="dropdown-item" href="{% url 'notesapp:post_basket_add' post.pk %}">Удалить</a></li>
+            {% endif %}
+            </ul>
+        </div>
+    </div>
+    <div class="card-body lead">
+       {{ post.text|convert_markdown|limit_markdown|safe }}
+        <div class="card-bottom">
+            <div>
+                {% include 'notes/includes/favorites_card_inc.html' %}
+            </div>
+            <div class="card-date align-middle"><span class="align-middle">{{ post.created|date:'d.m.Y' }}</span></div>
+        </div>
+    </div>
+    {% if post.tags.first %}
+    <div class="obj-tag">
+       <object>
+       {% for tag in post.tags.all %}
+        <a class="link__obj-tag" href="{% url 'notesapp:tag_posts_list' tag.pk %}">{{ tag|truncatechars:13 }}</a>
+       {% endfor %}
+       </object>
+    </div>
+    {% endif %}
+</div>
+{% endwith %}
