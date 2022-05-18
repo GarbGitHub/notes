@@ -111,6 +111,9 @@
 }
 
 .form-sigin-h1 {
+    font-size: 32px;
+    letter-spacing: -0.04em;
+    line-height: 1.45em;
     color: white;
 }
 

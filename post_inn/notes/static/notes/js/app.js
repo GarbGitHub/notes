@@ -17,10 +17,22 @@ defineThemeFromCookies()
 tagClassChange()
 setFontSizeForRange()
 ThemeTagClassChange()
+addClassForImg()
 pwaInstall()
 
 if (datetimeField != null) {
     localDateTimeNow();
+}
+
+function addClassForImg() {
+    if (lead) {
+        for (let i = 0; i < lead.length; ++i) {
+            let img = lead[i].getElementsByTagName("img");
+            for (let i = 0; i < img.length; ++i) {
+                img[i].classList.add("img-fluid");
+            }
+        }
+    }
 }
 
 function defineThemeFromCookies() {
