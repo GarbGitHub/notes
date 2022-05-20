@@ -1,5 +1,5 @@
 import bleach
-import markdown
+import markdown as md
 from django import template
 from django.template.defaultfilters import stringfilter
 
@@ -9,10 +9,16 @@ register = template.Library()
 @register.filter
 @stringfilter
 def convert_markdown(value):
-    return markdown.markdown(value, extensions=[
-        'markdown.extensions.fenced_code', 'nl2br',
+    return md.markdown(value, extensions=[
+        'nl2br',
         'fenced_code',
-        'sane_lists'
+        'codehilite',
+        'pymdownx.inlinehilite',
+        'pymdownx.tasklist',
+        'pymdownx.mark',
+        'pymdownx.keys',
+        'pymdownx.magiclink',
+        'pymdownx.tilde',
     ])
 
 
@@ -21,8 +27,18 @@ def limit_markdown(value):
     attrs = {
         'a': ['href', 'rel'],
         'img': ['alt', 'src', 'class'],
+        'code': ['lang', 'class'],
+        'pre': ['lang', 'class'],
+        'span': ['class'],
+        'ul': ['class'],
+        'ol': ['class'],
+        'li': ['class'],
+        'input': ['type', 'vlue', 'disabled', 'checked'],
+        'label': ['class'],
     }
     return bleach.clean(value, tags=[
+        'input',
+        'label',
         'br',
         'strong',
         'p',
@@ -40,5 +56,11 @@ def limit_markdown(value):
         'h6',
         'blockquote',
         'code',
-        'a'
+        'a',
+        'pre',
+        'span',
+        'mark',
+        'kbd',
+        's',
+        'del',
     ], attributes=attrs, strip=True)

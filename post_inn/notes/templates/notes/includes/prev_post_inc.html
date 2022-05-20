@@ -21,8 +21,8 @@
                 </div>
             </object>
         </div>
-        <div class="card-body lead">
-            {{ post.text|convert_markdown|limit_markdown|truncatechars_html:180|safe }}
+        <div class="card-body lead codehilite">
+            {{ post.text|convert_markdown|limit_markdown|truncatechars_html:220|safe }}
             <div class="card-bottom">
                 <div>
                     {% include 'notes/includes/favorites_card_inc.html' %}
