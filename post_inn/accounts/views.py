@@ -1,15 +1,18 @@
 from django.contrib import auth
+from django.core.exceptions import ValidationError
+from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib import messages
 from django.views.generic import UpdateView
+
 from accounts.models import User
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import user_passes_test
-from post_inn import get_config
+from post_inn import get_config, settings
 from accounts.forms import DivErrorList, UserLoginForm, UserRegisterForm, UserEditForm, UserPasswordEditForm
 
 
@@ -17,13 +20,21 @@ def login(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('notesapp:notes_list'))
 
-    title = 'Выполнить вход'
-    login_form = UserLoginForm(data=request.POST or None,
-                               error_class=DivErrorList)  # Все данные из формы полученные методом POST
-
+    login_form = UserLoginForm(data=request.POST or None, error_class=DivErrorList)
     _next = request.GET['next'] if 'next' in request.GET.keys() else ''
+    context = {'title_page': 'Выполнить вход',
+               'form': login_form,
+               'next': _next,
+               'description': 'Выполните вход, чтобы получить доступ доступ к вашим заметкам.',
+               'static_get_param': get_config.GET_CONFIG
+               }
+    err_message = str(login_form.non_field_errors())
 
-    if request.method == 'POST' and login_form.is_valid():  # если POST
+    if request.method == 'POST' and 'не подтвердили регистрацию' in err_message:
+        context['non_verify'] = True
+        request.session['user_email'] = request.POST['username']
+
+    elif request.method == 'POST' and login_form.is_valid():
         username = request.POST['username']
         password = request.POST['password']
 
@@ -38,13 +49,6 @@ def login(request):
             else:
                 return HttpResponseRedirect(reverse('notesapp:notes_list'))
 
-    context = {'title_page': title,
-               'form': login_form,
-               'next': _next,
-               'description': 'Выполните вход, чтобы получить доступ доступ к вашим заметкам.',
-               'static_get_param': get_config.GET_CONFIG
-               }
-
     return render(request, 'accounts/register_base.html', context)
 
 
@@ -56,30 +60,155 @@ def logout(request):
 def register(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('notesapp:notes_list'))
+
     context = {
         'title_page': 'Регистрация нового пользователя',
         'description': 'Зарегистрируйтесь, чтобы получить доступ к вашим заметкам с любых устройств.',
         'static_get_param': get_config.GET_CONFIG
     }
+
     if request.method == 'POST':
         register_form = UserRegisterForm(request.POST, request.FILES, error_class=DivErrorList)
+
         if register_form.is_valid():
-            # Create a new user object but avoid saving it yet
-            new_user = register_form.save(commit=False)
+            email = request.POST['email']
+            user = register_form.save(commit=False)
+            user.set_password(register_form.cleaned_data['password1'])
 
-            # Set the chosen password
-            new_user.set_password(register_form.cleaned_data['password1'])
+            if send_verify_mail(user):
+                request.session['message'] = f'Проверьте почту {email} для завершения регистрации'
+                user.save()
+                return HttpResponseRedirect(reverse('auth:result'))
 
-            # Save the User object
-            new_user.save()
-            messages.success(request, 'Успешно зарегистрирован')
-            return HttpResponseRedirect(reverse('auth:login'))
+            else:
+                print('сообщение НЕ отправлено')
+                request.session['message'] = f'Мы не смогли отправить ссылку на {email} для подтверждения регистрации'
+                return HttpResponseRedirect(reverse('auth:result'))
 
     else:
         register_form = UserRegisterForm()
 
     context['form'] = register_form
     return render(request, 'accounts/register_base.html', context)
+
+
+def result(request):
+    """Выводим результат регистрации"""
+
+    context = {
+        'title_page': 'Результат регистрации',
+        'description': 'Результат регистрации',
+        'static_get_param': get_config.GET_CONFIG
+    }
+
+    try:
+        if request.session.get('message'):
+            context['message'] = request.session.get('message')
+            del request.session['message']
+
+            context['title_dialog'] = f'Проверьте почту!'
+            messages.success(request, context['title_dialog'])
+
+        if request.user.is_authenticated or not context['message']:
+            return HttpResponseRedirect(reverse('notesapp:notes_list'))
+
+        return render(request, 'accounts/register_base.html', context)
+
+    except Exception as err:
+        context['title_dialog'] = f'Ошибка'
+        context['message'] = f'Error: {err.args[0]}'
+        context['verify_error'] = True
+        messages.success(request, context['title_dialog'])
+        return HttpResponseRedirect(reverse('index'))
+
+
+def send_verify_mail(user):
+    """Подтвердить регистрацию по email"""
+
+    verify_link = reverse('authapp:verify', args=[user.email, user.activation_key])
+    title = f'Подтверждение учетной записи {user.email}'
+    message = f'Для подтверждения учетной записи {user.email}, на сайте {settings.DOMAIN_NAME} - пройдите по ссылке: ' \
+              f'{settings.DOMAIN_NAME}{verify_link}'
+
+    # при значении fail_silently = False, в случае неудачной отправки, генерируется ошибка smtplib.SMTPException)
+    return send_mail(title, message, settings.EMAIL_HOST_USER, [user.email], fail_silently=False)
+
+
+def verify(request, email, activation_key):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('notesapp:notes_list'))
+
+    context = {'title_page': 'Верификация учетной записи пользователя'}
+    try:
+        user = User.objects.get(email=email)
+
+        if user.activation_key == activation_key and not user.is_activation_key_expired():
+            user.is_active = True
+            user.save()
+            # auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            context['title_dialog'] = f'Успешно!'
+            context['message'] = f'Учетная запись {user.email} подтверждена 😀'
+            context['verify_success'] = True
+            messages.success(request, context['title_dialog'])
+
+        else:
+            context['title_dialog'] = f'Отказано!'
+            context['message'] = f'Ссылка для подтверждения регистрации учетной записи {user.email} устарела и больше ' \
+                                 f'не действительна.'
+            context['verify_old_link'] = True
+            request.session['user_email'] = user.email
+            print(request.session['user_email'])
+            messages.success(request, context['title_dialog'])
+
+        return render(request, 'accounts/register_base.html', context)
+
+    except Exception as err:
+        context['title_dialog'] = f'Отказано!'
+        context['message'] = f'Error: {err.args[0]}'
+        context['verify_error'] = True
+        messages.success(request, context['title_dialog'])
+        return render(request, 'accounts/register_base.html', context)
+
+
+def verify_update(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('notesapp:notes_list'))
+
+    context = {'title_page': 'Новая ссылка'}
+    try:
+        email = request.session['user_email']
+        user = User.objects.get(email=email)
+
+        if user:
+            print('Старый ключ', user.activation_key)
+            print('Старое время', user.activation_key_expires)
+
+            # New key and date
+            user.activation_key = User.create_activation_key(user.email)
+            user.activation_key_expires = User.create_key_expiration_date()
+            user.save()
+
+            del request.session['user_email']
+            print('Новый ключ', user.activation_key)
+            print('Новое время', user.activation_key_expires)
+
+            if send_verify_mail(user):
+                request.session['message'] = f'Проверьте почту {email} для завершения регистрации'
+                return HttpResponseRedirect(reverse('auth:result'))
+
+            else:
+                request.session['message'] = f'Мы не смогли отправить ссылку на {email} для подтверждения регистрации'
+                return HttpResponseRedirect(reverse('auth:result'))
+
+        return render(request, 'accounts/register_base.html', context)
+
+    except Exception as err:
+        print('исключение')
+        context['title_dialog'] = f'Отказано!'
+        context['message'] = f'Error: {err.args[0]}'
+        context['verify_error'] = True
+        messages.success(request, context['title_dialog'])
+        return render(request, 'accounts/register_base.html', context)
 
 
 class EditUserPasswordUpdateView(SuccessMessageMixin, UpdateView):

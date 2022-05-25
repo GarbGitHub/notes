@@ -33,6 +33,8 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 
 DEBUG = True
+IS_DEV_SERVER = False
+TIME_DELTA_HOURS = 48
 
 ALLOWED_HOSTS = ['*']
 
@@ -41,12 +43,24 @@ TEST = 'ad'
 LOGIN_URL = '/app/auth/login/'
 LOGOUT_URL = '/app/auth/logout/'
 
-
 # Откуда брать переопределенного пользователя
 AUTH_USER_MODEL = 'accounts.User'
 
-# Application definition
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_PORT = env('EMAIL_PORT')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+if not IS_DEV_SERVER:
+    DOMAIN_NAME = env('LOCAL_DOMAIN_NAME')
+else:
+    DOMAIN_NAME = env('DOMAIN_NAME')
+
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -101,7 +115,6 @@ WSGI_APPLICATION = 'post_inn.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-IS_DEV_SERVER = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/

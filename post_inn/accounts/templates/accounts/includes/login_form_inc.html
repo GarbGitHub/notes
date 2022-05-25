@@ -12,6 +12,9 @@
     {% endfor %}
     </div>
     {% endfor %}
+    {% if non_verify %}
+    <p><a href="{% url 'auth:verify_update' %}">Выслать ссылку повторно</a></p>
+    {% endif %}
     <div class="form-floating">
         <input type="email" name="username" autocomplete="username" class="form-control sing" id="id_email" placeholder="name@example.com" required>
         <label for="id_email">Email</label>
