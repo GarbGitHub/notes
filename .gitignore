@@ -90,3 +90,12 @@ media/
 
 ### IDE ###
 *.idea/
+
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
+/post_inn/notes/migrations/__init__.py
+/post_inn/fordev/migrations/__init__.py
+/post_inn/fordev/migrations/
+/post_inn/notes/migrations/
+/post_inn/accounts/migrations/

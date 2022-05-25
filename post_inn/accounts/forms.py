@@ -1,4 +1,6 @@
+from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.forms.utils import ErrorList
 from django import forms
 from django.contrib.auth.hashers import check_password
@@ -12,11 +14,19 @@ class DivErrorList(ErrorList):
     def as_divs(self):
         if not self:
             return ''
-        return '<div class="alert alert-danger" role="alert">%s</div>' % ''.join(
-            ['<div class="error">%s</div>' % e for e in self])
+
+        return '%s' % ''.join(
+            ['%s' % e for e in self])
 
 
 class UserLoginForm(AuthenticationForm):
+    error_messages = {
+        'invalid_login': "Не верный пароль",
+        'inactive': "Вы не подтвердили регистрацию по ссылке для %(username)s",
+        'not_user': "Пользователь %(username)s не существует",
+        'value_err': "ValueError %(code_err)s",
+    }
+
     class Meta:  # параметры для создаваемого класса
         model = User  # модель с которой работает класс
         fields = ('email', 'password')  # необходимые поля
@@ -29,6 +39,49 @@ class UserLoginForm(AuthenticationForm):
                 field.widget.attrs['autocomplete'] = 'username'
             if field_name == 'password':
                 field.widget.attrs['autocomplete'] = 'current-password'
+
+    def clean(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+
+        if username and password:
+            # self.user_cache = authenticate(self.request, username=username, password=password)
+            # if self.user_cache is None:
+            try:
+                user_temp = User.objects.get(email=username)
+
+                user_pass = user_temp.password
+                print(user_pass)
+
+                if not user_temp.is_active:
+                    raise forms.ValidationError(
+                        self.error_messages['inactive'],
+                        code='inactive',
+                        params={'username': username},
+                    )
+
+                elif not check_password(password, user_pass):
+                    raise forms.ValidationError(
+                        self.error_messages['invalid_login'],
+                        code='invalid_login',
+                        params={'username': username},
+                    )
+
+            except ObjectDoesNotExist:
+                raise forms.ValidationError(
+                    self.error_messages['not_user'],
+                    code='not_user',
+                    params={'username': username},
+                )
+
+            except ValueError:
+                raise forms.ValidationError(
+                    self.error_messages['value_err'],
+                    code='value_err',
+                    params={'code_err': 'Не верный формат данных'},
+                )
+
+        return self.cleaned_data
 
 
 class UserRegisterForm(forms.ModelForm):
@@ -64,6 +117,14 @@ class UserRegisterForm(forms.ModelForm):
                 code='password_mismatch',
             )
         return password2
+
+    def save(self, *args, **kwargs):
+        user = super(UserRegisterForm, self).save()
+        user.is_active = False
+        user.activation_key = User.create_activation_key(user.email)
+        user.save()
+
+        return user
 
 
 class UserEditForm(forms.ModelForm):
@@ -105,7 +166,7 @@ class UserPasswordEditForm(forms.ModelForm):
         fields = ('old_password', 'password', 'password2')
 
     def __init__(self, hash_password, *args, **kwargs):
-        self.hash_password = hash_password
+
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
@@ -134,3 +195,18 @@ class UserPasswordEditForm(forms.ModelForm):
                 code='password_mismatch'
             )
         return old_password
+
+
+# class VerifyEditForm(forms.ModelForm):
+#     class Meta:
+#         model = User
+#         fields = ('activation_key', 'activation_key_expires')
+#
+#     def __init__(self, *args, **kwargs):
+#         super(VerifyEditForm, self).__init__(*args, **kwargs)
+#         for field_name, field in self.fields.items():
+#             field.widget.attrs['class'] = 'form-control'
+#             if field_name == 'name':
+#                 field.widget.attrs['autocomplete'] = 'given-name'
+#             if field_name == 'last_name':
+#                 field.widget.attrs['autocomplete'] = 'family-name'

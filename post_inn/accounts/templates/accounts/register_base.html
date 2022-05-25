@@ -35,7 +35,9 @@
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <header class="mb-auto">
             <div class="header-logo">
-                <h3 class="float-md-start mb-0"><img src="{% static 'accounts/images/logo-f.svg' %}"></h3>
+                <a href="/" class="header-logo">
+                    <h3 class="float-md-start mb-0"><img src="{% static 'accounts/images/logo-f.svg' %}"></h3>
+                </a>
                 {% with request.resolver_match.url_name as url_name %}
                 {% if url_name == 'register' %}
                 <nav class="nav nav-masthead justify-content-center float-md-end">
@@ -62,6 +64,8 @@
                     {% include 'accounts/includes/login_form_inc.html' %}
                 {% elif url_name == 'register' %}
                     {% include 'accounts/includes/register_form_inc.html' %}
+                {% elif url_name == 'verify' or url_name == 'result' or url_name == 'verify_update' %}
+                    {% include 'accounts/includes/verification_inc.html' %}
                 {% else %}
                     {% include 'accounts/includes/index_inc.html' %}
                 {% endif %}

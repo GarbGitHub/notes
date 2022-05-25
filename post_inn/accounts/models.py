@@ -1,6 +1,13 @@
+import hashlib
+import random
+from datetime import timedelta
+
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.hashers import make_password, identify_hasher
 from django.db.models import (EmailField, CharField, BooleanField, DateTimeField)
+from django.utils.timezone import now
+
+from post_inn.settings import TIME_DELTA_HOURS
 
 
 class UserManager(BaseUserManager):
@@ -44,6 +51,9 @@ class User(AbstractBaseUser):
     admin = BooleanField(verbose_name='Администратор', default=False)
     timestamp = DateTimeField(verbose_name='Создан', auto_now_add=True)
 
+    activation_key = CharField(max_length=128, blank=True)  # ключ подтверждения
+    activation_key_expires = DateTimeField(default=(now() + timedelta(hours=TIME_DELTA_HOURS)))  # Срок действия ключа
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
@@ -55,6 +65,21 @@ class User(AbstractBaseUser):
         # list_display = ['email', 'name', 'staff', 'is_active', 'admin', 'timestamp']
         # ordering = ['-admin', 'staff', '-is_active']
         # ordering = ['timestamp']
+
+    def is_activation_key_expired(self):
+        if now() <= self.activation_key_expires:
+            return False
+        else:
+            return True
+
+    @staticmethod
+    def create_key_expiration_date():
+        return now() + timedelta(hours=TIME_DELTA_HOURS)
+
+    @staticmethod
+    def create_activation_key(email):
+        salt = hashlib.sha1(str(random.random()).encode('utf8')).hexdigest()[:6]
+        return hashlib.sha1((email + salt).encode('utf8')).hexdigest()
 
     def __str__(self):
         return self.email
