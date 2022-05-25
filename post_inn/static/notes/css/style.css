@@ -114,7 +114,7 @@ pre, code, .codehilite, .codehilite pre code, .highlight {
     font-size: 100%;
 }
 
-.code, .highlight {color: #d63384;}
+code, .highlight {color: #d63384}
 
 h1,h2,h3{font-family: 'Lobster', cursive}
 
