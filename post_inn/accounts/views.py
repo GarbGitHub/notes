@@ -6,7 +6,6 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib import messages
 from django.views.generic import UpdateView
-
 from accounts.models import User
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
@@ -116,10 +115,10 @@ def result(request):
 
     except Exception as err:
         context['title_dialog'] = f'Ошибка'
-        context['message'] = f'Error: {err.args[0]}'
+        context['message'] = f'Registration error: "{err.args[0]}"'
         context['verify_error'] = True
         messages.success(request, context['title_dialog'])
-        return HttpResponseRedirect(reverse('index'))
+        return render(request, 'accounts/register_base.html', context)
 
 
 def send_verify_mail(user):

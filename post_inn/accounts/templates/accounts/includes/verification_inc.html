@@ -3,10 +3,13 @@
     <h1 class="form-sigin-h1 mb-3 fw-normal">{{ title_dialog }}</h1>
     <p>{{ message}}</p>
     {% if verify_success %}
+    <!--Успешная авторизация-->
     <p><a href="{% url 'auth:login' %}">Войдите</a>, чтобы начать.</p>
     {% elif verify_old_link %}
+    <!--Ссылка для верификации устарела -->
     <p><a href="{% url 'auth:verify_update' %}">Выслать новую ссылку</a> или <a href="{% url 'auth:register' %}">зарегистрировать новую учетную запись</a></p>
     {% elif verify_error %}
+    <!--Ошибка при регистрации -->
     <p><a href="{% url 'auth:login' %}">Войдите</a> или <a href="{% url 'auth:register' %}">зарегистрируйтесь</a>, чтобы начать.</p>
     {% endif %}
 </div>
