@@ -144,8 +144,10 @@ class UserEditForm(forms.ModelForm):
 
 class UserPasswordEditForm(forms.ModelForm):
     error_messages = {
-        'password_mismatch': "Passwords don\'t match.",
+        'password_mismatch': "Пароли не совпадают",
+        'old_password_err': "Старый пароль введен не верно",
     }
+
     old_password = forms.CharField(
         label='Старый пароль',
         widget=forms.PasswordInput,
@@ -166,15 +168,8 @@ class UserPasswordEditForm(forms.ModelForm):
         fields = ('old_password', 'password', 'password2')
 
     def __init__(self, hash_password, *args, **kwargs):
-
         super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
-            field.help_text = ''
-            if field_name != 'old_password':
-                field.widget.attrs['autocomplete'] = 'new-password'
-            else:
-                field.widget.attrs['autocomplete'] = 'current-password'
+        self.hash_password = hash_password
 
     def clean_password2(self):
         password = self.cleaned_data.get("password")
@@ -191,22 +186,7 @@ class UserPasswordEditForm(forms.ModelForm):
         hash_old_password = self.hash_password
         if old_password and not check_password(old_password, hash_old_password):
             raise forms.ValidationError(
-                self.error_messages['password_mismatch'],
-                code='password_mismatch'
+                self.error_messages['old_password_err'],
+                code='old_password_err'
             )
         return old_password
-
-
-# class VerifyEditForm(forms.ModelForm):
-#     class Meta:
-#         model = User
-#         fields = ('activation_key', 'activation_key_expires')
-#
-#     def __init__(self, *args, **kwargs):
-#         super(VerifyEditForm, self).__init__(*args, **kwargs)
-#         for field_name, field in self.fields.items():
-#             field.widget.attrs['class'] = 'form-control'
-#             if field_name == 'name':
-#                 field.widget.attrs['autocomplete'] = 'given-name'
-#             if field_name == 'last_name':
-#                 field.widget.attrs['autocomplete'] = 'family-name'
