@@ -6,13 +6,19 @@ from django.views.decorators.http import require_GET
 def robots_txt(request):
     lines = [
         "User-agent: Googlebot",
-        "Allow: /",
+        "Disallow: /app/auth/verify_update/",
+        "Disallow: /app/auth/verify/",
+        "Disallow: /app/auth/result/",
         "",
         "User-Agent: Yandex",
-        "Allow: /",
+        "Disallow: /app/auth/verify_update/",
+        "Disallow: /app/auth/verify/",
+        "Disallow: /app/auth/result/",
         "Host: https://www.zametochnik.ru/",
         "",
         "User-agent: *",
-        "Allow: /",
+        "Disallow: /app/auth/verify_update/",
+        "Disallow: /app/auth/verify/",
+        "Disallow: /app/auth/result/",
     ]
     return HttpResponse("\n".join(lines), content_type="text/plain")
