@@ -26,7 +26,7 @@ def counter_obj(request) -> dict:
 def get_tags_list(request):
     context_data = {'user_tags': []}
     if request.user.is_authenticated:
-        tags = Tag.objects.values_list('id', 'title').filter(author=request.user.pk, is_active=True)
+        tags = Tag.objects.values_list('id', 'title').filter(author=request.user.pk)
         for el in tags:
             count = Note.get_count_post_in_tag(user_pk=request.user.pk, tag_pk=el[0])
             context_data['user_tags'].append({'tag_id': f'{el[0]}', 'tag_name': f'{el[1]}', 'tag_count': count})

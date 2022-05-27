@@ -43,7 +43,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-    email = EmailField(unique=True, max_length=255)
+    email = EmailField(unique=True, verbose_name='Email', max_length=255)
     name = CharField(verbose_name='Имя', max_length=255, blank=True, null=True)
     last_name = CharField(verbose_name='Фамилия', max_length=255, blank=True, null=True)
     staff = BooleanField(verbose_name='Сотрудник', default=False)
@@ -60,7 +60,7 @@ class User(AbstractBaseUser):
     objects = UserManager()
 
     class Meta:
-        verbose_name = 'Пользователь',
+        verbose_name = 'Пользователя',
         verbose_name_plural = 'Пользователи',
         # list_display = ['email', 'name', 'staff', 'is_active', 'admin', 'timestamp']
         # ordering = ['-admin', 'staff', '-is_active']
