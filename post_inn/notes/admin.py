@@ -4,10 +4,12 @@ from .models import Note, Tag
 
 @admin.register(Note)
 class NoteAdmin(admin.ModelAdmin):
-    list_display = ['title', 'created', 'update', 'author', 'is_active', 'is_favorites',]
+    list_display = ['title', 'author', 'created', 'update', 'is_active', 'is_favorites']
+    list_filter = ('author',)
+    # raw_id_fields = ('tags',)
 
 
 @admin.register(Tag)
 class TagsAdmin(admin.ModelAdmin):
-    list_display = ['author', 'title', 'is_active', 'created', 'update']
-    ordering = ['-is_active']
+    list_display = ['title', 'author', 'update']
+    list_filter = ('author',)
