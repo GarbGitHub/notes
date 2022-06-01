@@ -14,6 +14,8 @@ from datetime import timedelta
 from pathlib import Path
 from django.conf import settings
 import environ
+import logging
+# logging.FileHandler
 
 env = environ.Env()
 environ.Env.read_env()
@@ -85,6 +87,37 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'main_format': {
+            #'format': '{asctime} - {levelname} - {module}/{filename} - {message}',
+            'format': '%(asctime)-18s %(levelname)-10s %(message)-10s %(pathname)-16s %(lineno)d', ' '
+            'style': '(',
+            'datefmt': '%d.%m.%Y %H:%M',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'main_format',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'formatter': 'main_format',
+            'filename': os.path.join(BASE_DIR, 'information.log'),
+        }
+    },
+    'loggers': {
+        'main': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': True,
+        }
+    }
+}
 
 ROOT_URLCONF = 'post_inn.urls'
 
@@ -237,32 +270,32 @@ SIMPLE_JWT = {
 }
 
 SWAGGER_SETTINGS = {
-   # default inspector classes, see advanced documentation
-   'DEFAULT_AUTO_SCHEMA_CLASS': 'drf_yasg.inspectors.SwaggerAutoSchema',
-   'DEFAULT_FIELD_INSPECTORS': [
-      'drf_yasg.inspectors.CamelCaseJSONFilter',
-      'drf_yasg.inspectors.ReferencingSerializerInspector',
-      'drf_yasg.inspectors.RelatedFieldInspector',
-      'drf_yasg.inspectors.ChoiceFieldInspector',
-      'drf_yasg.inspectors.FileFieldInspector',
-      'drf_yasg.inspectors.DictFieldInspector',
-      'drf_yasg.inspectors.SimpleFieldInspector',
-      'drf_yasg.inspectors.StringDefaultFieldInspector',
-   ],
-   'DEFAULT_FILTER_INSPECTORS': [
-      'drf_yasg.inspectors.CoreAPICompatInspector',
-   ],
-   'DEFAULT_PAGINATOR_INSPECTORS': [
-      'drf_yasg.inspectors.DjangoRestResponsePagination',
-      'drf_yasg.inspectors.CoreAPICompatInspector',
-   ],
+    # default inspector classes, see advanced documentation
+    'DEFAULT_AUTO_SCHEMA_CLASS': 'drf_yasg.inspectors.SwaggerAutoSchema',
+    'DEFAULT_FIELD_INSPECTORS': [
+        'drf_yasg.inspectors.CamelCaseJSONFilter',
+        'drf_yasg.inspectors.ReferencingSerializerInspector',
+        'drf_yasg.inspectors.RelatedFieldInspector',
+        'drf_yasg.inspectors.ChoiceFieldInspector',
+        'drf_yasg.inspectors.FileFieldInspector',
+        'drf_yasg.inspectors.DictFieldInspector',
+        'drf_yasg.inspectors.SimpleFieldInspector',
+        'drf_yasg.inspectors.StringDefaultFieldInspector',
+    ],
+    'DEFAULT_FILTER_INSPECTORS': [
+        'drf_yasg.inspectors.CoreAPICompatInspector',
+    ],
+    'DEFAULT_PAGINATOR_INSPECTORS': [
+        'drf_yasg.inspectors.DjangoRestResponsePagination',
+        'drf_yasg.inspectors.CoreAPICompatInspector',
+    ],
 
-   # default api Info if none is otherwise given; should be an import string to an openapi.Info object
-   'DEFAULT_INFO': None,
-   # default API url if none is otherwise given
-   'DEFAULT_API_URL': None,
+    # default api Info if none is otherwise given; should be an import string to an openapi.Info object
+    'DEFAULT_INFO': None,
+    # default API url if none is otherwise given
+    'DEFAULT_API_URL': None,
 
-   'USE_SESSION_AUTH': True,  # add Django Login and Django Logout buttons, CSRF token to swagger UI page
-   'LOGIN_URL': getattr(settings, 'LOGIN_URL', None),  # URL for the login button
-   'LOGOUT_URL': getattr(settings, 'LOGOUT_URL', None),  # URL for the logout button
+    'USE_SESSION_AUTH': True,  # add Django Login and Django Logout buttons, CSRF token to swagger UI page
+    'LOGIN_URL': getattr(settings, 'LOGIN_URL', None),  # URL for the login button
+    'LOGOUT_URL': getattr(settings, 'LOGOUT_URL', None),  # URL for the logout button
 }

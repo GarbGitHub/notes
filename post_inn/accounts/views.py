@@ -1,3 +1,6 @@
+import logging
+import smtplib
+
 from django.contrib import auth
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
@@ -13,6 +16,8 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import user_passes_test
 from post_inn import get_config, settings
 from accounts.forms import DivErrorList, UserLoginForm, UserRegisterForm, UserEditForm, UserPasswordEditForm
+
+logger = logging.getLogger('main')
 
 
 def login(request):
@@ -37,8 +42,7 @@ def login(request):
         username = request.POST['username']
         password = request.POST['password']
 
-        user = auth.authenticate(username=username, password=password)  # авторизован или нет
-
+        user = auth.authenticate(username=username, password=password)
         if user and user.is_active:
             auth.login(request, user)
 
@@ -74,14 +78,16 @@ def register(request):
             user = register_form.save(commit=False)
             user.set_password(register_form.cleaned_data['password1'])
 
-            if send_verify_mail(user):
+            if send_verify_mail(user) > 0:
                 request.session['message'] = f'Проверьте почту {email} для завершения регистрации'
                 user.save()
+                logger.info(f'Зарегистрировался новый пользователь {email}')
                 return HttpResponseRedirect(reverse('auth:result'))
 
             else:
-                print('сообщение НЕ отправлено')
-                request.session['message'] = f'Мы не смогли отправить ссылку на {email} для подтверждения регистрации'
+                message = f'Мы не смогли отправить ссылку на {email} для подтверждения регистрации'
+                logger.error(message)
+                request.session['message'] = message
                 return HttpResponseRedirect(reverse('auth:result'))
 
     else:
@@ -122,15 +128,29 @@ def result(request):
 
 
 def send_verify_mail(user):
-    """Подтвердить регистрацию по email"""
+    """
+    Подтвердить регистрацию по email
+    :param user:
+    :return: количество успешно доставленных сообщений (которое может быть 0 или 1)
+    """
 
-    verify_link = reverse('authapp:verify', args=[user.email, user.activation_key])
-    title = f'Подтверждение учетной записи {user.email}'
-    message = f'Для подтверждения учетной записи {user.email}, на сайте {settings.DOMAIN_NAME} - пройдите по ссылке: ' \
-              f'{settings.DOMAIN_NAME}{verify_link}'
+    try:
+        verify_link = reverse('authapp:verify', args=[user.email, user.activation_key])
+        title = f'Подтверждение учетной записи {user.email}'
+        message = f'Для подтверждения учетной записи {user.email}, на сайте {settings.DOMAIN_NAME} - пройдите по ссылке: ' \
+                  f'{settings.DOMAIN_NAME}{verify_link}'
 
-    # при значении fail_silently = False, в случае неудачной отправки, генерируется ошибка smtplib.SMTPException)
-    return send_mail(title, message, settings.EMAIL_HOST_USER, [user.email], fail_silently=False)
+        # fail_silently = False, в случае неудачной отправки, генерируется ошибка smtplib.SMTPException)
+        result_send_message = send_mail(title, message, settings.EMAIL_HOST_USER, [user.email], fail_silently=False)
+        logger.info(f'Пользователю {user.email} отправлена ссылка для подтверждения регистрации')
+        return result_send_message
+
+    except smtplib.SMTPException as e:
+        logging.error(f'При отправке письма произошла ошибка', e)
+
+    except Exception:
+        logging.error(f'При отправке письма произошло исключение', exc_info=True)
+        return 0
 
 
 def verify(request, email, activation_key):
@@ -144,6 +164,7 @@ def verify(request, email, activation_key):
         if user.activation_key == activation_key and not user.is_activation_key_expired():
             user.is_active = True
             user.save()
+            logger.info(f'Пользователь {user.email} успешно подтвердил регистрацию по почте')
             # auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             context['title_dialog'] = f'Успешно!'
             context['message'] = f'Учетная запись {user.email} подтверждена 😀'
@@ -156,8 +177,8 @@ def verify(request, email, activation_key):
                                  f'не действительна.'
             context['verify_old_link'] = True
             request.session['user_email'] = user.email
-            print(request.session['user_email'])
             messages.success(request, context['title_dialog'])
+            logger.info(f'Пользователю {user.email} отказано в верификации, ссылка устарела')
 
         return render(request, 'accounts/register_base.html', context)
 
@@ -166,6 +187,7 @@ def verify(request, email, activation_key):
         context['message'] = f'Error: {err.args[0]}'
         context['verify_error'] = True
         messages.success(request, context['title_dialog'])
+        logging.error(f'При верификации пользователя произошло исключение {err.args[0]}', exc_info=True)
         return render(request, 'accounts/register_base.html', context)
 
 
@@ -191,7 +213,7 @@ def verify_update(request):
             print('Новый ключ', user.activation_key)
             print('Новое время', user.activation_key_expires)
 
-            if send_verify_mail(user):
+            if send_verify_mail(user) > 0:
                 request.session['message'] = f'Проверьте почту {email} для завершения регистрации'
                 return HttpResponseRedirect(reverse('auth:result'))
 

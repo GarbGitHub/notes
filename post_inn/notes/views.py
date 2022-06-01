@@ -1,3 +1,4 @@
+import logging
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
@@ -38,7 +39,6 @@ class SearchResultsView(ListView):
         query = self.request.GET.get('q')
         if len(query) == 0:
             return []
-        print(query)
         objects = Note.objects.filter(Q(title__icontains=query) | Q(text__icontains=query),
                                       author=self.request.user,
                                       is_active=True)

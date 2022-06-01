@@ -49,9 +49,7 @@ class UserLoginForm(AuthenticationForm):
             # if self.user_cache is None:
             try:
                 user_temp = User.objects.get(email=username)
-
                 user_pass = user_temp.password
-                print(user_pass)
 
                 if not user_temp.is_active:
                     raise forms.ValidationError(
