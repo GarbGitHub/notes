@@ -99,3 +99,4 @@ media/
 /post_inn/fordev/migrations/
 /post_inn/notes/migrations/
 /post_inn/accounts/migrations/
+/post_inn/logs/

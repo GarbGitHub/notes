@@ -81,6 +81,15 @@ class User(AbstractBaseUser):
         salt = hashlib.sha1(str(random.random()).encode('utf8')).hexdigest()[:6]
         return hashlib.sha1((email + salt).encode('utf8')).hexdigest()
 
+    @staticmethod
+    def get_user_email(user_pk: int) -> str:
+        """
+        :param user_pk:
+        :return: user.email
+        """
+        user = User.objects.get(pk=user_pk)
+        return user.email
+
     def __str__(self):
         return self.email
 

@@ -5,6 +5,7 @@ from django.forms.utils import ErrorList
 from django import forms
 from django.contrib.auth.hashers import check_password
 from accounts.models import User
+from post_inn.utils import logger
 
 
 class DivErrorList(ErrorList):
@@ -52,6 +53,7 @@ class UserLoginForm(AuthenticationForm):
                 user_pass = user_temp.password
 
                 if not user_temp.is_active:
+                    logger.info(f'Отказ в авторизации для {user_temp.email}: регистрация не подтверждена по email')
                     raise forms.ValidationError(
                         self.error_messages['inactive'],
                         code='inactive',
@@ -59,6 +61,7 @@ class UserLoginForm(AuthenticationForm):
                     )
 
                 elif not check_password(password, user_pass):
+                    logger.debug(f'В форму логина {username} ввел не верный пароль')
                     raise forms.ValidationError(
                         self.error_messages['invalid_login'],
                         code='invalid_login',
@@ -66,13 +69,15 @@ class UserLoginForm(AuthenticationForm):
                     )
 
             except ObjectDoesNotExist:
+                logger.debug(f'В форму логина введен не зарегистрированный email {username=}')
                 raise forms.ValidationError(
                     self.error_messages['not_user'],
                     code='not_user',
                     params={'username': username},
                 )
 
-            except ValueError:
+            except ValueError as err:
+                logger.error(f'При авторизации возникло исключение: {err.args[0]}')
                 raise forms.ValidationError(
                     self.error_messages['value_err'],
                     code='value_err',
@@ -107,9 +112,11 @@ class UserRegisterForm(forms.ModelForm):
             field.help_text = ''
 
     def clean_password2(self):
+        email = self.cleaned_data.get("email")
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
         if password1 and password2 and password1 != password2:
+            logger.debug(f'При регистрации пользователя {email} вводятся разные пароли')
             raise forms.ValidationError(
                 self.error_messages['password_mismatch'],
                 code='password_mismatch',
@@ -121,6 +128,7 @@ class UserRegisterForm(forms.ModelForm):
         user.is_active = False
         user.activation_key = User.create_activation_key(user.email)
         user.save()
+        logger.info(f'Зарегистрировался не активный пользователь {user.email}')
 
         return user
 
@@ -173,6 +181,7 @@ class UserPasswordEditForm(forms.ModelForm):
         password = self.cleaned_data.get("password")
         password2 = self.cleaned_data.get("password2")
         if password and password2 and password != password2:
+            logger.debug(f'Ошибка при смене пароля: старый пароль введен не верно')
             raise forms.ValidationError(
                 self.error_messages['password_mismatch'],
                 code='password_mismatch',
@@ -183,6 +192,7 @@ class UserPasswordEditForm(forms.ModelForm):
         old_password = self.cleaned_data.get("old_password")
         hash_old_password = self.hash_password
         if old_password and not check_password(old_password, hash_old_password):
+            logger.debug(f'Ошибка при смене пароля: пароли не совпали')
             raise forms.ValidationError(
                 self.error_messages['old_password_err'],
                 code='old_password_err'

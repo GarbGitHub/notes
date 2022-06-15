@@ -10,11 +10,16 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+import datetime
 from datetime import timedelta
 from pathlib import Path
+from django.utils.timezone import now
 from django.conf import settings
+from datetime import date
+
 import environ
 import logging
+
 # logging.FileHandler
 
 env = environ.Env()
@@ -62,7 +67,6 @@ if not IS_DEV_SERVER:
 else:
     DOMAIN_NAME = env('DOMAIN_NAME')
 
-# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -92,32 +96,43 @@ LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
-        'main_format': {
-            #'format': '{asctime} - {levelname} - {module}/{filename} - {message}',
+        'info_format': {
+            'format': '%(asctime)-18s %(levelname)-10s %(message)-10s', ' '
+                                                                        'style': '(',
+            'datefmt': '%d.%m.%Y %H:%M',
+        },
+        'debug_format': {
             'format': '%(asctime)-18s %(levelname)-10s %(message)-10s %(pathname)-16s %(lineno)d', ' '
-            'style': '(',
+                                                                                                   'style': '(',
             'datefmt': '%d.%m.%Y %H:%M',
         },
     },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
-            'formatter': 'main_format',
+            'formatter': 'debug_format',
         },
         'file': {
             'class': 'logging.FileHandler',
-            'formatter': 'main_format',
-            'filename': os.path.join(BASE_DIR, 'information.log'),
+            'formatter': 'debug_format',
+            'filename': os.path.join(BASE_DIR, 'logs', f'{date.today()}.log'),
         }
     },
     'loggers': {
-        'main': {
+        'main_local': {
             'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'main_prod': {
+            'handlers': ['file'],
             'level': 'INFO',
             'propagate': True,
         }
     }
 }
+
+LOGGER = logging.getLogger('main_prod') if IS_DEV_SERVER else logging.getLogger('main_local')
 
 ROOT_URLCONF = 'post_inn.urls'
 
@@ -148,10 +163,8 @@ WSGI_APPLICATION = 'post_inn.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
 
 STATIC_URL = '/static/'
 
@@ -289,12 +302,10 @@ SWAGGER_SETTINGS = {
         'drf_yasg.inspectors.DjangoRestResponsePagination',
         'drf_yasg.inspectors.CoreAPICompatInspector',
     ],
-
     # default api Info if none is otherwise given; should be an import string to an openapi.Info object
     'DEFAULT_INFO': None,
     # default API url if none is otherwise given
     'DEFAULT_API_URL': None,
-
     'USE_SESSION_AUTH': True,  # add Django Login and Django Logout buttons, CSRF token to swagger UI page
     'LOGIN_URL': getattr(settings, 'LOGIN_URL', None),  # URL for the login button
     'LOGOUT_URL': getattr(settings, 'LOGOUT_URL', None),  # URL for the logout button
