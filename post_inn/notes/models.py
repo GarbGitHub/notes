@@ -1,13 +1,13 @@
 from datetime import datetime
 
-from django.db.models import Model, CharField, TextField, DateTimeField, ForeignKey, SET_NULL, BooleanField, \
-    ManyToManyField
+from django.db.models import Model, CharField, TextField, DateTimeField, ForeignKey, BooleanField, ManyToManyField, \
+    CASCADE
 
 from accounts.models import User
 
 
 class Tag(Model):
-    author = ForeignKey(User,verbose_name='Автор', null=True, blank=False, on_delete=SET_NULL)
+    author = ForeignKey(User, verbose_name='Автор', null=True, blank=False, on_delete=CASCADE)
     title = CharField(verbose_name='Тег', max_length=128)
     created = DateTimeField(verbose_name='Дата и время создания', default=datetime.now)
     update = DateTimeField(verbose_name='Дата обновления', auto_now=True)
@@ -36,7 +36,7 @@ class Tag(Model):
 
 
 class Note(Model):
-    author = ForeignKey(User, verbose_name='Автор', null=True, blank=False, on_delete=SET_NULL)
+    author = ForeignKey(User, verbose_name='Автор', null=True, blank=False, on_delete=CASCADE)
     title = CharField(verbose_name='Заголовок', max_length=128)
     text = TextField(verbose_name='Текст заметки', blank=True)
     full_text = TextField(verbose_name='Полное содержание', blank=True)
