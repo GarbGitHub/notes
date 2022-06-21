@@ -1,17 +1,12 @@
 import logging
-
+from django.conf import settings
 from django.contrib import auth
 from django.contrib.auth.forms import PasswordResetForm
-from django.contrib.auth.tokens import default_token_generator
-from django.core.exceptions import ValidationError
-from django.core.mail import send_mail, BadHeaderError
-from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render, redirect
-from django.template.loader import render_to_string
+from django.contrib.auth.views import PasswordResetCompleteView
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, resolve_url
 from django.urls import reverse
 from django.contrib import messages
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
 from django.views.generic import UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
@@ -238,7 +233,7 @@ class EditUserPasswordUpdateView(SuccessMessageMixin, UpdateView):
 
     def get_success_url(self):
         email = User.get_user_email(user_pk=self.request.user.id)
-        logger.info(f' Пользователь {email} успешно сменил пароль')
+        logger.info(f'Пользователь {email} успешно сменил пароль')
         return reverse_lazy('notesapp:notes_list')
 
     def get_object(self):
@@ -280,7 +275,6 @@ class EditUserUpdateView(SuccessMessageMixin, UpdateView):
         return super().dispatch(*args, **kwargs)
 
 
-# https://www.youtube.com/watch?v=i6wNXuY8lQA
 def password_reset_request(request):
     if request.method == "POST":
         password_reset_form = PasswordResetForm(request.POST)
@@ -289,7 +283,7 @@ def password_reset_request(request):
             email = password_reset_form.cleaned_data['email']
 
             try:
-                user = User.objects.get(email=email)  # email в форме регистрации проверен на уникальность
+                user = User.objects.get(email=email)
 
             except ObjectDoesNotExist:
                 request.session['title_dialog'] = 'Не верный email'
@@ -304,16 +298,46 @@ def password_reset_request(request):
                 return HttpResponseRedirect(reverse('auth:result'))
 
             if send_reset_password(user) > 0:
+                logger.info(f'Пользователю {user.email} отправлена ссылка для сброса пароля')
                 request.session['message'] = f'Проверьте почту {email} для получения инструкции по сбросу пароля'
 
             else:
                 request.session['title_dialog'] = f'Ошибка'
                 request.session['message'] = f'Мы не смогли отправить ссылку на {email} для подтверждения регистрации'
+                logger.error(f'Пользователю {user.email} не получилось отправить ссылку для сброса пароля')
 
             return HttpResponseRedirect(reverse('auth:result'))
 
     else:
         password_reset_form = PasswordResetForm()
 
-    return render(request=request, template_name="accounts/password_reset.html",
-                  context={"password_reset_form": password_reset_form})
+    return render(
+        request=request,
+        template_name="accounts/register_base.html",
+        context={
+            'password_reset_form': password_reset_form,
+            'title_page': 'Сброс пароля',
+            'description': 'Восстановить забытый пароль',
+            'static_get_param': get_config.GET_CONFIG
+        })
+
+
+class UserPasswordResetCompleteView(PasswordResetCompleteView):
+    """Страница подтверждения восстановления пароля"""
+
+    template_name = 'accounts/register_base.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['login_url'] = resolve_url(settings.LOGIN_URL)
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        context['message'] = 'Вы успешно сменили пароль'
+        context['title_dialog'] = 'Отличные новости!'
+        context['title_page'] = context['message']
+        context['password_reset_complete'] = True
+        context['static_get_param'] = get_config.GET_CONFIG
+        messages.success(request, context['message'])
+        return self.render_to_response(context)

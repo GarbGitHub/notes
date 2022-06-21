@@ -1,6 +1,5 @@
-from django.contrib.auth.views import PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
-from django.urls import path
-
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.urls import path, reverse_lazy
 import accounts.views as accounts
 
 app_name = 'authapp'
@@ -15,10 +14,19 @@ urlpatterns = [
     path('verify/<str:email>/<str:activation_key>/', accounts.verify, name='verify'),
     path('verify_update/', accounts.verify_update, name='verify_update'),
 
+    # Форма сброса пароля
     path('password_reset', accounts.password_reset_request, name='password_reset'),
-    path('reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(template_name="accounts/password_reset_confirm.html"),
-         name='password_reset_confirm'),
-    path('reset/done/', PasswordResetCompleteView.as_view(template_name='accounts/register_base.html'),
-         name='password_reset_complete'),
 
+    # форма для ввода нового пароля
+    path('reset/<uidb64>/<token>/',
+         PasswordResetConfirmView.as_view(
+             template_name="accounts/register_base.html",
+             success_url='complete/'
+         ),
+         name='password_reset_confirm'),
+
+    # уведомление о смене пароля
+    path('reset/<uidb64>/<token>/complete/',
+         accounts.UserPasswordResetCompleteView.as_view(),
+         name='password_reset_complete')
 ]

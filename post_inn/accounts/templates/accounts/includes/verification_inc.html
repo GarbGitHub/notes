@@ -11,5 +11,7 @@
     {% elif verify_error %}
     <!--Ошибка при регистрации -->
     <p><a href="{% url 'auth:login' %}">Войдите</a> или <a href="{% url 'auth:register' %}">зарегистрируйтесь</a>, чтобы начать.</p>
+    {% elif password_reset_complete %}
+     <p><a href="{% url 'auth:login' %}">Войдите с новым паролем</a></p>
     {% endif %}
 </div>

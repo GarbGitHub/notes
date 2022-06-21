@@ -64,7 +64,11 @@
                     {% include 'accounts/includes/login_form_inc.html' %}
                 {% elif url_name == 'register' %}
                     {% include 'accounts/includes/register_form_inc.html' %}
-                {% elif url_name == 'verify' or url_name == 'result' or url_name == 'verify_update' %}
+                {% elif url_name == 'password_reset'%}
+                    {% include 'accounts/includes/password_reset_inc.html' %}
+                {% elif url_name == 'password_reset_confirm'%}
+                    {% include 'accounts/includes/password_reset_confirm_inc.html' %}
+                {% elif url_name == 'verify' or url_name == 'result' or url_name == 'verify_update' or url_name == 'password_reset_complete' %}
                     {% include 'accounts/includes/verification_inc.html' %}
                 {% else %}
                     {% include 'accounts/includes/index_inc.html' %}

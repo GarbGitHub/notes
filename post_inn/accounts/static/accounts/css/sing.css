@@ -61,7 +61,7 @@
     border-bottom-color: #fff;
 }
 
-.form-sing {
+.form-sing, .form-password_reset_confirm {
     width: 100%;
     max-width: 330px;
     padding: 15px;
@@ -121,11 +121,17 @@
     color: #000;
 }
 
+.pw-reset {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 4px !important;
+    border-bottom-left-radius: 4px !important;
+}
+
+
 input.sing,
 input.sing:active,
 input.sing:focus {
     background-color: #ffede4;
-    border: 1 !important;
     border-color: #351918;
     outline: 0 !important;
     outline: none !important;
@@ -140,6 +146,22 @@ input.sing:active::placeholder,
 input.sing:focus::placeholder {
     visibility: hidden;
 }
+
+
+.rst1 {
+    margin-bottom: -1px;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    background-color: #ffede4;
+}
+
+.rst2 {
+    margin-bottom: 10px;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    background-color: #ffede4;
+}
+
 
 .form-sigin-submit {
     background-color: #a48b83;
@@ -160,11 +182,11 @@ input.sing:focus::placeholder {
     font-size: 80%;
 }
 
-.footer--link {
+.footer--link, .form-link {
     color: rgba(255, 255, 255, .5);
 }
 
-.footer--link:hover {
+.footer--link:hover, .form-link:hover {
     color: white;
 }
 
