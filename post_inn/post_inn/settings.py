@@ -202,7 +202,7 @@ else:
     }
 
     STATICFILES_DIRS = (
-        os.path.join(BASE_DIR, 'note_inn', 'static'),  # Путь к статике на сервере
+        os.path.join(BASE_DIR, 'static'),  # Путь к статике на сервере
     )
 
 # Password validation
