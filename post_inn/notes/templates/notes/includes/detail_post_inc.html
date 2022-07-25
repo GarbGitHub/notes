@@ -27,14 +27,14 @@
             <div class="card-date align-middle"><span class="align-middle">{{ post.created|date:'d.m.Y' }}</span></div>
         </div>
     </div>
-    {% if post.tags.first %}
     <div class="obj-tag">
+        {% if post.tags.first %}
        <object>
        {% for tag in post.tags.all %}
         <a class="link__obj-tag" href="{% url 'notesapp:tag_posts_list' tag.pk %}">{{ tag|truncatechars:13 }}</a>
        {% endfor %}
        </object>
+        {% endif %}
     </div>
-    {% endif %}
 </div>
 {% endwith %}
