@@ -5,6 +5,7 @@ from datetime import timedelta, datetime
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.hashers import make_password, identify_hasher
 from django.db.models import (EmailField, CharField, BooleanField, DateTimeField)
+from django.utils import timezone
 from django.utils.timezone import now
 
 from post_inn.settings import TIME_DELTA_HOURS
@@ -53,7 +54,7 @@ class User(AbstractBaseUser):
 
     activation_key = CharField(max_length=128, blank=True)  # ключ подтверждения
     #activation_key_expires = DateTimeField(default=(now() + timedelta(hours=TIME_DELTA_HOURS)))  # Срок действия ключа
-    activation_key_expires = DateTimeField(verbose_name='Срок действия ключа', default=now())  # Срок действия ключа
+    activation_key_expires = DateTimeField(verbose_name='Срок действия ключа', default=timezone.now)  # Срок действия ключа
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
