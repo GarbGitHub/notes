@@ -53,7 +53,7 @@ class User(AbstractBaseUser):
 
     activation_key = CharField(max_length=128, blank=True)  # ключ подтверждения
     #activation_key_expires = DateTimeField(default=(now() + timedelta(hours=TIME_DELTA_HOURS)))  # Срок действия ключа
-    activation_key_expires = DateTimeField(verbose_name='Срок действия ключа', blank=True, null=True)  # Срок действия ключа
+    activation_key_expires = DateTimeField(verbose_name='Срок действия ключа', default=now())  # Срок действия ключа
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
