@@ -15,7 +15,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.core.exceptions import ObjectDoesNotExist
 
 from accounts.models import User
-from accounts.utils.send_mail import send_verify_mail, send_reset_password
+from accounts.utils.send_mail import send_verify_mail, send_reset_password, create_decoded_byte_str
 from accounts.forms import DivErrorList, UserLoginForm, UserRegisterForm, UserEditForm, UserPasswordEditForm
 
 from post_inn import get_config
@@ -81,6 +81,7 @@ def register(request):
         if register_form.is_valid():
             email = request.POST['email']
             user = register_form.save(commit=False)
+            user.activation_key_expires = User.create_key_expiration_date()
             user.set_password(register_form.cleaned_data['password1'])
 
             if send_verify_mail(user) > 0:
@@ -137,12 +138,21 @@ def result(request):
         return render(request, 'accounts/register_base.html', context)
 
 
-def verify(request, email, activation_key):
+def verify(request, email_encode_b64, activation_key):
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('notesapp:notes_list'))
 
     context = {'title_page': 'Верификация учетной записи пользователя'}
     try:
+        email = create_decoded_byte_str(email_encode_b64)
+
+        if 'error' in email.lower():
+            context['title_dialog'] = f'Произошла ошибка'
+            context['message'] = email
+            context['verify_error'] = True
+            messages.success(request, context['title_dialog'])
+            return render(request, 'accounts/register_base.html', context)
+
         user = User.objects.get(email=email)
 
         if user.activation_key == activation_key and not user.is_activation_key_expired():

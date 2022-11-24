@@ -11,7 +11,7 @@ urlpatterns = [
     path('edit/', accounts.EditUserUpdateView.as_view(), name='edit'),
     path('result/', accounts.result, name='result'),
     path('edit/password/', accounts.EditUserPasswordUpdateView.as_view(), name='edit_password'),
-    path('verify/<str:email>/<str:activation_key>/', accounts.verify, name='verify'),
+    path('verify/<str:email_encode_b64>/<str:activation_key>/', accounts.verify, name='verify'),
     path('verify_update/', accounts.verify_update, name='verify_update'),
 
     # Форма сброса пароля

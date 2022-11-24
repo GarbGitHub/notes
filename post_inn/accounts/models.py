@@ -1,6 +1,6 @@
 import hashlib
 import random
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.hashers import make_password, identify_hasher
@@ -52,8 +52,8 @@ class User(AbstractBaseUser):
     timestamp = DateTimeField(verbose_name='Создан', auto_now_add=True)
 
     activation_key = CharField(max_length=128, blank=True)  # ключ подтверждения
-    activation_key_expires = DateTimeField(default=(now() + timedelta(hours=TIME_DELTA_HOURS)))  # Срок действия ключа
-
+    #activation_key_expires = DateTimeField(default=(now() + timedelta(hours=TIME_DELTA_HOURS)))  # Срок действия ключа
+    activation_key_expires = DateTimeField(verbose_name='Срок действия ключа', blank=True, null=True)  # Срок действия ключа
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
