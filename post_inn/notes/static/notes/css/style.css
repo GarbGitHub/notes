@@ -130,6 +130,10 @@ h1.header,
     font-family: var(--card-family);
 }
 
+.cardcursor {
+    cursor: pointer;
+}
+
 /* .form-label.light {
     font-family: 'Lobster', cursive;
 } */
@@ -226,6 +230,11 @@ p {
     margin-top: 40px;
 }
 
+.container.max-width {
+    max-width: 100%;
+    margin-right:100px;
+}
+
 .bd-placeholder-img {
     font-size: 1.125rem;
     text-anchor: middle;
@@ -239,6 +248,7 @@ p {
 .link-card:active {
     text-decoration: none;
     color: #000;
+    width: 100%;
 }
 
 .card {
@@ -280,13 +290,20 @@ h3.card-title {
 
 .star-card,
 .addnote,
+.full-screen,
 .addnote-top {
-    background-color: #60403e;
+    background-color: #a70d4f;
     border-radius: 100%;
     transition: .3s;
 }
 
+.full-screen {
+    background-color: #1E90FF;
+    cursor: pointer;
+}
+
 .addnote,
+.full-screen,
 .toast,
 .link-action {
     box-shadow: 0.2rem 0.5rem 0.5rem rgb(0 0 0 / 35%) !important;
@@ -306,6 +323,7 @@ h3.card-title {
 
 .star-card svg,
 .addnote svg,
+.full-screen svg,
 .addnote-top svg {
     position: absolute;
     left: 50%;
@@ -322,17 +340,18 @@ h3.card-title {
 
 .star-card:hover svg,
 .addnote:hover svg,
+.full-screen:hover svg,
 .addnote-top:hover svg {
     transform: translate(-50%, -50%) scale(1.3);
 }
 
-.addnote {
+.addnote, .full-screen {
     width: 70px;
     height: 70px;
     position: fixed;
 }
 
-.addnote svg {
+.addnote svg, .full-screen svg {
     width: 30px;
     height: 30px;
 }
@@ -402,8 +421,11 @@ h3.card-title {
     .nav-search-form {
         display: none;
     }
-    .addnote {
+    .addnote, .full-screen {
         display: none;
+    }
+    .container.max-width{
+        margin-right:0;
     }
     .nav-addnote {
         display: initial;
@@ -424,22 +446,43 @@ h3.card-title {
 
 @media (min-width: 1024px) {
     .addnote {
-        right: 260px;
-        bottom: 150px;
+        right: 20px;
+        top: 90px;
     }
 }
 
 @media (max-width: 1250px) {
     .addnote {
-        right: 40px;
-        bottom: 150px;
+        right: 20px;
+        top: 90px;
     }
 }
 
 @media (max-width: 1550px) {
     .addnote {
-        right: 40px;
-        bottom: 150px;
+        right: 20px;
+        top: 90px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .full-screen {
+        right: 20px;
+        top: 180px;
+    }
+}
+
+@media (max-width: 1250px) {
+    .full-screen {
+        right: 20px;
+        top: 180px;
+    }
+}
+
+@media (max-width: 1550px) {
+    .full-screen {
+        right: 20px;
+        top: 180px;
     }
 }
 

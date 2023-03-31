@@ -1,10 +1,10 @@
 {% load notes_extras %}
 {% with request.resolver_match.url_name as url_name %}
-<a class="link-card" href="{% url 'notesapp:post_detail' post.pk %}">
+
+
     <div class="card" id="cardFamily">
         <div class="card-header">
-            <h3 class="card-title">{{ post.title }}</h3>
-            <object>
+            <a class="link-card"  style="width:100%;" href="{% url 'notesapp:post_detail' post.pk %}"><h3 class="card-title">{{ post.title }}</h3></a>
                 <div class="dropdown">
                     <button type="button" class="btn dropdown-toggle toggle-action" id="dropdownCardMenu" data-bs-toggle="dropdown" aria-expanded="false">
                       <span><i class="bi bi-grip-vertical"></i></span>
@@ -19,10 +19,19 @@
                     {% endif %}
                     </ul>
                 </div>
-            </object>
         </div>
-        <div class="card-body lead codehilite">
+        <div class="card-body lead codehilite coursor cardcursor" onclick="location.href='{% url 'notesapp:post_detail' post.pk %}';">
             {{ post.text|convert_markdown|limit_markdown|truncatechars_html:220|safe }}
+
+            {% for item in post.todoitem.all|user_list_sort_by %}
+            <ul>
+                {% if item.is_active %}
+                <li>{{ item.title }}</li>
+                {% else %}
+                <li><del>{{ item.title }}</del></li>
+                {% endif %}
+            </ul>
+             {% endfor %}
             <div class="card-bottom">
                 <div>
                     {% include 'notes/includes/favorites_card_inc.html' %}
@@ -40,5 +49,5 @@
             {% endif %}
         </div>
     </div>
-</a>
+
 {% endwith %}
