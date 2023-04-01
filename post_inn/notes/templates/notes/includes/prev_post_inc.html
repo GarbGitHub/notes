@@ -1,10 +1,12 @@
 {% load notes_extras %}
 {% with request.resolver_match.url_name as url_name %}
-
-
     <div class="card" id="cardFamily">
         <div class="card-header">
+            {% if url_name == 'posts_basket_list' %}
+            <a class="link-card"  style="width:100%;" href="{% url 'notesapp:post_basket_detail' post.pk %}"><h3 class="card-title">{{ post.title }}</h3></a>
+            {% else %}
             <a class="link-card"  style="width:100%;" href="{% url 'notesapp:post_detail' post.pk %}"><h3 class="card-title">{{ post.title }}</h3></a>
+            {% endif %}
                 <div class="dropdown">
                     <button type="button" class="btn dropdown-toggle toggle-action" id="dropdownCardMenu" data-bs-toggle="dropdown" aria-expanded="false">
                       <span><i class="bi bi-grip-vertical"></i></span>
