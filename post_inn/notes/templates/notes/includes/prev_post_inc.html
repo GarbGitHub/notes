@@ -22,16 +22,6 @@
         </div>
         <div class="card-body lead codehilite coursor cardcursor" onclick="location.href='{% url 'notesapp:post_detail' post.pk %}';">
             {{ post.text|convert_markdown|limit_markdown|truncatechars_html:220|safe }}
-
-            {% for item in post.todoitem.all|user_list_sort_by %}
-            <ul>
-                {% if item.is_active %}
-                <li>{{ item.title }}</li>
-                {% else %}
-                <li><del>{{ item.title }}</del></li>
-                {% endif %}
-            </ul>
-             {% endfor %}
             <div class="card-bottom">
                 <div>
                     {% include 'notes/includes/favorites_card_inc.html' %}
